@@ -68,7 +68,7 @@ export function Reservation() {
             <Visual visual={{ art: 'pizza', photo: photos.pizzaChickenMushroom, alt: '' }} sizes="24rem" className="photo-fade h-full w-full object-cover" />
           </div>
           <div className="absolute right-[38%] top-[26%] -z-10 w-[32%] max-w-[10rem] animate-float" aria-hidden="true">
-            <Visual visual={{ art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, alt: '' }} sizes="10rem" className="photo-fade h-full w-full object-cover" />
+            <Visual visual={{ art: 'cocktail', tint: 'blue', photo: photos.mojito, alt: '' }} sizes="10rem" className="photo-fade h-full w-full object-cover" />
           </div>
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/60 to-transparent" aria-hidden="true" />
           <p className="font-script text-4xl text-gold-400">Reserve a sua mesa</p>

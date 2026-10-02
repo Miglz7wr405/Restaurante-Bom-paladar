@@ -30,21 +30,21 @@ export const massas: MenuItem[] = [
 ]
 
 export const cocktails: MenuItem[] = [
-  { id: 'margarita', name: 'Margarita', description: 'Tequila branca, triple sec, lima e sumo de limão.', price: 350, visual: { art: 'cocktail', tint: 'lime', photo: photos.mojito, alt: 'Cocktail Margarita' } },
+  { id: 'margarita', name: 'Margarita', description: 'Tequila branca, triple sec, lima e sumo de limão.', price: 350, visual: { art: 'cocktail', tint: 'lime', alt: 'Cocktail Margarita' } },
   { id: 'caipirinha', name: 'Caipirinha', description: 'Cachaça, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.', price: 350, visual: { art: 'cocktail', tint: 'lime', photo: photos.mojito, alt: 'Caipirinha com lima' } },
-  { id: 'caipiroska', name: 'Caipiroska', description: 'Vodka, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.', price: 300, visual: { art: 'cocktail', tint: 'berry', photo: photos.cocktailSignature, alt: 'Caipiroska de frutos vermelhos' } },
-  { id: 'long-island', name: 'Long Island', description: 'Vodka, rum branco, triple sec, gin, sumo de lima e tequila branca.', price: 350, visual: { art: 'cocktail', tint: 'amber', photo: photos.tequilaSunrise, alt: 'Cocktail Long Island' } },
-  { id: 'tequila-sunrise', name: 'Tequila Sunrise', description: 'Tequila branca, sumo de laranja e grenadine.', price: 500, visual: { art: 'cocktail', tint: 'sunrise', photo: photos.tequilaSunrise, alt: 'Tequila Sunrise' } },
-  { id: 'strawberry-daiquiri', name: 'Strawberry Daiquiri', description: 'Rum, triple sec, morango e lima.', price: 400, visual: { art: 'cocktail', tint: 'berry', photo: photos.cocktailSignature, alt: 'Daiquiri de morango' } },
-  { id: 'intense-man', name: 'Bom Paladar Intense Man', description: 'Rum branco, malibu e sumo de ananás.', price: 500, visual: { art: 'cocktail', tint: 'sunrise', photo: photos.cocktailSignature, alt: 'Cocktail de assinatura Bom Paladar Intense Man' } },
-  { id: 'intense-girl', name: 'Bom Paladar Intense Girl', description: 'Licor de morango, piña colada, rum e sumo de ananás.', price: 400, visual: { art: 'cocktail', tint: 'berry', photo: photos.cocktailSignature, alt: 'Cocktail de assinatura Bom Paladar Intense Girl' } },
-  { id: 'sex-on-the-beach', name: 'Sex on the Beach', description: 'Vodka, licor de pêssego e sumo de laranja.', price: 400, visual: { art: 'cocktail', tint: 'sunrise', photo: photos.tequilaSunrise, alt: 'Cocktail Sex on the Beach' } },
-  { id: 'blue-lagoon', name: 'Blue Lagoon', description: 'Vodka, licor Blue Curaçao, sumo de limão e Sprite.', price: 350, visual: { art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, alt: 'Cocktail Blue Lagoon azul' } },
-  { id: 'blue-hawaii', name: 'Blue Hawaii', description: 'Vodka, licor de morango, Blue Curaçao e Sprite.', price: 350, visual: { art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, alt: 'Cocktail Blue Hawaii' } },
+  { id: 'caipiroska', name: 'Caipiroska', description: 'Vodka, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.', price: 300, visual: { art: 'cocktail', tint: 'berry', alt: 'Caipiroska de frutos vermelhos' } },
+  { id: 'long-island', name: 'Long Island', description: 'Vodka, rum branco, triple sec, gin, sumo de lima e tequila branca.', price: 350, visual: { art: 'cocktail', tint: 'amber', alt: 'Cocktail Long Island' } },
+  { id: 'tequila-sunrise', name: 'Tequila Sunrise', description: 'Tequila branca, sumo de laranja e grenadine.', price: 500, visual: { art: 'cocktail', tint: 'sunrise', alt: 'Tequila Sunrise' } },
+  { id: 'strawberry-daiquiri', name: 'Strawberry Daiquiri', description: 'Rum, triple sec, morango e lima.', price: 400, visual: { art: 'cocktail', tint: 'berry', alt: 'Daiquiri de morango' } },
+  { id: 'intense-man', name: 'Bom Paladar Intense Man', description: 'Rum branco, malibu e sumo de ananás.', price: 500, visual: { art: 'cocktail', tint: 'sunrise', alt: 'Cocktail de assinatura Bom Paladar Intense Man' } },
+  { id: 'intense-girl', name: 'Bom Paladar Intense Girl', description: 'Licor de morango, piña colada, rum e sumo de ananás.', price: 400, visual: { art: 'cocktail', tint: 'berry', alt: 'Cocktail de assinatura Bom Paladar Intense Girl' } },
+  { id: 'sex-on-the-beach', name: 'Sex on the Beach', description: 'Vodka, licor de pêssego e sumo de laranja.', price: 400, visual: { art: 'cocktail', tint: 'sunrise', alt: 'Cocktail Sex on the Beach' } },
+  { id: 'blue-lagoon', name: 'Blue Lagoon', description: 'Vodka, licor Blue Curaçao, sumo de limão e Sprite.', price: 350, visual: { art: 'cocktail', tint: 'blue', alt: 'Cocktail Blue Lagoon azul' } },
+  { id: 'blue-hawaii', name: 'Blue Hawaii', description: 'Vodka, licor de morango, Blue Curaçao e Sprite.', price: 350, visual: { art: 'cocktail', tint: 'blue', alt: 'Cocktail Blue Hawaii' } },
   { id: 'mojito', name: 'Mojito', description: 'Rum branco, lima, hortelã, Sprite ou água tónica.', price: 350, visual: { art: 'cocktail', tint: 'mint', photo: photos.mojito, alt: 'Mojito com hortelã' } },
   { id: 'pina-colada', name: 'Piña Colada', description: 'Rum branco, cocktail de piña colada e sumo de ananás.', price: 450, visual: { art: 'cocktail', tint: 'cream', photo: photos.pinaColada, alt: 'Piña Colada cremosa' } },
-  { id: 'caipirinha-cerveja', name: 'Caipirinha de Cerveja', price: 400, visual: { art: 'cocktail', tint: 'amber', photo: photos.tequilaSunrise, alt: 'Caipirinha de cerveja' } },
-  { id: 'sangria', name: 'Sangria de Vinho Branco / Tinto', description: 'Aperitivo da casa, triple sec, frutas da época, brandy, vinho e Sprite.', price: 800, visual: { art: 'wine', photo: photos.sangria, alt: 'Jarro de sangria com fruta' } },
+  { id: 'caipirinha-cerveja', name: 'Caipirinha de Cerveja', price: 400, visual: { art: 'cocktail', tint: 'amber', alt: 'Caipirinha de cerveja' } },
+  { id: 'sangria', name: 'Sangria de Vinho Branco / Tinto', description: 'Aperitivo da casa, triple sec, frutas da época, brandy, vinho e Sprite.', price: 800, visual: { art: 'wine', alt: 'Jarro de sangria com fruta' } },
 ]
 
 export const menuCategories: MenuCategory[] = [

@@ -28,9 +28,9 @@ export const heroSlides: HeroSlide[] = [
     kicker: 'Serve ótimos cocktails',
     title: ['Cocktails', 'de Assinatura'],
     script: 'Cocktail',
-    subtitle: 'Do Bom Paladar Intense ao Mojito: a carta de bar que faz as noites de Quelimane.',
+    subtitle: 'Do Mojito à Piña Colada: a carta de bar que faz as noites de Quelimane.',
     badge: { top: '350', bottom: 'MT' },
-    visual: { art: 'cocktail', tint: 'sunrise', photo: photos.cocktailSignature, alt: 'Cocktail de assinatura Bom Paladar' },
+    visual: { art: 'cocktail', tint: 'mint', photo: photos.mojito, alt: 'Mojito com hortelã e lima' },
     decorations: ['lime', 'mint', 'ice', 'lime'],
   },
   {
@@ -50,7 +50,7 @@ export const categoryLinks: CategoryLink[] = [
   { id: 'lasanhas', label: 'Lasanhas', art: 'lasagna', photo: photos.lasanhaCarne, menuTab: 'massas' },
   { id: 'mariscos', label: 'Mariscos', art: 'seafood', photo: photos.mariscada },
   { id: 'carnes', label: 'Carnes', art: 'grill', photo: photos.carneGrelhada },
-  { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, menuTab: 'cocktails' },
+  { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', photo: photos.pinaColada, menuTab: 'cocktails' },
 ]
 
 export const dishOfMonth: { kicker: string; item: MenuItem; text: string; points: string[] } = {
@@ -75,13 +75,13 @@ export const promos: Promo[] = [
     tone: 'ember',
   },
   {
-    id: 'sangria',
-    kicker: 'Noites no bar',
-    title: 'Sangria da Casa',
-    text: 'Vinho branco ou tinto, fruta da época e brandy. 800 MT o jarro.',
-    cta: 'Ver cocktails',
-    href: '#menu',
-    visual: { art: 'wine', photo: photos.sangria, alt: 'Jarro de sangria' },
+    id: 'mariscada',
+    kicker: 'Para a mesa toda',
+    title: 'Combos de Mariscada',
+    text: 'Camarão, caranguejo, mexilhão e amêijoa, ao estilo da costa da Zambézia.',
+    cta: 'Reservar',
+    href: '#reservas',
+    visual: { art: 'seafood', photo: photos.mariscada, alt: 'Travessa de mariscada com camarão e caranguejo' },
     tone: 'ink',
   },
 ]
@@ -97,13 +97,13 @@ export const takeaway = {
 export const team: TeamMember[] = [
   { id: 'cozinha', name: 'Cozinha', role: 'Chef de cozinha', bio: 'Massas, lasanhas e grelhados preparados no momento.', visual: { art: 'pasta', photo: photos.massaBolonhesa, alt: 'Esparguete à bolonhesa da cozinha' }, socials: [] },
   { id: 'pizzaria', name: 'Pizzaria', role: 'Pizzaiolo', bio: 'Do Something Meating ao Double Stack, à saída do forno.', visual: { art: 'pizza', photo: photos.pizzaSomethingMeating, alt: 'Pizza acabada de sair do forno' }, socials: [] },
-  { id: 'bar', name: 'Bar', role: 'Mixologia', bio: 'Os cocktails de assinatura que dão fama à casa.', visual: { art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, alt: 'Cocktail Blue Lagoon do bar' }, socials: [] },
-  { id: 'sala', name: 'Sala', role: 'Serviço', bio: 'Recebe-o com a hospitalidade de Quelimane.', visual: { art: 'wine', photo: photos.sangria, alt: 'Sangria servida à mesa' }, socials: [] },
+  { id: 'bar', name: 'Bar', role: 'Mixologia', bio: 'Os cocktails de assinatura que dão fama à casa.', visual: { art: 'cocktail', tint: 'mint', photo: photos.mojito, alt: 'Mojito preparado no bar' }, socials: [] },
+  { id: 'sala', name: 'Sala', role: 'Serviço', bio: 'Recebe-o com a hospitalidade de Quelimane.', visual: { art: 'grill', photo: photos.carneGrelhada, alt: 'Carne grelhada servida à mesa' }, socials: [] },
 ]
 
 // Editable news entries (ISO dates).
 export const news: NewsPost[] = [
-  { id: 'cocktails', date: '2026-09-20', title: 'A nova carta de cocktails chegou', excerpt: 'Blue Lagoon, Tequila Sunrise e os nossos Intense Man e Intense Girl. Venha provar ao fim da tarde.', visual: { art: 'cocktail', tint: 'sunrise', photo: photos.tequilaSunrise, alt: 'Tequila Sunrise no balcão' } },
+  { id: 'cocktails', date: '2026-09-20', title: 'A nova carta de cocktails chegou', excerpt: 'Blue Lagoon, Tequila Sunrise e os nossos Intense Man e Intense Girl. Venha provar ao fim da tarde.', visual: { art: 'cocktail', tint: 'cream', photo: photos.pinaColada, alt: 'Piña Colada no balcão' } },
   { id: 'double-stack', date: '2026-09-08', title: 'Double Stack: a pizza de massa dupla', excerpt: 'Duas camadas, muito queijo e um recheio generoso. A pizza mais pedida do mês.', visual: { art: 'pizza', photo: photos.pizzaDoubleStack, alt: 'Pizza de massa dupla' } },
-  { id: 'sangria', date: '2026-08-28', title: 'Sangria para as noites quentes', excerpt: 'Branca ou tinta, com fruta da época. Perfeita para partilhar com amigos.', visual: { art: 'wine', photo: photos.sangria, alt: 'Copos de sangria' } },
+  { id: 'grelhados', date: '2026-08-28', title: 'Grelhados no ponto', excerpt: 'Carne grelhada com alecrim e alho assado: uma das sugestões da nossa secção de Carnes.', visual: { art: 'grill', photo: photos.carneGrelhada, alt: 'Bife grelhado fatiado com alecrim' } },
 ]

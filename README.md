@@ -25,23 +25,19 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 
 ### Fotografias
 
-As fotos de pizzas, massas e lasanhas foram recortadas dos cardápios (`public/images/menu/`, ligadas em `src/content/photos.ts`). Como as imagens recebidas são muito pequenas (cerca de 30 px por foto), estão marcadas `lowRes` e só aparecem nas miniaturas do menu e nos círculos das categorias; o hero, o prato do mês e os cards grandes usam a ilustração. Com as fotos originais em tamanho grande, basta substituir os ficheiros e remover `lowRes`.
+As fotos dos pratos estão em `public/images/dishes/` (fotos de estúdio geradas com IA no Lovable, 1024 px, fundo preto) e são ligadas aos pratos em `src/content/photos.ts`. Cada foto é servida em 512 e 1024 px, em WebP com fallback JPG.
 
-Sem foto, cada prato mostra uma ilustração SVG da marca. Para usar uma foto real, coloque os ficheiros em `public/images/` e adicione `photo` ao `visual` do prato:
+Há 16 fotos: 6 pizzas, 4 massas, 2 lasanhas, mariscada, carne grelhada, mojito e piña colada. Os cocktails sem foto própria (Blue Lagoon, Tequila Sunrise, Intense, Sangria, etc.) mostram a ilustração SVG da marca. Para adicionar ou trocar uma foto:
 
-```ts
-visual: {
-  art: 'pizza',
-  alt: 'Pizza Double Stack',
-  photo: { webp: '/images/double-stack.webp', jpg: '/images/double-stack.jpg', width: 800, height: 800 },
-}
-```
+1. Coloque `<nome>-512.webp`, `<nome>-512.jpg`, `<nome>-1024.webp` e `<nome>-1024.jpg` em `public/images/dishes/`.
+2. Adicione `<chave>: dish('<nome>')` em `src/content/photos.ts`.
+3. No prato (`menu.ts` / `home.ts`), use `photo: photos.<chave>` dentro de `visual`.
 
 As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding="async"` e dimensões explícitas (sem CLS).
 
 ## Por confirmar com o restaurante
 
-- **Fotos originais**: enviar as fotos dos pratos em tamanho grande (as do cardápio só servem para miniaturas).
+- **Fotos**: as fotos atuais foram geradas com IA a partir do menu; idealmente substituir por fotos reais dos pratos.
 - **Preços e nomes**: transcritos de fotos do menu em baixa resolução. Confirmar com o menu físico.
 - **Hora de abertura e dias**: só a hora de fecho (00:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 00:00" e o JSON-LD omite o horário.
 - **Entradas, carnes, mariscos, sobremesas, bebidas**: os itens destas páginas do menu não eram legíveis; as categorias aparecem como "Também no menu completo".
