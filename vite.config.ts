@@ -12,6 +12,10 @@ export default defineConfig({
     target: 'es2020',
     cssCodeSplit: true,
     rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        menu: fileURLToPath(new URL('./menu/index.html', import.meta.url)),
+      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],

@@ -6,7 +6,7 @@ import { ButtonLink } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 import { Logo } from '../ui/Logo'
 
-export function Navbar() {
+export function Navbar({ current }: { current?: string }) {
   const scrolled = useScrolled()
   const [open, setOpen] = useState(false)
 
@@ -25,12 +25,12 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 print:hidden transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
         solid ? 'bg-ink-950/95 shadow-card backdrop-blur-md' : 'bg-transparent'
       }`}
     >
       <div className="container-site flex h-nav items-center justify-between gap-4">
-        <a href="#inicio" aria-label="Bom Paladar, voltar ao início" className="shrink-0">
+        <a href="/#inicio" aria-label="Bom Paladar, voltar ao início" className="shrink-0">
           <Logo />
         </a>
 
@@ -40,10 +40,17 @@ export function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="group relative py-2 font-display text-sm uppercase tracking-widest text-cream-50/90 transition-colors hover:text-gold-400"
+                  aria-current={link.href === current ? 'page' : undefined}
+                  className={`group relative py-2 font-display text-sm uppercase tracking-widest transition-colors hover:text-gold-400 ${
+                    link.href === current ? 'text-gold-400' : 'text-cream-50/90'
+                  }`}
                 >
                   {link.label}
-                  <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-gold-400 transition-transform duration-300 ease-smooth group-hover:scale-x-100" />
+                  <span
+                    className={`absolute inset-x-0 -bottom-0.5 h-0.5 origin-left bg-gold-400 transition-transform duration-300 ease-smooth group-hover:scale-x-100 ${
+                      link.href === current ? 'scale-x-100' : 'scale-x-0'
+                    }`}
+                  />
                 </a>
               </li>
             ))}
@@ -51,7 +58,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <ButtonLink href="#reservas" variant="primary" className="hidden px-5 py-2.5 sm:inline-flex">
+          <ButtonLink href="/#reservas" variant="primary" className="hidden px-5 py-2.5 sm:inline-flex">
             Reservar
           </ButtonLink>
           <button
@@ -84,14 +91,17 @@ export function Navbar() {
                   <a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="block py-3 font-display text-lg uppercase tracking-widest text-cream-50 hover:text-gold-400"
+                    aria-current={link.href === current ? 'page' : undefined}
+                    className={`block py-3 font-display text-lg uppercase tracking-widest hover:text-gold-400 ${
+                      link.href === current ? 'text-gold-400' : 'text-cream-50'
+                    }`}
                   >
                     {link.label}
                   </a>
                 </li>
               ))}
               <li className="pt-3">
-                <ButtonLink href="#reservas" onClick={() => setOpen(false)} className="w-full">
+                <ButtonLink href="/#reservas" onClick={() => setOpen(false)} className="w-full">
                   Reservar mesa
                 </ButtonLink>
               </li>

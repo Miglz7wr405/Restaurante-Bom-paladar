@@ -9,7 +9,12 @@
   }
 
   body {
-    @apply bg-cream-50 font-sans text-ink-900 antialiased;
+    @apply bg-cream-50 font-sans text-ink-900 antialiased print:bg-white;
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm;
   }
 
   section[id],

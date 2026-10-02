@@ -17,6 +17,10 @@ export type IconName =
   | 'bag'
   | 'star'
   | 'calendar'
+  | 'search'
+  | 'grid'
+  | 'list'
+  | 'print'
 
 const PATHS: Record<IconName, ReactElement> = {
   whatsapp: (
@@ -62,6 +66,28 @@ const PATHS: Record<IconName, ReactElement> = {
     </>
   ),
   star: <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z" fill="currentColor" stroke="none" />,
+  search: (
+    <>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m20 20-4.2-4.2" />
+    </>
+  ),
+  grid: (
+    <>
+      <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" />
+    </>
+  ),
+  list: <path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" strokeWidth="2.2" />,
+  print: (
+    <>
+      <path d="M7 9V3.5h10V9" />
+      <rect x="3.5" y="9" width="17" height="8" rx="2" />
+      <path d="M7 14h10v6.5H7z" />
+    </>
+  ),
   calendar: (
     <>
       <rect x="3.5" y="5" width="17" height="15" rx="2" />

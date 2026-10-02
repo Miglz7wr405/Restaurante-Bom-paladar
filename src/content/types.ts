@@ -20,6 +20,8 @@ export interface Photo {
   jpgSet?: string
   width: number
   height: number
+  /** Shown under the photo when it was taken by someone else. */
+  credit?: string
 }
 
 /** A real photo when available, otherwise a brand illustration is rendered. */
@@ -34,14 +36,17 @@ export interface MenuItem {
   id: string
   name: string
   description?: string
-  /** Price in meticais (MT). */
-  price: number
-  visual: Visual
+  /** Price in meticais (MT). Undefined means "ask the staff". */
+  price?: number
+  visual?: Visual
 }
 
-export interface MenuCategory {
+export interface MenuSection {
   id: string
   label: string
+  note?: string
+  /** Every item costs the same; the printed-menu view shows it once in the header. */
+  flatPrice?: number
   items: MenuItem[]
 }
 
@@ -79,7 +84,8 @@ export interface CategoryLink {
   art: ArtKind
   tint?: CocktailTint
   photo?: Photo
-  menuTab?: string
+  /** Section id on the /menu/ page. */
+  section: string
 }
 
 export interface Promo {

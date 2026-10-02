@@ -151,10 +151,10 @@ export function Hero() {
                   {slide.subtitle}
                 </p>,
                 <div key="c" className="mt-8 flex flex-wrap gap-3">
-                  <ButtonLink href="#menu" arrow>
+                  <ButtonLink href="/menu/" arrow>
                     Ver menu
                   </ButtonLink>
-                  <ButtonLink href="#reservas" variant="outline">
+                  <ButtonLink href="/#reservas" variant="outline">
                     Reservar mesa
                   </ButtonLink>
                 </div>,

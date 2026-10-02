@@ -1,5 +1,7 @@
-import { menuCategories } from '@/content/menu'
-import { navLinks, restaurant, socials } from '@/content/restaurant'
+import { findSection } from '@/content/menu'
+import { MENU_URL, navLinks, restaurant, socials } from '@/content/restaurant'
+
+const FOOTER_SECTIONS = ['entradas', 'pizzas', 'massas', 'mariscos', 'carnes', 'cocktails'].map(findSection)
 import { Icon } from '../ui/Icon'
 import { Logo } from '../ui/Logo'
 
@@ -7,11 +9,12 @@ export function Footer() {
   const year = new Date().getFullYear()
   const { address, phone, hours } = restaurant
   return (
-    <footer id="contactos" className="bg-ink-950 text-cream-100/80">
+    <footer id="contactos" className="bg-ink-950 text-cream-100/80 print:hidden">
       <div className="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <div>
           <Logo />
-          <p className="mt-5 max-w-xs text-sm">{restaurant.description}</p>
+          <p className="mt-4 font-script text-2xl text-gold-400">{restaurant.slogan}</p>
+          <p className="mt-3 max-w-xs text-sm">{restaurant.description}</p>
           <ul className="mt-6 flex gap-2" aria-label="Redes sociais e contactos">
             {socials
               .filter((s) => s.href)
@@ -42,7 +45,7 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <a href="#reservas" className="hover:text-gold-300">
+              <a href="/#reservas" className="hover:text-gold-300">
                 Reservas
               </a>
             </li>
@@ -52,13 +55,18 @@ export function Footer() {
         <div>
           <h2 className="font-display text-lg uppercase tracking-wider text-cream-50">Menu</h2>
           <ul className="mt-4 space-y-2 text-sm">
-            {menuCategories.map((c) => (
-              <li key={c.id}>
-                <a href="#menu" className="hover:text-gold-300">
-                  {c.label}
+            {FOOTER_SECTIONS.map((s) => (
+              <li key={s.id}>
+                <a href={`${MENU_URL}#${s.id}`} className="hover:text-gold-300">
+                  {s.label}
                 </a>
               </li>
             ))}
+            <li>
+              <a href={MENU_URL} className="font-semibold text-gold-300 hover:text-gold-200">
+                Ver menu completo →
+              </a>
+            </li>
           </ul>
         </div>
 

@@ -28,6 +28,7 @@ export const restaurant = {
     'https://www.google.com/maps/search/?api=1&query=Bom%20Paladar%20Restaurante%20%26%20Bar%2C%20Rua%20Robert%20Mugabe%2C%20Quelimane',
   rating: { value: 4.3, count: 6, source: 'Google' },
   highlight: 'Serve ótimos cocktails',
+  slogan: 'Sabor, qualidade e boa companhia!',
   // Only the closing time (00:00) is confirmed. Set `opens` (e.g. '10:00') and check the days once confirmed.
   hours: [
     {
@@ -47,15 +48,24 @@ export const socials: SocialLink[] = [
   { label: 'Instagram', href: '', icon: 'instagram' },
 ]
 
+// Absolute so they work from both pages; on "/" they stay same-document scrolls.
 export const navLinks = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Menu', href: '#menu' },
-  { label: 'Destaques', href: '#destaques' },
-  { label: 'Equipa', href: '#equipa' },
-  { label: 'Novidades', href: '#novidades' },
+  { label: 'Início', href: '/#inicio' },
+  { label: 'Menu', href: '/menu/' },
+  { label: 'Destaques', href: '/#destaques' },
+  { label: 'Equipa', href: '/#equipa' },
+  { label: 'Novidades', href: '/#novidades' },
   { label: 'Contactos', href: '#contactos' },
 ] as const
 
+export const MENU_URL = '/menu/'
+export const RESERVE_URL = '/#reservas'
+
 export function formatPrice(value: number): string {
   return `${Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} MT`
+}
+
+/** Items without a printed price (e.g. shots) are priced at the bar. */
+export function formatItemPrice(value: number | undefined): string {
+  return value === undefined ? 'Consultar' : formatPrice(value)
 }

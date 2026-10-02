@@ -1,6 +1,6 @@
 import { m } from 'framer-motion'
 import { dishOfMonth } from '@/content/home'
-import { formatPrice } from '@/content/restaurant'
+import { formatItemPrice } from '@/content/restaurant'
 import { fadeLeft, fadeRight, viewportOnce } from '@/lib/motion'
 import { ButtonLink } from '../ui/Button'
 import { Icon } from '../ui/Icon'
@@ -14,7 +14,7 @@ export function DishOfMonth() {
         <m.div className="relative mx-auto w-full max-w-lg" variants={fadeLeft} initial="hidden" whileInView="show" viewport={viewportOnce}>
           <div className="absolute inset-[4%] animate-float-slow rounded-blob bg-gold-400" aria-hidden="true" />
           <div className="absolute inset-[12%] rounded-blob bg-ember-500/90 [transform:rotate(35deg)]" aria-hidden="true" />
-          <Visual visual={item.visual} className="relative aspect-square w-full rounded-full object-cover p-[8%] drop-shadow-[0_30px_30px_rgb(0_0_0_/_0.35)]" />
+          {item.visual && <Visual visual={item.visual} className="relative aspect-square w-full rounded-full object-cover p-[8%] drop-shadow-[0_30px_30px_rgb(0_0_0_/_0.35)]" />}
         </m.div>
 
         <m.div variants={fadeRight} initial="hidden" whileInView="show" viewport={viewportOnce}>
@@ -34,8 +34,8 @@ export function DishOfMonth() {
             ))}
           </ul>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <p className="font-display text-5xl font-bold text-ember-600">{formatPrice(item.price)}</p>
-            <ButtonLink href="#reservas" variant="dark" arrow>
+            <p className="font-display text-5xl font-bold text-ember-600">{formatItemPrice(item.price)}</p>
+            <ButtonLink href="/#reservas" variant="dark" arrow>
               Pedir agora
             </ButtonLink>
           </div>

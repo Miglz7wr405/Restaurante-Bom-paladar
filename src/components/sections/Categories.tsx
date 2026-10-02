@@ -1,5 +1,5 @@
 import { categoryLinks } from '@/content/home'
-import { selectMenuTab } from '@/lib/menuTabs'
+import { MENU_URL } from '@/content/restaurant'
 import { Visual } from '../ui/Visual'
 import { Reveal, RevealGroup } from '../ui/Reveal'
 
@@ -13,8 +13,7 @@ export function Categories() {
         {categoryLinks.map((cat) => (
           <Reveal as="li" key={cat.id}>
             <a
-              href="#menu"
-              onClick={() => cat.menuTab && selectMenuTab(cat.menuTab)}
+              href={`${MENU_URL}#${cat.section}`}
               className="group flex flex-col items-center gap-3 text-center"
             >
               <span className={`relative grid aspect-square w-full max-w-[8.5rem] place-items-center overflow-hidden rounded-full bg-ink-950 ${cat.photo ? 'p-1.5' : 'p-4'} shadow-card ring-2 ring-gold-400/0 transition-[transform,box-shadow] duration-200 ease-out group-hover:scale-[1.03] group-hover:shadow-card-hover group-hover:ring-gold-400 group-focus-visible:ring-gold-400`}>

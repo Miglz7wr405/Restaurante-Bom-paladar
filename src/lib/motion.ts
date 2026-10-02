@@ -24,4 +24,5 @@ export const stagger = (delayChildren = 0): Variants => ({
   show: { transition: { staggerChildren: 0.08, delayChildren } },
 })
 
-export const viewportOnce = { once: true, amount: 0.2 } as const
+// Trigger on first pixels (minus a bottom margin) rather than a ratio, so tall grids still reveal on small screens.
+export const viewportOnce = { once: true, margin: '0px 0px -12% 0px' } as const

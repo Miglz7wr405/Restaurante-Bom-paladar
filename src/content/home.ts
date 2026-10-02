@@ -45,12 +45,12 @@ export const heroSlides: HeroSlide[] = [
 ]
 
 export const categoryLinks: CategoryLink[] = [
-  { id: 'pizzas', label: 'Pizzas', art: 'pizza', photo: photos.pizzaChickenMushroom, menuTab: 'pizzas' },
-  { id: 'massas', label: 'Massas', art: 'pasta', photo: photos.massaBolonhesa, menuTab: 'massas' },
-  { id: 'lasanhas', label: 'Lasanhas', art: 'lasagna', photo: photos.lasanhaCarne, menuTab: 'massas' },
-  { id: 'mariscos', label: 'Mariscos', art: 'seafood', photo: photos.mariscada },
-  { id: 'carnes', label: 'Carnes', art: 'grill', photo: photos.carneGrelhada },
-  { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', photo: photos.pinaColada, menuTab: 'cocktails' },
+  { id: 'pizzas', label: 'Pizzas', art: 'pizza', photo: photos.pizzaChickenMushroom, section: 'pizzas' },
+  { id: 'massas', label: 'Massas', art: 'pasta', photo: photos.massaBolonhesa, section: 'massas' },
+  { id: 'lasanhas', label: 'Lasanhas', art: 'lasagna', photo: photos.lasanhaCarne, section: 'massas' },
+  { id: 'mariscos', label: 'Mariscos', art: 'seafood', photo: photos.mariscada, section: 'mariscos' },
+  { id: 'carnes', label: 'Carnes', art: 'grill', photo: photos.carneGrelhada, section: 'carnes' },
+  { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', photo: photos.pinaColada, section: 'cocktails' },
 ]
 
 export const dishOfMonth: { kicker: string; item: MenuItem; text: string; points: string[] } = {
@@ -63,6 +63,15 @@ export const dishOfMonth: { kicker: string; item: MenuItem; text: string; points
 export const featuredIds = ['chicken-mushroom', 'fettuccine', 'lasanha-frango', 'mojito', 'pina-colada'] as const
 export const featured: MenuItem[] = featuredIds.map(findItem)
 
+// Home page "Os mais pedidos" tabs: a short pick per category; the full list lives on /menu/.
+export const popularTabs: { id: string; label: string; items: MenuItem[] }[] = [
+  { id: 'pizzas', label: 'Pizzas', items: ['double-stack', 'chicken-mushroom', 'pizza-mexicana', 'pizza-seafood', 'pizza-havaiana', 'something-meating'] },
+  { id: 'massas', label: 'Massas', items: ['carbonara', 'bolonhesa', 'fettuccine', 'puttanesca-marisco', 'lasanha-carne', 'lasanha-frango'] },
+  { id: 'mariscos', label: 'Mariscos', items: ['aparelhada-bom-paladar', 'aparelhada-2', 'camarao-frigideira', 'lagosta-grelhada', 'bacalhau-bras', 'lula-grelhada'] },
+  { id: 'carnes', label: 'Carnes & Aves', items: ['tabua-2', 'bife-grelhado', 't-bone', 'picanha-brasileira', 'meia-galinha', 'frango-mamae'] },
+  { id: 'cocktails', label: 'Cocktails', items: ['mojito', 'pina-colada', 'caipirinha', 'intense-man', 'blue-lagoon', 'sangria'] },
+].map((tab) => ({ ...tab, items: tab.items.map(findItem) }))
+
 export const promos: Promo[] = [
   {
     id: 'pizza-night',
@@ -70,7 +79,7 @@ export const promos: Promo[] = [
     title: 'Pizza Double Stack',
     text: 'Massa dupla recheada, para dividir à mesa (ou não).',
     cta: 'Encomendar',
-    href: '#reservas',
+    href: '/#reservas',
     visual: { art: 'pizza', photo: photos.pizzaDoubleStack, alt: 'Pizza Double Stack' },
     tone: 'ember',
   },
@@ -80,7 +89,7 @@ export const promos: Promo[] = [
     title: 'Combos de Mariscada',
     text: 'Camarão, caranguejo, mexilhão e amêijoa, ao estilo da costa da Zambézia.',
     cta: 'Reservar',
-    href: '#reservas',
+    href: '/#reservas',
     visual: { art: 'seafood', photo: photos.mariscada, alt: 'Travessa de mariscada com camarão e caranguejo' },
     tone: 'ink',
   },
