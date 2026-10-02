@@ -51,9 +51,10 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 - **Fotos**: as fotos de estúdio foram geradas com IA; idealmente substituir por fotos reais dos pratos. Pedir autorização ao autor das 3 fotos do Google Maps.
 - **Nomes corrigidos** (as imagens do menu recebidas foram ampliadas com IA, que alterou algumas palavras): Dorrada → Dobrada, Girouipa → Garoupa, Atum brasrado → Atum braseado, Pato malal → Arroz de Pato, Macapaza → Matapa, Mousse de Marambé → Mousse de Malambe, Camarão alinho → Camarão ao alho, Bacalhau à "Zonas de Sé" → à Zé do Pipo, Galinha "caprão/caprina" → Galinha cafreal, "mabo de vaca" (tábuas) → lombo de vaca, Something "Meating" → Meeting (como no menu novo); as duas linhas "Galinha … à pastora" foram juntadas numa só.
-- **Nomes que ficaram como estavam, por confirmar**: Congue, Xima Caracata, Xatiné c/ Maço (aparece em Guarnições a 150 MT e em Aves a 1.500 MT), Peixe Peru, Camarão Tô, Frango à Mamãe, Guitinha (shots). Também se retiraram textos ilegíveis entre parênteses (petiscos "Carne de vaca" e "Galinha caipira", "Bife à Milanesa").
+- **Nomes que ficaram como estavam, por confirmar**: Congue, Xima Caracata, Xatiné c/ Maço (aparece em Guarnições a 150 MT e em Aves a 1.500 MT), Peixe Peru, Camarão Tô, Frango à Mamãe. Também se retiraram textos ilegíveis entre parênteses (petiscos "Carne de vaca" e "Galinha caipira", "Bife à Milanesa").
 - **Preços**: Massas & Lasanhas vêm da imagem antiga em baixa resolução (não vieram no envio novo). Os Shots não têm preço no menu ("Consultar").
-- **Carta de bebidas** (águas, refrigerantes, sumos, cafetaria, cervejas, vinhos, espumantes, whisky, aguardentes, licores): as páginas recebidas eram ilegíveis; o site mostra só uma nota. Enviar fotos nítidas para as acrescentar.
+- **Cocktails**: confirmados com a imagem nítida do menu de cocktails (preços e ingredientes).
+- **Restante carta de bebidas** (águas, refrigerantes, sumos, cafetaria, cervejas, vinhos, espumantes, whisky, aguardentes, licores): as páginas recebidas eram ilegíveis; o site mostra só uma nota. Enviar fotos nítidas para as acrescentar.
 - **Hora de abertura e dias**: só a hora de fecho (00:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 00:00" e o JSON-LD omite o horário.
 - **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 87 185 4417`. Confirmar que o número tem WhatsApp.
 - **Facebook / Instagram**: adicionar os links em `socials` (vazios não aparecem).

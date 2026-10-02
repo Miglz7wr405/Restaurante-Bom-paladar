@@ -179,10 +179,10 @@ const sobremesas: MenuItem[] = [
 ]
 
 const cocktails: MenuItem[] = [
-  it('margarita', 'Margarita', 350, 'Tequila branca, triple sec, lime e sumo de lima.', art('cocktail', 'Cocktail Margarita', 'lime')),
-  it('savanarita', 'Savanarita & Coronarita', 500, 'Tequila branca, triple sec, lime, sumo de lima e sidra.', art('cocktail', 'Cocktail Savanarita', 'amber')),
+  it('margarita', 'Margarita', 350, 'Tequila branca, triple sec, lima e sumo de lima.', art('cocktail', 'Cocktail Margarita', 'lime')),
+  it('savanarita', 'Savanarita & Coronarita', 500, 'Tequila branca, triple sec, lima, sumo de lima e sidra.', art('cocktail', 'Cocktail Savanarita', 'amber')),
   it('caipirinha', 'Caipirinha', 350, 'Cachaça, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.', photo(photos.mojito, 'cocktail', 'Caipirinha com lima e gelo')),
-  it('caipiroska', 'Caipiroska', 300, 'Vodka, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.', art('cocktail', 'Caipiroska de frutos vermelhos', 'berry')),
+  it('caipiroska', 'Caipirosca', 300, 'Vodka, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.', art('cocktail', 'Caipirosca de frutos vermelhos', 'berry')),
   it('long-island', 'Long Island', 350, 'Vodka, rum branco, triple sec, Coca-Cola, sumo de lima e tequila branca.', art('cocktail', 'Cocktail Long Island', 'amber')),
   it('tequila-sunrise', 'Tequila Sunrise', 500, 'Tequila branca, sumo de laranja e grenadine.', art('cocktail', 'Tequila Sunrise', 'sunrise')),
   it('strawberry-daiquiri', 'Strawberry Daiquiri', 400, 'Rum, triple sec, morango e lime.', art('cocktail', 'Daiquiri de morango', 'berry')),
@@ -194,7 +194,7 @@ const cocktails: MenuItem[] = [
   it('blue-hawaii', 'Blue Hawaii', 350, 'Vodka, licor de pêssego, licor Blue Curaçao e Sprite.', art('cocktail', 'Cocktail Blue Hawaii', 'blue')),
   it('mojito', 'Mojito', 300, 'Rum branco, lima, hortelã, Sprite ou água tónica.', photo(photos.mojito, 'cocktail', 'Mojito com hortelã e lima')),
   it('pina-colada', 'Piña Colada', 450, 'Rum branco, cocktail base de piña colada e sumo de ananás.', photo(photos.pinaColada, 'cocktail', 'Piña Colada cremosa com ananás')),
-  it('shots', 'Shots', undefined, 'Blow Job, Guitinha, B52, Tequila Gold, Tequila Branca, Blue Kamikaze, Jägermeister e Jägerbomb.', art('cocktail', 'Shots', 'amber')),
+  it('shots', 'Shots', undefined, 'Blow Job, Quitinha, B52, Tequila Gold, Tequila Branca, Blue Kamikaze, Jägermeister e Jägerbomb.', art('cocktail', 'Shots', 'amber')),
   it('sangria', 'Sangria de Vinho Branco / Tinto', 800, 'Aguardente de cana, triple sec, xarope de menta, brandy, vinho e Sprite.', art('wine', 'Jarro de sangria com fruta')),
 ]
 
