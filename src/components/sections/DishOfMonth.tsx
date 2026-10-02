@@ -14,7 +14,7 @@ export function DishOfMonth() {
         <m.div className="relative mx-auto w-full max-w-lg" variants={fadeLeft} initial="hidden" whileInView="show" viewport={viewportOnce}>
           <div className="absolute inset-[4%] animate-float-slow rounded-blob bg-gold-400" aria-hidden="true" />
           <div className="absolute inset-[12%] rounded-blob bg-ember-500/90 [transform:rotate(35deg)]" aria-hidden="true" />
-          <Visual visual={item.visual} className="relative aspect-square w-full drop-shadow-[0_30px_30px_rgb(0_0_0_/_0.35)]" />
+          <Visual visual={item.visual} className="relative aspect-square w-full rounded-full object-cover p-[8%] drop-shadow-[0_30px_30px_rgb(0_0_0_/_0.35)]" />
         </m.div>
 
         <m.div variants={fadeRight} initial="hidden" whileInView="show" viewport={viewportOnce}>

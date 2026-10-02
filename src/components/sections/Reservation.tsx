@@ -4,8 +4,9 @@ import { restaurant } from '@/content/restaurant'
 import { fadeLeft, fadeRight, viewportOnce } from '@/lib/motion'
 import { todayISO, validateReservation, whatsappLink, type ReservationData, type ReservationErrors } from '@/lib/validation'
 import { Button } from '../ui/Button'
-import { DishArt } from '../ui/DishArt'
+import { photos } from '@/content/photos'
 import { Icon } from '../ui/Icon'
+import { Visual } from '../ui/Visual'
 
 const EMPTY: ReservationData = { name: '', phone: '', date: '', time: '', guests: '2' }
 
@@ -64,10 +65,10 @@ export function Reservation() {
           className="brick-wall relative isolate flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-card p-8 text-cream-50 md:p-10"
         >
           <div className="absolute -right-10 -top-6 -z-10 w-[70%] max-w-sm animate-float-slow" aria-hidden="true">
-            <DishArt kind="pizza" className="h-full w-full drop-shadow-[0_30px_30px_rgb(0_0_0_/_0.6)]" />
+            <Visual visual={{ art: 'pizza', photo: photos.pizzaChickenMushroom, alt: '' }} sizes="24rem" className="photo-fade h-full w-full object-cover" />
           </div>
           <div className="absolute right-[38%] top-[26%] -z-10 w-[32%] max-w-[10rem] animate-float" aria-hidden="true">
-            <DishArt kind="cocktail" tint="blue" className="h-full w-full drop-shadow-[0_20px_20px_rgb(0_0_0_/_0.6)]" />
+            <Visual visual={{ art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, alt: '' }} sizes="10rem" className="photo-fade h-full w-full object-cover" />
           </div>
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/60 to-transparent" aria-hidden="true" />
           <p className="font-script text-4xl text-gold-400">Reserve a sua mesa</p>

@@ -2,8 +2,9 @@ import { useState, type FormEvent } from 'react'
 import { restaurant } from '@/content/restaurant'
 import { isValidEmail, whatsappLink } from '@/lib/validation'
 import { Button } from '../ui/Button'
-import { DishArt } from '../ui/DishArt'
+import { photos } from '@/content/photos'
 import { Reveal, RevealGroup } from '../ui/Reveal'
+import { Visual } from '../ui/Visual'
 
 export function Newsletter() {
   const [email, setEmail] = useState('')
@@ -29,10 +30,10 @@ export function Newsletter() {
   return (
     <section aria-labelledby="ofertas-title" className="relative overflow-hidden bg-cream-100 py-16 md:py-24">
       <div className="pointer-events-none absolute -left-20 top-1/2 hidden w-72 -translate-y-1/2 md:block lg:w-80" aria-hidden="true">
-        <DishArt kind="lasagna" className="h-full w-full animate-float-slow drop-shadow-[0_25px_25px_rgb(0_0_0_/_0.25)]" />
+        <Visual visual={{ art: 'pizza', photo: photos.pizzaMexicana, alt: '' }} sizes="20rem" className="photo-fade h-full w-full animate-float-slow object-cover" />
       </div>
       <div className="pointer-events-none absolute -right-16 top-1/2 hidden w-64 -translate-y-1/2 md:block lg:w-72" aria-hidden="true">
-        <DishArt kind="pizza-seafood" className="h-full w-full animate-float drop-shadow-[0_25px_25px_rgb(0_0_0_/_0.25)]" />
+        <Visual visual={{ art: 'pizza-seafood', photo: photos.pizzaSeafood, alt: '' }} sizes="18rem" className="photo-fade h-full w-full animate-float object-cover" />
       </div>
 
       <RevealGroup className="container-site relative mx-auto max-w-xl text-center">

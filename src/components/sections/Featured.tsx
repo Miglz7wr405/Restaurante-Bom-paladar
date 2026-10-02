@@ -17,11 +17,15 @@ export function Featured() {
         >
           {featured.map((item) => (
             <Reveal as="li" key={item.id} className="w-[70%] shrink-0 snap-center sm:w-[42%] md:w-auto">
-              <article className="card-lift group relative flex h-full flex-col items-center rounded-card bg-white p-5 text-center">
-                <div className="relative -mt-2 aspect-square w-full max-w-[11rem] transition-transform duration-500 ease-smooth group-hover:-translate-y-2 group-hover:rotate-6">
-                  <Visual visual={item.visual} className="h-full w-full" />
+              <article className="card-lift group relative flex h-full flex-col items-center overflow-hidden rounded-card bg-white p-3 pb-5 text-center">
+                <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-ink-950">
+                  <Visual
+                    visual={item.visual}
+                    sizes="(min-width: 1024px) 15rem, (min-width: 768px) 30vw, 70vw"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-smooth group-hover:scale-110"
+                  />
                 </div>
-                <h3 className="mt-4 font-display text-lg font-semibold uppercase leading-tight text-ink-950">{item.name}</h3>
+                <h3 className="mt-4 px-2 font-display text-lg font-semibold uppercase leading-tight text-ink-950">{item.name}</h3>
                 {item.description && <p className="mt-2 line-clamp-2 text-sm text-muted">{item.description}</p>}
                 <p className="mt-auto pt-4">
                   <span className="sr-only">Preço: </span>

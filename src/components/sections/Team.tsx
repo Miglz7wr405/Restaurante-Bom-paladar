@@ -23,8 +23,8 @@ export function Team() {
               <Reveal as="li" key={member.id}>
                 <article className="card-lift group relative overflow-hidden rounded-card bg-ink-950 text-cream-50">
                   <div className="brick-wall relative aspect-[4/5] overflow-hidden">
-                    <div className="absolute inset-[14%] transition-transform duration-500 ease-smooth group-hover:scale-110">
-                      <Visual visual={member.visual} className="h-full w-full drop-shadow-[0_20px_25px_rgb(0_0_0_/_0.6)]" />
+                    <div className="absolute inset-[6%] transition-transform duration-500 ease-smooth group-hover:scale-110">
+                      <Visual visual={member.visual} sizes="(min-width: 1024px) 18rem, 90vw" className="photo-fade h-full w-full object-cover" />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent" aria-hidden="true" />
                     <ul

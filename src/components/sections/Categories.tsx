@@ -21,7 +21,6 @@ export function Categories() {
                 {!cat.photo && <span className="absolute inset-1.5 rounded-full border border-dashed border-gold-400/40" aria-hidden="true" />}
                 <Visual
                   visual={{ art: cat.art, tint: cat.tint, photo: cat.photo, alt: '' }}
-                  size="thumb"
                   sizes="136px"
                   className={`h-full w-full transition-transform duration-500 ease-smooth ${cat.photo ? 'rounded-full object-cover group-hover:scale-110' : 'group-hover:rotate-12'}`}
                 />

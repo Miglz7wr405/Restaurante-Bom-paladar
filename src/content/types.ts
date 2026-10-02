@@ -15,10 +15,11 @@ export type CocktailTint = 'lime' | 'blue' | 'sunrise' | 'berry' | 'mint' | 'cre
 export interface Photo {
   webp: string
   jpg: string
+  /** Optional responsive candidates, e.g. "a-512.webp 512w, a-1024.webp 1024w". */
+  webpSet?: string
+  jpgSet?: string
   width: number
   height: number
-  /** Small source (e.g. cropped from the printed menu): only shown at thumbnail size; large slots fall back to the illustration. */
-  lowRes?: boolean
 }
 
 /** A real photo when available, otherwise a brand illustration is rendered. */

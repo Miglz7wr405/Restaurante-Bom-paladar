@@ -17,8 +17,8 @@ export function News() {
             <Reveal as="li" key={post.id}>
               <article className="card-lift group flex h-full flex-col overflow-hidden rounded-card bg-white">
                 <div className={`relative grid aspect-[16/10] place-items-center overflow-hidden ${i % 2 ? 'bg-ember-600' : 'brick-wall'}`}>
-                  <div className="h-[80%] transition-transform duration-500 ease-smooth group-hover:rotate-6 group-hover:scale-110">
-                    <Visual visual={post.visual} className="aspect-square h-full drop-shadow-[0_20px_20px_rgb(0_0_0_/_0.5)]" />
+                  <div className="h-[96%] transition-transform duration-500 ease-smooth group-hover:rotate-3 group-hover:scale-110">
+                    <Visual visual={post.visual} sizes="(min-width: 768px) 30vw, 90vw" className="photo-fade aspect-square h-full object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col p-6">

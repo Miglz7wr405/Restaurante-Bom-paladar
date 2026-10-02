@@ -193,7 +193,7 @@ export function Hero() {
               >
                 <div className="absolute inset-[6%] rounded-full shadow-glow" aria-hidden="true" />
                 <div className={slide.visual.art.startsWith('pizza') ? 'h-full w-full animate-spin-slow' : 'h-full w-full'}>
-                  <Visual visual={slide.visual} priority className="h-full w-full drop-shadow-[0_30px_40px_rgb(0_0_0_/_0.6)]" />
+                  <Visual visual={slide.visual} priority sizes="(min-width: 1024px) 34rem, 80vw" className="photo-fade h-full w-full object-cover drop-shadow-[0_30px_40px_rgb(0_0_0_/_0.6)]" />
                 </div>
                 <span
                   aria-hidden="true"

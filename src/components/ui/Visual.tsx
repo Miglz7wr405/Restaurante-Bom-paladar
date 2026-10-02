@@ -7,21 +7,21 @@ interface VisualProps {
   /** Hero / LCP images should load eagerly with high priority. */
   priority?: boolean
   sizes?: string
-  /** 'thumb' allows low-resolution photos; 'large' falls back to the illustration for them. */
-  size?: 'thumb' | 'large'
 }
 
 /** Renders the dish photo (WebP with JPG fallback) when provided, otherwise the brand illustration. */
-export function Visual({ visual, className, priority = false, sizes = '(min-width: 1024px) 33vw, 90vw', size = 'large' }: VisualProps) {
-  const photo = visual.photo?.lowRes && size === 'large' ? undefined : visual.photo
+export function Visual({ visual, className, priority = false, sizes = '(min-width: 1024px) 33vw, 90vw' }: VisualProps) {
+  const { photo } = visual
   if (!photo) {
     return <DishArt kind={visual.art} tint={visual.tint} className={className} title={visual.alt} />
   }
   return (
-    <picture>
-      <source srcSet={photo.webp} type="image/webp" sizes={sizes} />
+    <picture className="contents">
+      <source srcSet={photo.webpSet ?? photo.webp} type="image/webp" sizes={sizes} />
       <img
         src={photo.jpg}
+        srcSet={photo.jpgSet}
+        sizes={photo.jpgSet ? sizes : undefined}
         alt={visual.alt}
         width={photo.width}
         height={photo.height}

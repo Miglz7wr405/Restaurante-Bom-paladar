@@ -18,7 +18,7 @@ export function Promos() {
                 className="absolute -right-12 top-1/2 -z-10 aspect-square w-[62%] -translate-y-1/2 transition-transform duration-700 ease-smooth group-hover:rotate-12 group-hover:scale-105 sm:-right-6 sm:w-[52%]"
                 aria-hidden="true"
               >
-                <Visual visual={promo.visual} className="h-full w-full drop-shadow-[0_20px_30px_rgb(0_0_0_/_0.5)]" />
+                <Visual visual={promo.visual} sizes="(min-width: 768px) 25vw, 60vw" className="photo-fade h-full w-full object-cover" />
               </div>
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/85 via-ink-950/55 to-ink-950/0" aria-hidden="true" />
               <div className="max-w-[60%] text-cream-50">

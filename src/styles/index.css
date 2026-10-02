@@ -65,6 +65,12 @@
     @apply shadow-card transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.03] hover:shadow-card-hover focus-within:scale-[1.03] focus-within:shadow-card-hover;
   }
 
+  /* Dish photos are shot on black: fade the square edges so they sit on any background. */
+  .photo-fade {
+    mask-image: radial-gradient(closest-side, #000 80%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, #000 80%, transparent 100%);
+  }
+
   .field {
     @apply w-full rounded-xl border border-ink-600/30 bg-white px-4 py-3 text-ink-950 placeholder:text-ink-600/80 transition-colors focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-400/60;
   }

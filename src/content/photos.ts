@@ -1,25 +1,34 @@
 import type { Photo } from './types'
 
-// Dish photos cropped from the restaurant's printed menus (Pasta and Pizza boards).
-// The source images are tiny, so these are flagged lowRes and only used as thumbnails.
-// Replace with full-size photos (and drop lowRes) when available.
-const menuPhoto = (name: string): Photo => ({
-  webp: `/images/menu/${name}.webp`,
-  jpg: `/images/menu/${name}.jpg`,
-  width: 240,
-  height: 240,
-  lowRes: true,
+// Studio photos of the menu dishes (1024 px source, black background), served at 512/1024 px in WebP + JPG.
+const dish = (name: string): Photo => ({
+  webp: `/images/dishes/${name}-1024.webp`,
+  jpg: `/images/dishes/${name}-1024.jpg`,
+  webpSet: `/images/dishes/${name}-512.webp 512w, /images/dishes/${name}-1024.webp 1024w`,
+  jpgSet: `/images/dishes/${name}-512.jpg 512w, /images/dishes/${name}-1024.jpg 1024w`,
+  width: 1024,
+  height: 1024,
 })
 
 export const photos = {
-  pizzaCogumelos: menuPhoto('pizza-cogumelos'),
-  pizzaMilho: menuPhoto('pizza-milho'),
-  pizzaMarisco: menuPhoto('pizza-marisco'),
-  pizzaAzeitona: menuPhoto('pizza-azeitona'),
-  pizzaQueijo: menuPhoto('pizza-queijo'),
-  massaBolonhesa: menuPhoto('massa-bolonhesa'),
-  massaMolho: menuPhoto('massa-molho'),
-  massaEsparguete: menuPhoto('massa-esparguete'),
-  lasanhaGratinada: menuPhoto('lasanha-gratinada'),
-  lasanhaCarne: menuPhoto('lasanha-carne'),
+  pizzaDoubleStack: dish('pizza-double-stack'),
+  pizzaChickenMushroom: dish('pizza-chicken-mushroom'),
+  pizzaSeafood: dish('pizza-seafood'),
+  pizzaMexicana: dish('pizza-mexicana'),
+  pizzaHavaiana: dish('pizza-havaiana'),
+  pizzaSomethingMeating: dish('pizza-something-meating'),
+  massaCarbonara: dish('massa-carbonara'),
+  massaBolonhesa: dish('massa-bolonhesa'),
+  massaFettuccine: dish('massa-fettuccine'),
+  massaMarisco: dish('massa-marisco'),
+  lasanhaCarne: dish('lasanha-carne'),
+  lasanhaFrango: dish('lasanha-frango'),
+  mariscada: dish('mariscada'),
+  carneGrelhada: dish('carne-grelhada'),
+  mojito: dish('cocktail-mojito'),
+  pinaColada: dish('cocktail-pina-colada'),
+  blueLagoon: dish('cocktail-blue-lagoon'),
+  tequilaSunrise: dish('cocktail-tequila-sunrise'),
+  cocktailSignature: dish('cocktail-signature'),
+  sangria: dish('sangria'),
 }

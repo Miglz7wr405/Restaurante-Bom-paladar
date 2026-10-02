@@ -62,7 +62,7 @@ export function PopularMenu() {
                   className="group flex items-center gap-4 rounded-card border border-cream-50/5 bg-ink-900 p-3 transition-colors duration-200 hover:border-gold-400/40 hover:bg-ink-800"
                 >
                   <span className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-full bg-ink-800 p-1 ring-2 ring-gold-400/40 transition-transform duration-300 ease-smooth group-hover:rotate-6 group-hover:scale-105">
-                    <Visual visual={item.visual} size="thumb" className="h-full w-full rounded-full object-cover" sizes="80px" />
+                    <Visual visual={item.visual} className="h-full w-full rounded-full object-cover" sizes="80px" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-baseline gap-3">

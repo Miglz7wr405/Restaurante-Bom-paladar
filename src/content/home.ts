@@ -10,7 +10,7 @@ export const heroSlides: HeroSlide[] = [
     script: 'Pizza',
     subtitle: 'Duas camadas de massa, queijo a derreter e o melhor da casa num só forno.',
     badge: { top: '1.000', bottom: 'MT' },
-    visual: { art: 'pizza', alt: 'Pizza Double Stack acabada de sair do forno' },
+    visual: { art: 'pizza', photo: photos.pizzaDoubleStack, alt: 'Pizza Double Stack acabada de sair do forno' },
     decorations: ['basil', 'tomato', 'olive', 'chili', 'cheese'],
   },
   {
@@ -20,7 +20,7 @@ export const heroSlides: HeroSlide[] = [
     script: 'Pasta',
     subtitle: 'Tiras de frango, natas e cogumelos, envolvidos num tagliatelle sempre al dente.',
     badge: { top: '550', bottom: 'MT' },
-    visual: { art: 'pasta', alt: 'Prato de tagliatelle carbonara' },
+    visual: { art: 'pasta', photo: photos.massaCarbonara, alt: 'Prato de tagliatelle carbonara' },
     decorations: ['basil', 'pepper', 'cheese', 'tomato'],
   },
   {
@@ -30,7 +30,7 @@ export const heroSlides: HeroSlide[] = [
     script: 'Cocktail',
     subtitle: 'Do Bom Paladar Intense ao Mojito: a carta de bar que faz as noites de Quelimane.',
     badge: { top: '350', bottom: 'MT' },
-    visual: { art: 'cocktail', tint: 'sunrise', alt: 'Cocktail de assinatura Bom Paladar' },
+    visual: { art: 'cocktail', tint: 'sunrise', photo: photos.cocktailSignature, alt: 'Cocktail de assinatura Bom Paladar' },
     decorations: ['lime', 'mint', 'ice', 'lime'],
   },
   {
@@ -39,18 +39,18 @@ export const heroSlides: HeroSlide[] = [
     title: ['Mariscos', '& Peixes'],
     script: 'Mariscada',
     subtitle: 'Combos de mariscada para partilhar, ao estilo da costa da Zambézia.',
-    visual: { art: 'seafood', alt: 'Travessa de mariscada com camarão' },
+    visual: { art: 'seafood', photo: photos.mariscada, alt: 'Travessa de mariscada com camarão' },
     decorations: ['lime', 'chili', 'basil', 'shrimp'],
   },
 ]
 
 export const categoryLinks: CategoryLink[] = [
-  { id: 'pizzas', label: 'Pizzas', art: 'pizza', photo: photos.pizzaCogumelos, menuTab: 'pizzas' },
+  { id: 'pizzas', label: 'Pizzas', art: 'pizza', photo: photos.pizzaChickenMushroom, menuTab: 'pizzas' },
   { id: 'massas', label: 'Massas', art: 'pasta', photo: photos.massaBolonhesa, menuTab: 'massas' },
   { id: 'lasanhas', label: 'Lasanhas', art: 'lasagna', photo: photos.lasanhaCarne, menuTab: 'massas' },
-  { id: 'mariscos', label: 'Mariscos', art: 'seafood' },
-  { id: 'carnes', label: 'Carnes', art: 'grill' },
-  { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', menuTab: 'cocktails' },
+  { id: 'mariscos', label: 'Mariscos', art: 'seafood', photo: photos.mariscada },
+  { id: 'carnes', label: 'Carnes', art: 'grill', photo: photos.carneGrelhada },
+  { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, menuTab: 'cocktails' },
 ]
 
 export const dishOfMonth: { kicker: string; item: MenuItem; text: string; points: string[] } = {
@@ -71,7 +71,7 @@ export const promos: Promo[] = [
     text: 'Massa dupla recheada, para dividir à mesa (ou não).',
     cta: 'Encomendar',
     href: '#reservas',
-    visual: { art: 'pizza', alt: 'Pizza Double Stack' },
+    visual: { art: 'pizza', photo: photos.pizzaDoubleStack, alt: 'Pizza Double Stack' },
     tone: 'ember',
   },
   {
@@ -81,7 +81,7 @@ export const promos: Promo[] = [
     text: 'Vinho branco ou tinto, fruta da época e brandy. 800 MT o jarro.',
     cta: 'Ver cocktails',
     href: '#menu',
-    visual: { art: 'wine', alt: 'Jarro de sangria' },
+    visual: { art: 'wine', photo: photos.sangria, alt: 'Jarro de sangria' },
     tone: 'ink',
   },
 ]
@@ -93,17 +93,17 @@ export const takeaway = {
   features: ['Encomenda por telefone', 'Pronto a levantar', 'Pizzas, massas e cocktails'],
 }
 
-// Placeholder team: replace names/bios and add real photos (visual.photo) once provided by the restaurant.
+// Placeholder team: replace names/bios and team photos (visual.photo) once provided by the restaurant.
 export const team: TeamMember[] = [
-  { id: 'cozinha', name: 'Cozinha', role: 'Chef de cozinha', bio: 'Massas, lasanhas e grelhados preparados no momento.', visual: { art: 'pasta', alt: 'Ilustração da equipa de cozinha' }, socials: [] },
-  { id: 'pizzaria', name: 'Pizzaria', role: 'Pizzaiolo', bio: 'Do Something Meating ao Double Stack, à saída do forno.', visual: { art: 'pizza', alt: 'Ilustração da equipa da pizzaria' }, socials: [] },
-  { id: 'bar', name: 'Bar', role: 'Mixologia', bio: 'Os cocktails de assinatura que dão fama à casa.', visual: { art: 'cocktail', tint: 'blue', alt: 'Ilustração da equipa do bar' }, socials: [] },
-  { id: 'sala', name: 'Sala', role: 'Serviço', bio: 'Recebe-o com a hospitalidade de Quelimane.', visual: { art: 'wine', alt: 'Ilustração da equipa de sala' }, socials: [] },
+  { id: 'cozinha', name: 'Cozinha', role: 'Chef de cozinha', bio: 'Massas, lasanhas e grelhados preparados no momento.', visual: { art: 'pasta', photo: photos.massaBolonhesa, alt: 'Esparguete à bolonhesa da cozinha' }, socials: [] },
+  { id: 'pizzaria', name: 'Pizzaria', role: 'Pizzaiolo', bio: 'Do Something Meating ao Double Stack, à saída do forno.', visual: { art: 'pizza', photo: photos.pizzaSomethingMeating, alt: 'Pizza acabada de sair do forno' }, socials: [] },
+  { id: 'bar', name: 'Bar', role: 'Mixologia', bio: 'Os cocktails de assinatura que dão fama à casa.', visual: { art: 'cocktail', tint: 'blue', photo: photos.blueLagoon, alt: 'Cocktail Blue Lagoon do bar' }, socials: [] },
+  { id: 'sala', name: 'Sala', role: 'Serviço', bio: 'Recebe-o com a hospitalidade de Quelimane.', visual: { art: 'wine', photo: photos.sangria, alt: 'Sangria servida à mesa' }, socials: [] },
 ]
 
 // Editable news entries (ISO dates).
 export const news: NewsPost[] = [
-  { id: 'cocktails', date: '2026-09-20', title: 'A nova carta de cocktails chegou', excerpt: 'Blue Lagoon, Tequila Sunrise e os nossos Intense Man e Intense Girl. Venha provar ao fim da tarde.', visual: { art: 'cocktail', tint: 'sunrise', alt: 'Cocktails coloridos no balcão' } },
-  { id: 'double-stack', date: '2026-09-08', title: 'Double Stack: a pizza de massa dupla', excerpt: 'Duas camadas, muito queijo e um recheio generoso. A pizza mais pedida do mês.', visual: { art: 'pizza', alt: 'Pizza de massa dupla' } },
-  { id: 'sangria', date: '2026-08-28', title: 'Sangria para as noites quentes', excerpt: 'Branca ou tinta, com fruta da época. Perfeita para partilhar com amigos.', visual: { art: 'wine', alt: 'Copos de sangria' } },
+  { id: 'cocktails', date: '2026-09-20', title: 'A nova carta de cocktails chegou', excerpt: 'Blue Lagoon, Tequila Sunrise e os nossos Intense Man e Intense Girl. Venha provar ao fim da tarde.', visual: { art: 'cocktail', tint: 'sunrise', photo: photos.tequilaSunrise, alt: 'Tequila Sunrise no balcão' } },
+  { id: 'double-stack', date: '2026-09-08', title: 'Double Stack: a pizza de massa dupla', excerpt: 'Duas camadas, muito queijo e um recheio generoso. A pizza mais pedida do mês.', visual: { art: 'pizza', photo: photos.pizzaDoubleStack, alt: 'Pizza de massa dupla' } },
+  { id: 'sangria', date: '2026-08-28', title: 'Sangria para as noites quentes', excerpt: 'Branca ou tinta, com fruta da época. Perfeita para partilhar com amigos.', visual: { art: 'wine', photo: photos.sangria, alt: 'Copos de sangria' } },
 ]
