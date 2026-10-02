@@ -1,31 +1,32 @@
+import { photos } from './photos'
 import type { MenuCategory, MenuItem } from './types'
 
 // Transcribed from the restaurant's printed menus (Pasta, Pizza, Cocktail boards).
 // Source images were low resolution: verify names and prices against the physical menu before going live.
 
 export const pizzas: MenuItem[] = [
-  { id: 'something-meating', name: 'Something Meating', description: 'Carne moída, bacon de vaca, salsicha, molho de tomate e queijo.', price: 700, visual: { art: 'pizza', alt: 'Pizza Something Meating com carnes e queijo' } },
-  { id: 'chicken-mushroom', name: 'Chicken Mushroom', description: 'Frango, cogumelos, cebola e tomate em cubinhos.', price: 700, visual: { art: 'pizza', alt: 'Pizza Chicken Mushroom com frango e cogumelos' } },
-  { id: 'pizza-club', name: 'Pizza Club', description: 'Bacon de vaca e peito de frango.', price: 700, visual: { art: 'pizza', alt: 'Pizza Club com bacon e frango' } },
-  { id: 'pizza-mexicana', name: 'Pizza Mexicana', description: 'Carne moída, azeitonas, pimento em cubinhos e cebola picada.', price: 700, visual: { art: 'pizza', alt: 'Pizza Mexicana com carne moída e pimento' } },
-  { id: 'pizza-regina', name: 'Pizza Regina', description: 'Cogumelos e fiambre.', price: 700, visual: { art: 'pizza', alt: 'Pizza Regina com cogumelos' } },
-  { id: 'pizza-havaiana', name: 'Pizza Havaiana', description: 'Ananás e fiambre em cubinhos.', price: 700, visual: { art: 'pizza', alt: 'Pizza Havaiana com ananás' } },
-  { id: 'pizza-seafood', name: 'Pizza Seafood', description: 'Lulas, camarão, mexilhão e pimentos.', price: 750, visual: { art: 'pizza-seafood', alt: 'Pizza de marisco com camarão e lulas' } },
-  { id: 'cream-cheese-crust', name: 'Cream Cheese Crust', description: 'Borda recheada com queijo creme.', price: 800, visual: { art: 'pizza', alt: 'Pizza com borda recheada de queijo creme' } },
-  { id: 'double-stack', name: 'Double Stack', description: 'Duas camadas de massa recheadas, com o melhor da casa.', price: 1000, visual: { art: 'pizza', alt: 'Pizza Double Stack de massa dupla' } },
-  { id: 'duas-estacoes', name: 'Pizza de Duas Estações', price: 800, visual: { art: 'pizza', alt: 'Pizza de duas estações' } },
-  { id: 'quatro-estacoes', name: 'Pizza de Quatro Estações', price: 800, visual: { art: 'pizza', alt: 'Pizza de quatro estações' } },
-  { id: 'pizza-atum', name: 'Pizza de Atum', price: 700, visual: { art: 'pizza', alt: 'Pizza de atum' } },
+  { id: 'something-meating', name: 'Something Meating', description: 'Carne moída, bacon de vaca, salsicha, molho de tomate e queijo.', price: 700, visual: { art: 'pizza', photo: photos.pizzaQueijo, alt: 'Pizza Something Meating com carnes e queijo' } },
+  { id: 'chicken-mushroom', name: 'Chicken Mushroom', description: 'Frango, cogumelos, cebola e tomate em cubinhos.', price: 700, visual: { art: 'pizza', photo: photos.pizzaCogumelos, alt: 'Pizza Chicken Mushroom com frango e cogumelos' } },
+  { id: 'pizza-club', name: 'Pizza Club', description: 'Bacon de vaca e peito de frango.', price: 700, visual: { art: 'pizza', photo: photos.pizzaMilho, alt: 'Pizza Club com bacon e frango' } },
+  { id: 'pizza-mexicana', name: 'Pizza Mexicana', description: 'Carne moída, azeitonas, pimento em cubinhos e cebola picada.', price: 700, visual: { art: 'pizza', photo: photos.pizzaAzeitona, alt: 'Pizza Mexicana com carne moída e pimento' } },
+  { id: 'pizza-regina', name: 'Pizza Regina', description: 'Cogumelos e fiambre.', price: 700, visual: { art: 'pizza', photo: photos.pizzaCogumelos, alt: 'Pizza Regina com cogumelos' } },
+  { id: 'pizza-havaiana', name: 'Pizza Havaiana', description: 'Ananás e fiambre em cubinhos.', price: 700, visual: { art: 'pizza', photo: photos.pizzaMilho, alt: 'Pizza Havaiana com ananás' } },
+  { id: 'pizza-seafood', name: 'Pizza Seafood', description: 'Lulas, camarão, mexilhão e pimentos.', price: 750, visual: { art: 'pizza-seafood', photo: photos.pizzaMarisco, alt: 'Pizza de marisco com camarão e lulas' } },
+  { id: 'cream-cheese-crust', name: 'Cream Cheese Crust', description: 'Borda recheada com queijo creme.', price: 800, visual: { art: 'pizza', photo: photos.pizzaQueijo, alt: 'Pizza com borda recheada de queijo creme' } },
+  { id: 'double-stack', name: 'Double Stack', description: 'Duas camadas de massa recheadas, com o melhor da casa.', price: 1000, visual: { art: 'pizza', photo: photos.pizzaQueijo, alt: 'Pizza Double Stack de massa dupla' } },
+  { id: 'duas-estacoes', name: 'Pizza de Duas Estações', price: 800, visual: { art: 'pizza', photo: photos.pizzaMilho, alt: 'Pizza de duas estações' } },
+  { id: 'quatro-estacoes', name: 'Pizza de Quatro Estações', price: 800, visual: { art: 'pizza', photo: photos.pizzaCogumelos, alt: 'Pizza de quatro estações' } },
+  { id: 'pizza-atum', name: 'Pizza de Atum', price: 700, visual: { art: 'pizza', photo: photos.pizzaAzeitona, alt: 'Pizza de atum' } },
 ]
 
 export const massas: MenuItem[] = [
-  { id: 'carbonara', name: 'Massa Tagliatelle Carbonara', description: 'Tiras de frango, salsicha, natas e cogumelos.', price: 550, visual: { art: 'pasta', alt: 'Tagliatelle carbonara cremoso' } },
-  { id: 'fettuccine', name: 'Massa Fettuccine', description: 'Tiras de frango, camarão, cebola picada e molho de tomate.', price: 850, visual: { art: 'pasta-red', alt: 'Fettuccine com frango e camarão' } },
-  { id: 'bolonhesa', name: 'Massa Bolonhesa', description: 'Esparguete com carne moída e molho de tomate.', price: 650, visual: { art: 'pasta-red', alt: 'Esparguete à bolonhesa' } },
-  { id: 'puttanesca-marisco', name: 'Massa Puttanesca de Marisco', description: 'Lulas, camarão e mexilhão em molho de tomate.', price: 1200, visual: { art: 'pasta-red', alt: 'Massa puttanesca com marisco' } },
-  { id: 'lasanha-carne', name: 'Lasanha de Carne Moída', price: 700, visual: { art: 'lasagna', alt: 'Lasanha de carne moída gratinada' } },
-  { id: 'lasanha-frango', name: 'Lasanha de Frango Desfiado', price: 700, visual: { art: 'lasagna', alt: 'Lasanha de frango desfiado' } },
-  { id: 'lasanha-legumes', name: 'Lasanha de Legumes', price: 550, visual: { art: 'lasagna', alt: 'Lasanha de legumes' } },
+  { id: 'carbonara', name: 'Massa Tagliatelle Carbonara', description: 'Tiras de frango, salsicha, natas e cogumelos.', price: 550, visual: { art: 'pasta', photo: photos.massaEsparguete, alt: 'Tagliatelle carbonara cremoso' } },
+  { id: 'fettuccine', name: 'Massa Fettuccine', description: 'Tiras de frango, camarão, cebola picada e molho de tomate.', price: 850, visual: { art: 'pasta-red', photo: photos.massaMolho, alt: 'Fettuccine com frango e camarão' } },
+  { id: 'bolonhesa', name: 'Massa Bolonhesa', description: 'Esparguete com carne moída e molho de tomate.', price: 650, visual: { art: 'pasta-red', photo: photos.massaBolonhesa, alt: 'Esparguete à bolonhesa' } },
+  { id: 'puttanesca-marisco', name: 'Massa Puttanesca de Marisco', description: 'Lulas, camarão e mexilhão em molho de tomate.', price: 1200, visual: { art: 'pasta-red', photo: photos.massaMolho, alt: 'Massa puttanesca com marisco' } },
+  { id: 'lasanha-carne', name: 'Lasanha de Carne Moída', price: 700, visual: { art: 'lasagna', photo: photos.lasanhaCarne, alt: 'Lasanha de carne moída gratinada' } },
+  { id: 'lasanha-frango', name: 'Lasanha de Frango Desfiado', price: 700, visual: { art: 'lasagna', photo: photos.lasanhaGratinada, alt: 'Lasanha de frango desfiado' } },
+  { id: 'lasanha-legumes', name: 'Lasanha de Legumes', price: 550, visual: { art: 'lasagna', photo: photos.lasanhaGratinada, alt: 'Lasanha de legumes' } },
 ]
 
 export const cocktails: MenuItem[] = [

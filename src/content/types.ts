@@ -17,6 +17,8 @@ export interface Photo {
   jpg: string
   width: number
   height: number
+  /** Small source (e.g. cropped from the printed menu): only shown at thumbnail size; large slots fall back to the illustration. */
+  lowRes?: boolean
 }
 
 /** A real photo when available, otherwise a brand illustration is rendered. */
@@ -75,6 +77,7 @@ export interface CategoryLink {
   label: string
   art: ArtKind
   tint?: CocktailTint
+  photo?: Photo
   menuTab?: string
 }
 

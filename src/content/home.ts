@@ -1,4 +1,5 @@
 import { findItem } from './menu'
+import { photos } from './photos'
 import type { CategoryLink, HeroSlide, MenuItem, NewsPost, Promo, TeamMember } from './types'
 
 export const heroSlides: HeroSlide[] = [
@@ -44,9 +45,9 @@ export const heroSlides: HeroSlide[] = [
 ]
 
 export const categoryLinks: CategoryLink[] = [
-  { id: 'pizzas', label: 'Pizzas', art: 'pizza', menuTab: 'pizzas' },
-  { id: 'massas', label: 'Massas', art: 'pasta', menuTab: 'massas' },
-  { id: 'lasanhas', label: 'Lasanhas', art: 'lasagna', menuTab: 'massas' },
+  { id: 'pizzas', label: 'Pizzas', art: 'pizza', photo: photos.pizzaCogumelos, menuTab: 'pizzas' },
+  { id: 'massas', label: 'Massas', art: 'pasta', photo: photos.massaBolonhesa, menuTab: 'massas' },
+  { id: 'lasanhas', label: 'Lasanhas', art: 'lasagna', photo: photos.lasanhaCarne, menuTab: 'massas' },
   { id: 'mariscos', label: 'Mariscos', art: 'seafood' },
   { id: 'carnes', label: 'Carnes', art: 'grill' },
   { id: 'cocktails', label: 'Cocktails', art: 'cocktail', tint: 'blue', menuTab: 'cocktails' },

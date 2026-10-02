@@ -25,6 +25,8 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 
 ### Fotografias
 
+As fotos de pizzas, massas e lasanhas foram recortadas dos cardápios (`public/images/menu/`, ligadas em `src/content/photos.ts`). Como as imagens recebidas são muito pequenas (cerca de 30 px por foto), estão marcadas `lowRes` e só aparecem nas miniaturas do menu e nos círculos das categorias; o hero, o prato do mês e os cards grandes usam a ilustração. Com as fotos originais em tamanho grande, basta substituir os ficheiros e remover `lowRes`.
+
 Sem foto, cada prato mostra uma ilustração SVG da marca. Para usar uma foto real, coloque os ficheiros em `public/images/` e adicione `photo` ao `visual` do prato:
 
 ```ts
@@ -39,6 +41,7 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 ## Por confirmar com o restaurante
 
+- **Fotos originais**: enviar as fotos dos pratos em tamanho grande (as do cardápio só servem para miniaturas).
 - **Preços e nomes**: transcritos de fotos do menu em baixa resolução. Confirmar com o menu físico.
 - **Hora de abertura e dias**: só a hora de fecho (00:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 00:00" e o JSON-LD omite o horário.
 - **Entradas, carnes, mariscos, sobremesas, bebidas**: os itens destas páginas do menu não eram legíveis; as categorias aparecem como "Também no menu completo".

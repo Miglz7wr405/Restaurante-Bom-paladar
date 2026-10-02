@@ -1,6 +1,6 @@
 import { categoryLinks } from '@/content/home'
 import { selectMenuTab } from '@/lib/menuTabs'
-import { DishArt } from '../ui/DishArt'
+import { Visual } from '../ui/Visual'
 import { Reveal, RevealGroup } from '../ui/Reveal'
 
 export function Categories() {
@@ -17,9 +17,14 @@ export function Categories() {
               onClick={() => cat.menuTab && selectMenuTab(cat.menuTab)}
               className="group flex flex-col items-center gap-3 text-center"
             >
-              <span className="relative grid aspect-square w-full max-w-[8.5rem] place-items-center rounded-full bg-ink-950 p-4 shadow-card ring-2 ring-gold-400/0 transition-[transform,box-shadow] duration-200 ease-out group-hover:scale-[1.03] group-hover:shadow-card-hover group-hover:ring-gold-400 group-focus-visible:ring-gold-400">
-                <span className="absolute inset-1.5 rounded-full border border-dashed border-gold-400/40" aria-hidden="true" />
-                <DishArt kind={cat.art} tint={cat.tint} className="h-full w-full transition-transform duration-500 ease-smooth group-hover:rotate-12" />
+              <span className={`relative grid aspect-square w-full max-w-[8.5rem] place-items-center overflow-hidden rounded-full bg-ink-950 ${cat.photo ? 'p-1.5' : 'p-4'} shadow-card ring-2 ring-gold-400/0 transition-[transform,box-shadow] duration-200 ease-out group-hover:scale-[1.03] group-hover:shadow-card-hover group-hover:ring-gold-400 group-focus-visible:ring-gold-400`}>
+                {!cat.photo && <span className="absolute inset-1.5 rounded-full border border-dashed border-gold-400/40" aria-hidden="true" />}
+                <Visual
+                  visual={{ art: cat.art, tint: cat.tint, photo: cat.photo, alt: '' }}
+                  size="thumb"
+                  sizes="136px"
+                  className={`h-full w-full transition-transform duration-500 ease-smooth ${cat.photo ? 'rounded-full object-cover group-hover:scale-110' : 'group-hover:rotate-12'}`}
+                />
               </span>
               <span className="font-display text-base font-semibold uppercase tracking-wider text-ink-950 group-hover:text-ember-600 md:text-lg">
                 {cat.label}
