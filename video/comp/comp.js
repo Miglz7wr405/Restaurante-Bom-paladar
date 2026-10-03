@@ -375,7 +375,7 @@
     })
   })()
   plateShot(scene('pizza2'), {
-    img: 'pizza-seafood', bg: '#5a2a0c', ghost: 'Pizza', spin: 22, fx: ['steam'],
+    img: 'pizza-seafood-cliente', bg: '#5a2a0c', ghost: 'Pizza', spin: 22, fx: ['steam'],
     kicker: 'Pizzaria da casa', name: 'Pizza Seafood', chips: ['Lula', 'Camarão', 'Ananás', 'Pimentos'], price: 700, priceAt: b3.marks.priceB,
   })
   plateShot(scene('massa1'), {

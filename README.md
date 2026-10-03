@@ -63,7 +63,7 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 ## Vídeo publicitário (`video/`)
 
-Anúncio de ~68 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Nassif", ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros.
+Anúncio de ~68 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Dinis", sotaque de Portugal, ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros.
 
 Ordem do vídeo, conduzida pela voz:
 1. Logótipo e "O sabor que Quelimane adora!".
@@ -94,7 +94,7 @@ O guião, os tempos de cada prato e de cada preço estão em `video/scripts/buil
 | `video/scripts/mix.cjs` | Mistura voz + música (com ducking) + efeitos, normaliza a −14 LUFS / −1 dBTP |
 | `video/scripts/encode.sh` | Junta frames e áudio num MP4 H.264/AAC (máximo, HD < 30 MB e leve) e tira a capa |
 
-Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo2/b01..b10.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/board1..4.jpg`, e depois:
+Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo3/b01..b10.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/board1..4.jpg`, e depois:
 
 ```bash
 npm run build && npx vite preview &           # site em http://localhost:4173

@@ -4,7 +4,7 @@
  *
  *   node scripts/build-timeline.cjs
  *
- * Entradas: assets/audio/vo2/b01..b10.mp3 (um take por bloco), assets/audio/music/music.mp3.
+ * Entradas: assets/audio/<VO_DIR>/b01..b10.mp3 (um take por bloco), assets/audio/music/music.mp3.
  * Saídas: timeline.json e assets/audio/music/music-ext.wav.
  */
 const fs = require('node:fs')
@@ -30,20 +30,21 @@ function silences(file, db = -40, d = 0.05) {
  * (silencedetect -34 dB): onde começa cada prato e onde a voz diz cada preço.
  * Se um bloco for regerado, os tempos mudam: confirmar com silencedetect e atualizar aqui.
  */
+const VO_DIR = 'vo3' // voz Dinis (sotaque de Portugal), eleven_v3
 const BLOCKS = [
-  { id: 'b01', text: 'Bom Paladar, Restaurante e Bar! O sabor que Quelimane ADORA!', marks: { slogan: 2.25 } },
-  { id: 'b02', text: 'Na Rua Robert Mugabe, aberto até à meia-noite, com nota quatro vírgula três no Google!', marks: { open: 1.59, rating: 3.64 } },
-  { id: 'b03', text: 'Pizza Double Stack, duas camadas de puro sabor: MIL meticais! Pizza Seafood, com lula e camarão: setecentos!', marks: { priceA: 2.48, dishB: 4.5, priceB: 6.93 } },
-  { id: 'b04', text: 'Tagliatelle Carbonara, bem cremosa: quinhentos e cinquenta! Lasanha de carne moída: setecentos!', marks: { priceA: 2.4, dishB: 3.72, priceB: 5.85 } },
-  { id: 'b05', text: 'Aparelhada de mariscos, com lula, camarão e lagosta: a partir de mil e quinhentos meticais!', marks: { priceA: 3.77 } },
-  { id: 'b06', text: 'Bife grelhado com molho demi-glace: mil e cem! Meia galinha cafreal: oitocentos!', marks: { priceA: 2.53, dishB: 3.55, priceB: 5.13 } },
-  { id: 'b07', text: 'Para petiscar: asinhas crocantes e pão de alho com queijo, a partir de trezentos e cinquenta!', marks: { asinhas: 1.08, pao: 2.32, priceA: 3.8 } },
-  { id: 'b08', text: 'E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!', marks: { priceA: 0.84, priceB: 2.1 } },
+  { id: 'b01', text: 'Bom Paladar, Restaurante e Bar! O sabor que Quelimane ADORA!', marks: { slogan: 2.1 } },
+  { id: 'b02', text: 'Na Rua Robert Mugabe, aberto até à meia-noite, com nota quatro vírgula três no Google!', marks: { open: 2.38, rating: 4.08 } },
+  { id: 'b03', text: 'Pizza Double Stack, duas camadas de puro sabor: MIL meticais! Pizza Seafood, com lula e camarão: setecentos!', marks: { priceA: 4.02, dishB: 5.9, priceB: 8.43 } },
+  { id: 'b04', text: 'Tagliatelle Carbonara, bem cremosa: quinhentos e cinquenta! Lasanha de carne moída: setecentos!', marks: { priceA: 2.84, dishB: 4.25, priceB: 5.77 } },
+  { id: 'b05', text: 'Aparelhada de mariscos, com lula, camarão e lagosta: a partir de mil e quinhentos meticais!', marks: { priceA: 3.4 } },
+  { id: 'b06', text: 'Bife grelhado com molho demi-glace: mil e cem! Meia galinha cafreal: oitocentos!', marks: { priceA: 2.42, dishB: 3.6, priceB: 5.24 } },
+  { id: 'b07', text: 'Para petiscar: asinhas crocantes e pão de alho com queijo, a partir de trezentos e cinquenta!', marks: { asinhas: 1.11, pao: 2.21, priceA: 3.7 } },
+  { id: 'b08', text: 'E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!', marks: { priceA: 1.32, priceB: 2.95 } },
   { id: 'b09', text: 'São mais de cento e trinta pratos e bebidas no nosso cardápio!', marks: {} },
   {
     id: 'b10',
     text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: oitenta e sete... cento e oitenta e cinco... quarenta e quatro... dezassete! Bom Paladar: reserve JÁ!',
-    marks: { reserve: 2.0, n1: 4.27, n2: 5.56, n3: 7.18, n4: 8.25, brand: 9.4, cta: 10.43 },
+    marks: { reserve: 1.96, n1: 4.16, n2: 5.44, n3: 7.07, n4: 8.24, brand: 9.49, cta: 10.67 },
   },
 ]
 
@@ -52,17 +53,17 @@ let t = START
 const blocks = {}
 const lines = []
 for (const b of BLOCKS) {
-  const file = A(`vo2/${b.id}.mp3`)
+  const file = A(`${VO_DIR}/${b.id}.mp3`)
   const dur = probe(file)
   const sil = silences(file)
   const lead = sil.length && sil[0][0] < 0.01 ? sil[0][1] : 0
-  const tail = sil.length && sil[sil.length - 1][1] >= dur - 0.02 ? sil[sil.length - 1][0] : dur
+  const tail = sil.length && sil[sil.length - 1][1] >= dur - 0.12 ? sil[sil.length - 1][0] : dur
   const from = Math.max(0, lead - 0.02)
   const to = Math.min(dur, tail + 0.04)
   const at = +t.toFixed(3)
   const abs = Object.fromEntries(Object.entries(b.marks).map(([k, v]) => [k, +(at + v - from).toFixed(3)]))
   blocks[b.id] = { start: at, end: +(at + to - from).toFixed(3), marks: abs }
-  lines.push({ id: b.id, file: `vo2/${b.id}.mp3`, from: +from.toFixed(3), to: +to.toFixed(3), at, end: blocks[b.id].end, text: b.text })
+  lines.push({ id: b.id, file: `${VO_DIR}/${b.id}.mp3`, from: +from.toFixed(3), to: +to.toFixed(3), at, end: blocks[b.id].end, text: b.text })
   t = at + (to - from) + GAP
 }
 const voiceEnd = blocks.b10.end
@@ -72,7 +73,7 @@ const music = JSON.parse(execFileSync('python3', [path.join(__dirname, 'beats.py
 const beatLen = 60 / music.bpm
 const bar = 4 * beatLen
 const BUTTON = 55.4 // fim ("botão") da música original
-const nBars = Math.max(0, Math.ceil((voiceEnd + 2.4 - (BUTTON - 0.0)) / bar))
+const nBars = Math.max(0, Math.ceil((voiceEnd + 1.4 - BUTTON) / bar))
 const insertAt = music.offset + 70 * beatLen // início de compasso a meio da música
 const ext = nBars * bar
 execFileSync('ffmpeg', [
@@ -84,7 +85,7 @@ execFileSync('ffmpeg', [
     `[p1][p2]acrossfade=d=0.03:c1=tri:c2=tri[q];[q][p3]acrossfade=d=0.03:c1=tri:c2=tri[out]`,
   '-map', '[out]', '-ar', '48000', A('music/music-ext.wav'),
 ])
-const DURATION = +Math.max(BUTTON + ext + 1.6, voiceEnd + 2.4).toFixed(2)
+const DURATION = +Math.max(BUTTON + ext + 1.6, voiceEnd + 2.0).toFixed(2)
 const beats = []
 for (let b = music.offset; b < DURATION; b += beatLen) beats.push(+b.toFixed(3))
 
