@@ -105,3 +105,38 @@ canvas { position: absolute; inset: 0; pointer-events: none; }
 
 .line { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-400)); }
 .line.r { background: linear-gradient(270deg, transparent, var(--gold-400)); }
+
+/* ---- v2 ---------------------------------------------------------------- */
+.tag {
+  position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 0.18em 0.55em 0.22em; border-radius: 0.28em; line-height: 1; white-space: nowrap;
+  background: linear-gradient(160deg, var(--ember-400), var(--ember-500) 55%, var(--ember-700));
+  border: 0.06em solid var(--gold-300);
+  box-shadow: 0 0 0 0.05em rgba(11, 11, 12, 0.9), 0 0.25em 0.6em rgba(0, 0, 0, 0.55), 0 0 1.2em rgba(239, 74, 63, 0.35);
+  font-family: Oswald, sans-serif; font-weight: 700; color: var(--cream-50);
+}
+.tag .row { display: flex; align-items: baseline; gap: 0.12em; }
+.tag .mt { font-size: 0.42em; letter-spacing: 0.08em; color: var(--gold-200); }
+.tag .from { font-size: 0.26em; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-200); margin-bottom: 0.1em; }
+.card { position: absolute; border-radius: 28px; overflow: hidden; border: 6px solid var(--gold-400); box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7); background: #000; }
+.card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .label { position: absolute; left: 0; right: 0; bottom: 0; padding: 0.5em 0.6em 0.45em; font: 700 1em Oswald; text-transform: uppercase; letter-spacing: 0.03em; background: linear-gradient(transparent, rgba(0, 0, 0, 0.85) 45%); color: var(--cream-50); }
+.hl { position: absolute; border: 4px solid var(--gold-300); border-radius: 8px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45), 0 0 30px rgba(236, 208, 138, 0.9), inset 0 0 20px rgba(236, 208, 138, 0.35); }
+.wipe { position: absolute; top: -20%; bottom: -20%; width: 70%; transform: skewX(-18deg); background: linear-gradient(90deg, #0b0b0c 0%, var(--gold-600) 12%, var(--gold-300) 50%, var(--gold-600) 88%, #0b0b0c 100%); opacity: 0; }
+.infobar {
+  position: absolute; display: flex; align-items: center; gap: 0.7em; white-space: nowrap; padding: 0.45em 1em; border-radius: 999px;
+  background: rgba(11, 11, 12, 0.78); border: 2px solid rgba(224, 184, 90, 0.5); font: 600 1em Inter; color: var(--cream-100);
+}
+.infobar svg { width: 1.2em; height: 1.2em; }
+.infobar .wa { color: var(--wa); }
+.infobar i { width: 2px; height: 1.1em; background: rgba(224, 184, 90, 0.5); }
+.browser { position: absolute; border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.75), 0 0 0 2px rgba(224, 184, 90, 0.4); }
+.browser .bar { height: 44px; background: #1c1c1f; display: flex; align-items: center; gap: 10px; padding: 0 16px; }
+.browser .bar b { width: 13px; height: 13px; border-radius: 50%; background: #ef4a3f; }
+.browser .bar b:nth-child(2) { background: #e0b85a; } .browser .bar b:nth-child(3) { background: #3f7d3a; }
+.browser .bar span { margin-left: 14px; flex: 1; height: 26px; border-radius: 13px; background: #2a2a2e; color: #cfc8b8; font: 500 15px Inter; display: flex; align-items: center; padding-left: 14px; }
+.browser .view { position: relative; overflow: hidden; }
+.browser .view img { position: absolute; left: 0; top: 0; width: 100%; transform-origin: 0 0; }
+.stars { display: inline-flex; gap: 0.08em; position: relative; color: rgba(224, 184, 90, 0.25); }
+.stars .on { position: absolute; inset: 0; display: inline-flex; gap: 0.08em; color: var(--gold-300); overflow: hidden; white-space: nowrap; }
+.stars svg { width: 1em; height: 1em; flex: none; }

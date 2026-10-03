@@ -12,7 +12,12 @@ ffmpeg -v error -stats -y -framerate "$fps" -i "out/${fmt}/frames/f%05d.jpg" -i 
   -map 0:v -map 1:a -t "$dur" \
   -c:v libx264 -preset slow -crf 17 -profile:v high -pix_fmt yuv420p -r "$fps" \
   -c:a aac -b:a 192k -ar 48000 -movflags +faststart "$out"
-# Versão leve para WhatsApp/redes (720p, ~15 MB)
+# Versão HD para partilhar (1080p, duas passagens, ~27 MB: cabe nos limites de 30 MB)
+plog="out/${fmt}/x264pass"
+ffmpeg -v error -y -i "$out" -c:v libx264 -preset slow -b:v 3000k -pass 1 -passlogfile "$plog" -an -f null -
+ffmpeg -v error -y -i "$out" -c:v libx264 -preset slow -b:v 3000k -pass 2 -passlogfile "$plog" -pix_fmt yuv420p \
+  -c:a aac -b:a 160k -movflags +faststart "out/BomPaladar_Anuncio_${fmt}_HD.mp4"
+# Versão leve para WhatsApp/redes (720p, ~9 MB)
 scale=$([ "$fmt" = 9x16 ] && echo 720:1280 || echo 1280:720)
 ffmpeg -v error -y -i "$out" -vf "scale=$scale:flags=lanczos" -c:v libx264 -preset slow -crf 23 -maxrate 1.9M -bufsize 3.8M \
   -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart "out/BomPaladar_Anuncio_${fmt}_leve.mp4"

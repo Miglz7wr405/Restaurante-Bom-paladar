@@ -38,8 +38,8 @@ f.push(`${voLabels.join('')}amix=inputs=${voLabels.length}:normalize=0:duration=
 
 // Música com ducking
 const [fo0] = T.music.fadeOut
-f.push(`[0:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:${T.duration},volume=-5dB,afade=t=in:d=0.4,afade=t=out:st=${fo0}:d=${(T.duration - fo0).toFixed(2)}[mus]`)
-f.push(`[mus][key]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=380:makeup=1[duck]`)
+f.push(`[0:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:${T.duration},volume=-3dB,afade=t=in:d=0.2,afade=t=out:st=${fo0}:d=${(T.duration - fo0).toFixed(2)}[mus]`)
+f.push(`[mus][key]sidechaincompress=threshold=0.05:ratio=4:attack=20:release=300:makeup=1[duck]`)
 
 // Efeitos
 const sfxLabels = []

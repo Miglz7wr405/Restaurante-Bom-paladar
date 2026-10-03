@@ -9,6 +9,7 @@
  * - As animações CSS/WAAPI ficam em pausa e são avançadas à mão com o mesmo passo.
  * - As Google Fonts são servidas a partir do @fontsource local (sem rede).
  * Saída: assets/site/<take>/f00001.jpg …
+ * Takes: desktop (hero → favoritos → reserva preenchida) e mobile (/menu/ Cartões → Cardápio).
  */
 const fs = require('node:fs')
 const path = require('node:path')
@@ -47,39 +48,40 @@ async function routeFonts(context) {
 // ---- Takes -----------------------------------------------------------------
 // Cada take: url, viewport, duração e uma lista de "eventos" no tempo (s).
 // scroll: [t0, t1, alvo] (alvo = número ou função que corre na página); act: [t, fn(page)]
+const top = (sel, off) => `(() => { const e = document.querySelector('${sel}'); return e.getBoundingClientRect().top + scrollY - ${off} })()`
 const takes = {
+  // Desktop: hero → "Os favoritos da casa" → reserva preenchida (para "reserve a sua mesa pelo WhatsApp")
   desktop: {
     url: '/',
     viewport: { width: 1440, height: 900 },
     scale: 1,
-    duration: 13.5,
+    duration: 5.4,
     scroll: [
-      [2.0, 3.6, `(() => { const e = document.getElementById('hoje-title'); return e.getBoundingClientRect().top + scrollY - 140 })()`],
-      [5.0, 6.4, `(() => { const e = document.getElementById('menu-title'); return e.getBoundingClientRect().top + scrollY - 120 })()`],
-      [8.6, 10.0, `(() => { const e = document.getElementById('reservas-title'); return e.getBoundingClientRect().top + scrollY - 200 })()`],
-      [11.2, 12.8, `document.documentElement.scrollHeight - innerHeight`],
+      [0.9, 1.6, top('#hoje-title', 140)],
+      [2.0, 2.7, top('#reservas-title', 170)],
     ],
-    act: [
-      [6.8, `[...document.querySelectorAll('[role=tab]')].find(b => b.textContent.trim() === 'Mariscos')?.click()`],
+    act: [[2.75, `(() => { const s = document.getElementById('res-guests'); const set = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set; set.call(s, s.options[3].value); s.dispatchEvent(new Event('change', { bubbles: true })) })()`]],
+    type: [
+      [2.8, 'Ana Matola', 0.06, '#res-name'],
+      [3.55, '84 123 4567', 0.05, '#res-phone'],
     ],
   },
+  // Mobile: /menu/ em Cartões com fotos → toggle para Cardápio
   mobile: {
     url: '/menu/',
     viewport: { width: 390, height: 844 },
     scale: 2,
     mobile: true,
-    duration: 13.5,
+    duration: 4.4,
     scroll: [
-      [1.6, 4.4, `(() => { const e = document.getElementById('pizzas'); return e.getBoundingClientRect().top + scrollY - 110 })()`],
-      [5.0, 5.9, `(() => { const e = document.querySelector('[aria-label="Forma de ver o menu"]'); return e.getBoundingClientRect().top + scrollY - 80 })()`],
-      [6.8, 8.6, `(() => { const e = document.getElementById('pizzas'); return e.getBoundingClientRect().top + scrollY - 110 })()`],
-      [9.0, 9.6, `(() => { const e = document.querySelector('[aria-label="Forma de ver o menu"]'); return e.getBoundingClientRect().top + scrollY - 80 })()`],
+      [0.3, 1.6, top('#pizzas', 110)],
+      [2.6, 4.2, top('#pizzas', -260)],
     ],
     act: [
-      [6.2, `[...document.querySelectorAll('button[aria-pressed]')].find(b => b.textContent.includes('Cardápio'))?.click()`],
-      [9.8, `document.querySelector('input[type=search]').focus()`],
+      [2.2, `[...document.querySelectorAll('button[aria-pressed]')].find(b => b.textContent.includes('Cardápio'))?.click()`],
+      // A troca de vista muda a altura da página: volta às pizzas no frame seguinte
+      [2.24, `window.scrollTo({ top: ${top('#pizzas', 110)}, behavior: 'instant' })`],
     ],
-    type: [10.0, 'camarão', 0.13],
   },
 }
 
@@ -105,7 +107,7 @@ async function capture(name, take) {
   // Todas as imagens carregadas antes de começar (sem buracos pretos durante o scroll).
   await page.evaluate(() => document.querySelectorAll('img').forEach((i) => ((i.loading = 'eager'), (i.decoding = 'sync'))))
   await page.evaluate(() => Promise.all([...document.images].map((i) => (i.complete ? Promise.resolve() : new Promise((r) => (i.onload = i.onerror = r))).then(() => i.decode().catch(() => 0)))))
-  await page.clock.pauseAt(new Date('2026-10-03T19:30:01'))
+  await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 50)
   await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' })
 
   // Avança animações CSS/WAAPI por `dt` ms em cada frame.
@@ -131,15 +133,14 @@ async function capture(name, take) {
         await page.evaluate(code)
       }
     }
-    // Escrita tecla a tecla
-    if (take.type) {
-      const [t0, text, step] = take.type
+    // Escrita tecla a tecla (cada campo: [início, texto, segundos por tecla, seletor])
+    for (const [j, [t0, text, step, sel]] of (take.type || []).entries()) {
       const n = Math.min(text.length, Math.floor((t - t0) / step) + 1)
       for (let k = 0; k < n; k++) {
-        if (!typed.has(k)) {
-          typed.add(k)
-          await page.keyboard.type(text[k])
-        }
+        if (typed.has(`${j}:${k}`)) continue
+        if (k === 0) await page.evaluate((sel) => document.querySelector(sel).focus(), sel)
+        typed.add(`${j}:${k}`)
+        await page.keyboard.type(text[k])
       }
     }
     // Scroll suave calculado por frame

@@ -63,22 +63,38 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 ## Vídeo publicitário (`video/`)
 
-Anúncio de ~57 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Voz (Dinis, PT), música e efeitos foram gerados na ElevenLabs.
+Anúncio de ~68 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Nassif", ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros.
 
-Ordem do vídeo: gancho com a pizza → logótipo → o restaurante (morada, ★ 4,3, aberto até à meia-noite, fotos reais) → 5 pratos em "slow motion" → os cardápios reais e o contador 0→135 → o website (gravação real em portátil e telemóvel) → final com **RESERVE JÁ**, WhatsApp e morada.
+Ordem do vídeo, conduzida pela voz:
+1. Logótipo e "O sabor que Quelimane adora!".
+2. Morada, horário e ★ 4,3 no Google.
+3. **Pratos com nome e preço lidos pela voz e mostrados no ecrã quando são ditos:**
+   - Pizza Double Stack e Pizza Seafood
+   - Tagliatelle Carbonara e Lasanha
+   - Aparelhada de mariscos
+   - Bife grelhado e ½ galinha cafreal
+   - Petiscos
+   - Mojito e Piña Colada
+4. 135 pratos e bebidas no menu do site.
+5. O website, com a reserva preenchida.
+6. Final com WhatsApp (número lido pela voz) e **RESERVE JÁ**.
+
+Vários pratos entram "do cardápio para a mesa": aparece o cardápio impresso real, a linha do prato fica destacada e a câmara faz zoom até ao prato.
+
+O guião, os tempos de cada prato e de cada preço estão em `video/scripts/build-timeline.cjs` (`BLOCKS`).
 
 | Ficheiro | O quê |
 | --- | --- |
 | `video/timeline.json` | Fonte única: cenas alinhadas à batida, tempo de cada fala e de cada efeito (gerado) |
 | `video/comp/` | A composição (`index.html?format=9x16` ou `16x9`), com `comp.seek(t)` determinístico |
 | `video/scripts/beats.py` | Deteta o BPM e a grelha de batidas da música |
-| `video/scripts/build-timeline.cjs` | Gera o `timeline.json` a partir da música e das durações das falas |
+| `video/scripts/build-timeline.cjs` | Guião e marcas de tempo; gera o `timeline.json` (blocos de voz seguidos, cenas, preços) e estende a música |
 | `video/scripts/capture-site.cjs` | Grava o site frame a frame com relógio falso (desktop 1440×900 e mobile 390×844) |
 | `video/scripts/render.cjs` | Renderiza os frames da composição (vários workers) |
 | `video/scripts/mix.cjs` | Mistura voz + música (com ducking) + efeitos, normaliza a −14 LUFS / −1 dBTP |
-| `video/scripts/encode.sh` | Junta frames e áudio num MP4 H.264/AAC e tira a capa |
+| `video/scripts/encode.sh` | Junta frames e áudio num MP4 H.264/AAC (máximo, HD < 30 MB e leve) e tira a capa |
 
-Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo/vo1..vo8.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/board1..4.jpg`, e depois:
+Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo2/b01..b10.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/board1..4.jpg`, e depois:
 
 ```bash
 npm run build && npx vite preview &           # site em http://localhost:4173

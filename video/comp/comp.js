@@ -1,12 +1,13 @@
 /* global gsap */
 /**
- * Composição do anúncio do Bom Paladar (motion design).
+ * Composição do anúncio do Bom Paladar (v2: conduzida pela voz).
  *
- * Uma timeline GSAP em pausa. O render chama `await comp.seek(t)` para cada frame: tudo o que
- * aparece no ecrã é função de `t` (tweens, partículas com seed fixa, grão, gravações do site),
+ * Uma timeline GSAP em pausa. O render chama `await comp.seek(t)` em cada frame: tudo o que aparece
+ * é função de `t` (tweens, partículas com seed fixa, grão, tremor de câmara, gravações do site),
  * por isso o resultado é igual em qualquer worker e em qualquer ordem.
  *
- * ?format=9x16 (1080×1920) ou ?format=16x9 (1920×1080, por omissão). Mesma timeline, dois layouts.
+ * ?format=9x16 (1080×1920) ou ?format=16x9 (1920×1080). Tempos de cada cena, de cada prato e de cada
+ * preço vêm do timeline.json (gerado a partir das pausas da locução).
  */
 ;(() => {
   const TL = window.TIMELINE
@@ -16,12 +17,16 @@
   const H = V ? 1920 : 1080
   const C = { x: W / 2, y: H / 2 }
   const S = Object.fromEntries(TL.scenes.map((s) => [s.id, s]))
+  const M = TL.marks
+  const BL = TL.blocks
   const PHOTO = (n) => `../assets/photos/${n}.jpg`
+  const BOARD = (n) => `../assets/menu/${n}.jpg`
 
   const stage = document.getElementById('stage')
   const scenesEl = document.getElementById('scenes')
+  // Camada para elementos globais (faixa de informação, faixa dourada): os filhos diretos do #stage ocupam o ecrã todo
+  const overlay = document.getElementById('overlay')
   Object.assign(stage.style, { width: `${W}px`, height: `${H}px` })
-  document.body.classList.add(V ? 'v' : 'h')
 
   gsap.defaults({ ease: 'power2.out' })
   const tl = gsap.timeline({ paused: true })
@@ -38,15 +43,15 @@
     if (css) gsap.set(n, css)
     return n
   }
-  /** Posiciona pelo centro (x, y). */
   const at = (n, x, y, extra = {}) => gsap.set(n, { left: x, top: y, xPercent: -50, yPercent: -50, ...extra })
 
   function scene(id) {
     const s = S[id]
     const el = add(scenesEl, `<div class="scene" id="sc-${id}"></div>`)
-    if (s.start === 0) gsap.set(el, { visibility: 'visible' })
-    else tl.set(el, { visibility: 'visible' }, s.start)
-    tl.set(el, { visibility: 'hidden' }, s.end)
+    // display (não visibility): um filho com visibility:visible apareceria fora da sua cena
+    gsap.set(el, { display: s.start === 0 ? 'block' : 'none', visibility: 'visible' })
+    if (s.start > 0) tl.set(el, { display: 'block' }, s.start)
+    tl.set(el, { display: 'none' }, s.end)
     return { el, s: s.start, e: s.end, d: s.end - s.start }
   }
 
@@ -66,35 +71,48 @@
     pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
     star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z" fill="currentColor" stroke="none"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
-    grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
     list: '<path d="M8 7h12M8 12h12M8 17h12"/><circle cx="4.5" cy="7" r="1" fill="currentColor"/><circle cx="4.5" cy="12" r="1" fill="currentColor"/><circle cx="4.5" cy="17" r="1" fill="currentColor"/>',
+    search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
   }
-  const icon = (name, cls = '') =>
-    `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`
+  const icon = (name, cls = '', style = '') =>
+    `<svg class="${cls}" style="${style}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`
 
   // Logótipo (paths de src/components/ui/Logo.tsx) com pathLength para o desenho a traço
-  const LOGO = `<svg viewBox="-1 -1 42 50" style="overflow:visible"><g fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-width="0.6">
+  const LOGO = `<svg viewBox="-1 -1 42 50" style="overflow:visible;width:100%;height:100%"><g fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-width="0.6">
     <ellipse pathLength="1" cx="9" cy="10" rx="6" ry="9"/><rect pathLength="1" x="7.5" y="16" width="3" height="30" rx="1.5"/>
     <rect pathLength="1" x="18.5" y="2" width="3" height="44" rx="1.5"/><rect pathLength="1" x="29" y="2" width="1.6" height="12" rx="0.8"/>
     <rect pathLength="1" x="32.5" y="2" width="1.6" height="12" rx="0.8"/><rect pathLength="1" x="36" y="2" width="1.6" height="12" rx="0.8"/>
     <path pathLength="1" d="M28 12h11v3a5.5 5.5 0 0 1-4 5.3V46h-3V20.3A5.5 5.5 0 0 1 28 15z"/></g></svg>`
-
-  function drawLogo(svgWrap, t0, dur = 0.9) {
-    const shapes = svgWrap.querySelectorAll('ellipse,rect,path')
+  function drawLogo(wrap, t0, dur = 0.6) {
+    const shapes = wrap.querySelectorAll('ellipse,rect,path')
     gsap.set(shapes, { strokeDasharray: 1, strokeDashoffset: 1 })
-    tl.to(shapes, { strokeDashoffset: 0, duration: dur, stagger: 0.07, ease: 'power2.inOut' }, t0)
-    tl.to(shapes, { fillOpacity: 1, duration: 0.5, stagger: 0.05 }, t0 + dur * 0.75)
+    tl.to(shapes, { strokeDashoffset: 0, duration: dur, stagger: 0.04, ease: 'power2.inOut' }, t0)
+    tl.to(shapes, { fillOpacity: 1, duration: 0.35, stagger: 0.03 }, t0 + dur * 0.7)
   }
 
-  /** Revela uma linha de texto de baixo para cima dentro de uma máscara. */
-  const rise = (span, t, dur = 0.85) => tl.fromTo(span, { yPercent: 115 }, { yPercent: 0, duration: dur, ease: 'expo.out' }, t)
-  /** "Escreve" um texto em script da esquerda para a direita. */
-  const wipe = (n, t, dur = 0.9) =>
+  const rise = (span, t, dur = 0.7) => tl.fromTo(span, { yPercent: 115 }, { yPercent: 0, duration: dur, ease: 'expo.out' }, t)
+  const wipe = (n, t, dur = 0.7) =>
     tl.fromTo(n, { clipPath: 'inset(-30% 100% -30% -8%)' }, { clipPath: 'inset(-30% -8% -30% -8%)', duration: dur, ease: 'power2.inOut' }, t)
-  const pop = (n, t, from = {}) =>
-    tl.fromTo(n, { autoAlpha: 0, scale: 0.6, y: 20, ...from }, { autoAlpha: 1, scale: 1, y: 0, rotation: 0, duration: 0.6, ease: 'back.out(2)' }, t)
+  const pop = (n, t, from = {}, dur = 0.5) =>
+    tl.fromTo(n, { autoAlpha: 0, scale: 0.5, y: 24, ...from }, { autoAlpha: 1, scale: 1, x: 0, y: 0, rotation: from.toRotation ?? 0, duration: dur, ease: 'back.out(2.2)' }, t)
+  /** Texto que "bate": entra grande e desfocado, assenta com tremor e flash. */
+  function slam(n, t, { shake = 7, flash = 0.12, from = 2.2 } = {}) {
+    tl.fromTo(n, { autoAlpha: 0, scale: from, filter: 'blur(14px)' }, { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 0.34, ease: 'power4.out' }, t)
+    if (shake) shakes.push({ t: t + 0.12, amp: shake, dur: 0.35 })
+    if (flash) flashes.push({ t: t + 0.1, peak: flash, decay: 0.35, color: '#fff3d6' })
+  }
+  const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 
+  // ---- Efeitos globais (analíticos) -----------------------------------------
+  const flashes = []
+  const shakes = []
+  const wipes = []
+  const siteMaps = []
+  const emitters = []
+  const emit = (type, t0, t1, rect, rate, extra = {}) => emitters.push({ type, t0, t1, rect, rate, seed: emitters.length * 7919 + 13, layer: 'back', ...extra })
+  const cuts = TL.scenes.slice(1).map((s) => s.start)
+
+  // ---- Peças reutilizáveis ----------------------------------------------------
   function makeDish(parent, name, x, y, size) {
     const wrap = add(
       parent,
@@ -103,102 +121,177 @@
     at(wrap, x, y)
     return { wrap, sweep: wrap.querySelector('.sweep'), x, y, size }
   }
-  const sweep = (d, t, dur = 0.9) => tl.fromTo(d.sweep, { xPercent: -120 }, { xPercent: 120, duration: dur, ease: 'power1.inOut' }, t)
+  function makeCard(parent, name, label, x, y, w, h, rot) {
+    const wrap = add(
+      parent,
+      `<div class="card" style="width:${w}px;height:${h}px;font-size:${V ? 40 : 34}px"><img src="${PHOTO(name)}" alt=""><div class="sweep" style="position:absolute;inset:-20%;background:linear-gradient(105deg,transparent 38%,rgba(255,244,214,.35) 50%,transparent 62%);mix-blend-mode:screen"></div>${label ? `<div class="label">${label}</div>` : ''}</div>`,
+    )
+    at(wrap, x, y, { rotation: rot })
+    return { wrap, sweep: wrap.querySelector('.sweep'), x, y, size: Math.max(w, h) }
+  }
+  const sweep = (d, t, dur = 0.85) => tl.fromTo(d.sweep, { xPercent: -120 }, { xPercent: 120, duration: dur, ease: 'power1.inOut' }, t)
 
-  // ---- Partículas (deterministas) -----------------------------------------
-  const emitters = []
-  const emit = (type, t0, t1, rect, rate, extra = {}) => emitters.push({ type, t0, t1, rect, rate, seed: emitters.length * 7919 + 13, layer: 'back', ...extra })
+  /** Etiqueta de preço que entra quando a voz diz o preço, com contador 0 → valor. */
+  function priceTag(parent, value, x, y, size, t, { from = false, rot = -7 } = {}) {
+    const tag = add(
+      parent,
+      `<div class="tag" style="font-size:${size}px">${from ? '<span class="from">a partir de</span>' : ''}<span class="row"><span class="num">0</span><span class="mt">MT</span></span></div>`,
+    )
+    at(tag, x, y, { rotation: rot })
+    const num = tag.querySelector('.num')
+    const o = { n: 0 }
+    tl.fromTo(tag, { autoAlpha: 0, scale: 0, rotation: rot - 25 }, { autoAlpha: 1, scale: 1, rotation: rot, duration: 0.45, ease: 'back.out(2.6)' }, t - 0.08)
+    tl.to(o, { n: value, duration: 0.28, ease: 'power2.out', onUpdate: () => (num.textContent = fmt(o.n)) }, t - 0.08)
+    tl.to(tag, { scale: 1.08, duration: 0.12, ease: 'power1.out', yoyo: true, repeat: 1 }, t + 0.42)
+    shakes.push({ t: t + 0.05, amp: 9, dur: 0.35 })
+    flashes.push({ t: t + 0.02, peak: 0.16, decay: 0.3, color: '#ffd38a' })
+    return tag
+  }
 
-  // ---- Efeitos globais: flash e desfoque horizontal nos cortes --------------
-  const flashes = []
-  const cuts = TL.scenes.slice(1).map((s) => s.start)
-
-  // =========================================================================
-  // 1. Gancho
-  // =========================================================================
-  ;(() => {
-    const { el, e } = scene('hook')
-    const P = V ? { x: 540, y: 1130, size: 1000 } : { x: 1380, y: 560, size: 880 }
-    add(el, `<div class="layer" style="background:radial-gradient(circle at ${P.x}px ${P.y}px, #5a210c 0%, #24100a 30%, #0b0b0c 62%)"></div>`)
-    const dish = makeDish(el, 'pizza-double-stack', P.x, P.y, P.size)
+  /** Bloco de texto do prato: categoria, nome e chips de ingredientes. */
+  function dishText(parent, { kicker, name, chips = [] }, t, maxW) {
+    const align = V ? 'center' : 'left'
     const box = add(
-      el,
-      `<div class="abs" style="width:${V ? 1000 : 860}px;text-align:${V ? 'center' : 'left'}">
-        <div class="mask"><span class="kicker" style="font-size:${V ? 42 : 36}px">Em Quelimane,</span></div>
-        <div class="mask"><span class="script" style="font-size:${V ? 130 : 118}px">há um sabor que</span></div>
-        <div class="mask"><span class="oswald gold-text nowrap" style="font-size:${V ? 132 : 108}px">fica na memória</span></div>
+      parent,
+      `<div class="abs" style="width:${maxW}px;text-align:${align}">
+        <div class="mask"><span class="kicker" style="font-size:${V ? 34 : 30}px">${kicker}</span></div>
+        <div class="oswald nm fit" data-max="${maxW}" style="font-size:${V ? 104 : 112}px;${V ? 'white-space:nowrap' : ''}">${name}</div>
+        <div class="chips" style="margin-top:${V ? 20 : 26}px;display:flex;flex-wrap:wrap;gap:12px;justify-content:${V ? 'center' : 'flex-start'};font-size:${V ? 30 : 27}px">
+          ${chips.map((c) => `<span class="chip">${c}</span>`).join('')}</div>
       </div>`,
     )
-    if (V) at(box, 540, 400)
-    else gsap.set(box, { left: 140, top: 540, yPercent: -50 })
-    const [l1, l2, l3] = box.querySelectorAll('.mask > span')
-    rise(l1, 0.5)
-    rise(l2, 1.2)
-    rise(l3, 1.9)
-    tl.to(box, { autoAlpha: 0, y: -50, filter: 'blur(12px)', duration: 0.35, ease: 'power2.in' }, e - 0.4)
+    if (V) gsap.set(box, { left: (W - maxW) / 2, top: 1265 })
+    else gsap.set(box, { left: 110, top: 540, yPercent: -50 })
+    rise(box.querySelector('.mask > span'), t)
+    slam(box.querySelector('.nm'), t + 0.08)
+    tl.fromTo(box.querySelectorAll('.chip'), { autoAlpha: 0, y: 20, scale: 0.8 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.09, ease: 'back.out(2)' }, t + 0.45)
+    return box
+  }
 
-    tl.fromTo(dish.wrap, { scale: 1.35, autoAlpha: 0, filter: 'blur(22px)' }, { scale: 1, autoAlpha: 1, filter: 'blur(0px)', duration: 2.4 }, 0)
-    tl.fromTo(dish.wrap, { rotation: -16 }, { rotation: 5, duration: e, ease: 'none' }, 0)
-    tl.to(dish.wrap, { scale: 1.06, duration: 0.8, ease: 'none' }, 2.4)
-    tl.to(dish.wrap, { scale: 2.6, filter: 'blur(18px)', duration: 0.42, ease: 'power3.in' }, e - 0.42)
-    sweep(dish, 1.7, 1.0)
-    emit('ember', 0, e, { x: 0, y: H * 0.7, w: W, h: H * 0.35 }, 38)
-    emit('steam', 0.6, e, { x: P.x - P.size * 0.25, y: P.y - P.size * 0.42, w: P.size * 0.5, h: P.size * 0.2 }, 4, { layer: 'front' })
-  })()
+  /** Cardápio real em ecrã inteiro: destaca as linhas do prato e faz zoom (na foto do cardápio, se houver). */
+  function boardIntro(parent, board, t0, { rows = [], target, zoomAt, zoomDur = 0.5 }) {
+    const bw = V ? 1080 : 810
+    const bh = (bw * 1448) / 1086
+    const bx = (W - bw) / 2
+    const by = (H - bh) / 2
+    const k = bw / 1086
+    const layer = add(parent, '<div class="layer"></div>')
+    gsap.set(layer, { transformOrigin: `${C.x}px ${C.y}px` })
+    add(layer, `<img src="${BOARD(board)}" alt="" style="position:absolute;left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.7)">`)
+    rows.forEach(([x0, y0, x1, y1, ta], i) => {
+      const hl = add(layer, `<div class="hl" style="left:${bx + x0 * k}px;top:${by + y0 * k}px;width:${(x1 - x0) * k}px;height:${(y1 - y0) * k}px"></div>`)
+      tl.fromTo(hl, { autoAlpha: 0, scale: 1.15 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: 'power3.out' }, ta ?? t0 + 0.1 + i * 0.25)
+    })
+    tl.fromTo(layer, { scale: 1.12, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'expo.out' }, t0)
+    if (target) {
+      const [x0, y0, x1, y1] = target
+      const cx = bx + ((x0 + x1) / 2) * k
+      const cy = by + ((y0 + y1) / 2) * k
+      const kk = Math.min((W * 0.62) / ((x1 - x0) * k), (H * 0.5) / ((y1 - y0) * k))
+      tl.to(layer, { x: -kk * (cx - C.x), y: -kk * (cy - C.y), scale: kk, duration: zoomDur, ease: 'power3.in' }, zoomAt)
+    }
+    tl.to(layer, { autoAlpha: 0, duration: 0.12 }, zoomAt + zoomDur - 0.02)
+    flashes.push({ t: zoomAt + zoomDur, peak: 0.75, decay: 0.45, color: '#ffffff' })
+    return layer
+  }
+
+  /** Plano de prato: fundo, palavra fantasma, foto em slow motion, texto, preço. */
+  function plateShot(sc, cfg) {
+    const { el, s, e, d } = sc
+    const t0 = cfg.dishAt ?? s
+    const P = V ? { x: 540, y: 800, size: 900 } : { x: 1300, y: 560, size: 880 }
+    add(el, `<div class="layer" style="background:radial-gradient(circle at ${P.x}px ${P.y}px, ${cfg.bg} 0%, ${cfg.bg}55 32%, #0b0b0c 68%)"></div>`)
+    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 300 : 340}px">${cfg.ghost}</div>`)
+    at(ghost, P.x, V ? P.y : P.y)
+    tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: d, ease: 'none' }, s)
+    const dish = cfg.card
+      ? makeCard(el, cfg.img, null, P.x, P.y, V ? 820 : 760, V ? 820 : 760, -3)
+      : makeDish(el, cfg.img, P.x, P.y, P.size)
+    const inFrom = cfg.fromBoard ? { x: 0, scale: 0.35, rotation: 0, filter: 'blur(6px)', autoAlpha: 0.4 } : { x: V ? 560 : 800, scale: 1.5, rotation: cfg.spin || 10, filter: 'blur(18px)', autoAlpha: 0 }
+    tl.fromTo(dish.wrap, inFrom, { x: 0, scale: 1, rotation: cfg.card ? -3 : 0, filter: 'blur(0px)', autoAlpha: 1, duration: 0.55, ease: 'expo.out' }, t0)
+    tl.to(dish.wrap, { scale: 1.1, rotation: (cfg.card ? -3 : 0) + (cfg.spin > 15 ? 8 : 3), y: -16, duration: Math.max(0.5, e - t0 - 0.85), ease: 'sine.inOut' }, t0 + 0.55)
+    tl.to(dish.wrap, { x: V ? -560 : -800, scale: 1.25, filter: 'blur(16px)', duration: 0.3, ease: 'power3.in' }, e - 0.3)
+    sweep(dish, t0 + 0.7)
+    const box = dishText(el, cfg, t0 + 0.05, V ? 1000 : 740)
+    tl.to(box, { autoAlpha: 0, x: -50, duration: 0.25, ease: 'power2.in' }, e - 0.27)
+    const tp = V ? { x: P.x + 300, y: P.y - 360, size: 96 } : { x: P.x - 330, y: P.y - 340, size: 92 }
+    const tag = priceTag(el, cfg.price, tp.x, tp.y, tp.size, cfg.priceAt, { from: cfg.from })
+    tl.to(tag, { autoAlpha: 0, scale: 0.6, duration: 0.22, ease: 'power2.in' }, e - 0.25)
+    // efeitos por prato
+    const r = { x: P.x - P.size * 0.28, y: P.y - P.size * 0.46, w: P.size * 0.56, h: P.size * 0.22 }
+    if (cfg.fx?.includes('steam')) emit('steam', t0 + 0.3, e, r, 4, { layer: 'front' })
+    if (cfg.fx?.includes('spark')) emit('spark', t0 + 0.2, e, { x: P.x - P.size * 0.3, y: P.y + P.size * 0.05, w: P.size * 0.6, h: P.size * 0.2 }, 30, { layer: 'front' })
+    if (cfg.fx?.includes('ember')) emit('ember', s, e, { x: 0, y: H * 0.75, w: W, h: H * 0.3 }, 24)
+    if (cfg.fx?.includes('bokeh')) emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 3, { layer: 'front' })
+    emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 10)
+    return { dish, box, tag }
+  }
 
   // =========================================================================
-  // 2. Logótipo
+  // 1. Abertura: logótipo + "O sabor que Quelimane ADORA!"
   // =========================================================================
   ;(() => {
-    const { el, s, e, d } = scene('logo')
-    const L = V
-      ? { mark: [540, 690, 380], name: [540, 1010, 200], tag: [540, 1140, 36], words: [540, 1300, 54] }
-      : { mark: [960, 300, 300], name: [960, 560, 170], tag: [960, 670, 30], words: [960, 820, 48] }
-    const glow = add(el, `<div class="layer" style="background:radial-gradient(circle at ${L.mark[0]}px ${L.mark[1] + (V ? 220 : 180)}px, rgba(201,154,59,.35), rgba(201,154,59,.08) 35%, transparent 60%)"></div>`)
-    const g = add(el, '<div class="layer"></div>')
-    const mark = add(g, `<div class="abs" style="height:${L.mark[2]}px;width:${L.mark[2] * 0.875}px;color:var(--gold-400);filter:drop-shadow(0 0 24px rgba(224,184,90,.45))">${LOGO}</div>`)
+    const { el, s, e } = scene('intro')
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 45}%, #3a2a10 0%, #16120b 40%, #0b0b0c 75%)"></div>`)
+    // Montagem rápida por trás das palavras
+    const mont = add(el, '<div class="layer"></div>')
+    const shots = ['pizza-double-stack', 'mariscada', 'carne-grelhada', 'cocktail-mojito', 'massa-carbonara']
+    const t1 = M.slogan
+    const step = (e - t1) / shots.length
+    shots.forEach((n, i) => {
+      const d = makeDish(mont, n, C.x, C.y + (V ? 120 : 0), V ? 1250 : 1100)
+      gsap.set(d.wrap, { autoAlpha: 0 })
+      tl.set(d.wrap, { autoAlpha: 1 }, t1 + i * step)
+      tl.fromTo(d.wrap, { scale: 1.25, rotation: -6 }, { scale: 1.05, rotation: 4, duration: step + 0.05, ease: 'none' }, t1 + i * step)
+      tl.set(d.wrap, { autoAlpha: 0 }, t1 + (i + 1) * step)
+    })
+    add(mont, '<div class="layer" style="background:rgba(11,11,12,.5)"></div>')
+    tl.fromTo(mont, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 }, t1)
+
+    const L = V ? { mark: [540, 720, 300], name: [540, 980, 190], tag: [540, 1110, 36] } : { mark: [960, 300, 260], name: [960, 560, 170], tag: [960, 680, 32] }
+    const logo = add(el, '<div class="layer"></div>')
+    gsap.set(logo, { transformOrigin: `${C.x}px ${C.y}px` })
+    const mark = add(logo, `<div class="abs" style="height:${L.mark[2]}px;width:${L.mark[2] * 0.875}px;color:var(--gold-400);filter:drop-shadow(0 0 26px rgba(224,184,90,.55))">${LOGO}</div>`)
     at(mark, L.mark[0], L.mark[1])
-    const name = add(g, `<div class="abs script gold-text" style="font-size:${L.name[2]}px;padding:0 .2em">Bom Paladar</div>`)
+    const name = add(logo, `<div class="abs script gold-text" style="font-size:${L.name[2]}px;padding:0 .2em">Bom Paladar</div>`)
     at(name, L.name[0], L.name[1])
-    const tag = add(g, `<div class="abs kicker" style="font-size:${L.tag[2]}px">Restaurante &amp; Bar</div>`)
+    const tag = add(logo, `<div class="abs kicker" style="font-size:${L.tag[2]}px">Restaurante &amp; Bar</div>`)
     at(tag, L.tag[0], L.tag[1])
-    const lw = V ? 200 : 260
-    const ll = add(g, `<div class="line" style="width:${lw}px"></div>`)
-    const lr = add(g, `<div class="line r" style="width:${lw}px"></div>`)
-    gsap.set(ll, { left: L.tag[0] - (V ? 260 : 240) - lw, top: L.tag[1], transformOrigin: '100% 50%' })
-    gsap.set(lr, { left: L.tag[0] + (V ? 260 : 240), top: L.tag[1], transformOrigin: '0% 50%' })
-    const words = add(
-      g,
-      `<div class="abs oswald nowrap" style="font-size:${L.words[2]}px;font-weight:600;display:flex;gap:.55em;align-items:center">
-        <span>Sabor</span><i style="color:var(--gold-400);font-style:normal">·</i><span>Qualidade</span><i style="color:var(--gold-400);font-style:normal">·</i><span class="gold-text">Boa companhia</span></div>`,
-    )
-    at(words, L.words[0], L.words[1])
-    const ws = words.querySelectorAll('span,i')
+    drawLogo(mark, 0.3, 0.55)
+    tl.fromTo(mark, { scale: 1.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.6, ease: 'expo.out' }, 0.3)
+    wipe(name, 0.45, 0.65)
+    tl.fromTo(tag, { autoAlpha: 0, letterSpacing: '0.05em' }, { autoAlpha: 1, letterSpacing: '0.5em', duration: 0.9, ease: 'expo.out' }, 1.0)
+    tl.to(logo, { scale: 1.06, duration: t1 - 1, ease: 'none' }, 1)
+    tl.to(logo, { autoAlpha: 0, scale: 1.4, filter: 'blur(10px)', duration: 0.25, ease: 'power2.in' }, t1 - 0.2)
+    flashes.push({ t: 0.32, peak: 0.7, decay: 0.6, color: '#f3d48a' })
+    shakes.push({ t: 0.35, amp: 10, dur: 0.4 })
 
-    tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.3 }, s)
-    tl.to(glow, { opacity: 0.55, duration: 2.5, ease: 'sine.inOut' }, s + 0.4)
-    tl.fromTo(g, { scale: 1 }, { scale: 1.05, duration: d, ease: 'none' }, s)
-    drawLogo(mark, s + 0.05, 0.9)
-    tl.fromTo(mark, { scale: 0.85 }, { scale: 1, duration: 1.4, ease: 'expo.out' }, s)
-    wipe(name, s + 0.35, 1.0)
-    tl.fromTo(tag, { autoAlpha: 0, letterSpacing: '0.05em' }, { autoAlpha: 1, letterSpacing: '0.5em', duration: 1.3, ease: 'expo.out' }, s + 1.0)
-    tl.fromTo([ll, lr], { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'expo.out' }, s + 1.15)
-    // "Sabor, qualidade e boa companhia." começa ~1,75 s depois do início da fala 2
-    tl.fromTo(ws, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.17, ease: 'back.out(1.8)' }, s + 2.0)
-    tl.to(g, { scale: 1.18, autoAlpha: 0, filter: 'blur(10px)', duration: 0.34, ease: 'power2.in' }, e - 0.34)
-    flashes.push({ t: s, peak: 0.55, decay: 0.6, color: '#f3d48a' })
-    emit('burst', s, s + 2.5, { x: L.mark[0], y: L.mark[1], w: 0, h: 0 }, 140)
-    emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 22)
+    // "O SABOR QUE / QUELIMANE / ADORA!"
+    const words = add(
+      el,
+      `<div class="abs" style="text-align:center;width:${V ? 1000 : 1700}px">
+        <div class="oswald w1" style="font-size:${V ? 120 : 130}px">O sabor que</div>
+        <div class="oswald w2 gold-text" style="font-size:${V ? 150 : 170}px">Quelimane</div>
+        <div class="oswald w3 shine" style="font-size:${V ? 230 : 230}px;line-height:1">Adora!</div>
+      </div>`,
+    )
+    at(words, C.x, C.y)
+    slam(words.querySelector('.w1'), t1, { shake: 4, flash: 0.08 })
+    slam(words.querySelector('.w2'), t1 + 0.9, { shake: 6, flash: 0.1 })
+    slam(words.querySelector('.w3'), t1 + 1.6, { shake: 14, flash: 0.35, from: 3 })
+    tl.fromTo(words.querySelector('.w3'), { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 0.7, ease: 'power1.inOut' }, t1 + 1.9)
+    tl.to(words, { autoAlpha: 0, scale: 1.3, filter: 'blur(10px)', duration: 0.22, ease: 'power2.in' }, e - 0.22)
+    emit('ember', 0, e, { x: 0, y: H * 0.7, w: W, h: H * 0.35 }, 34)
+    emit('burst', 0.32, 2.6, { x: L.mark[0], y: L.mark[1], w: 0, h: 0 }, 140)
   })()
 
   // =========================================================================
-  // 3. O restaurante: mapa, morada, avaliação, horário, fotos reais
+  // 2. Local: Rua Robert Mugabe · aberto até à meia-noite · 4,3 no Google
   // =========================================================================
   ;(() => {
-    const { el, s, e } = scene('restaurant')
-    const pin = V ? { x: 540, y: 520 } : { x: 370, y: 470 }
+    const { el, s, e } = scene('local')
+    const pin = V ? { x: 540, y: 500 } : { x: 360, y: 430 }
     add(el, `<div class="layer" style="background:radial-gradient(circle at ${pin.x}px ${pin.y}px, #2a2112 0%, #121110 45%, #0b0b0c 80%)"></div>`)
-    // Mapa estilizado (seed fixa)
     const rnd = mulberry(42)
     let roads = ''
     for (let i = 0; i < 9; i++) {
@@ -211,364 +304,359 @@
       const x1 = x0 + (rnd() - 0.5) * 260
       roads += `<path pathLength="1" d="M${x0} -80 C ${x0 + (rnd() - 0.5) * 200} ${H * 0.35}, ${x1 + (rnd() - 0.5) * 200} ${H * 0.7}, ${x1} ${H + 80}" stroke-width="${2 + rnd() * 4}"/>`
     }
-    const river = V
-      ? `M-100 ${H * 0.9} C ${W * 0.3} ${H * 0.82}, ${W * 0.6} ${H * 0.98}, ${W + 100} ${H * 0.86}`
-      : `M-100 ${H * 0.95} C ${W * 0.35} ${H * 0.78}, ${W * 0.62} ${H * 1.02}, ${W + 100} ${H * 0.82}`
     const main = `M-80 ${pin.y + 60} C ${pin.x * 0.6} ${pin.y + 40}, ${pin.x * 1.3} ${pin.y + 90}, ${W + 80} ${pin.y + 20}`
     const map = add(
       el,
       `<svg class="layer" viewBox="0 0 ${W} ${H}" style="overflow:visible">
         <defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="rgba(224,184,90,.06)" stroke-width="1"/></pattern></defs>
         <rect x="-200" y="-200" width="${W + 400}" height="${H + 400}" fill="url(#grid)"/>
-        <path d="${river}" stroke="#123742" stroke-width="${V ? 150 : 130}" fill="none" stroke-linecap="round" opacity=".65"/>
-        <g class="roads" fill="none" stroke="rgba(236,208,138,.16)" stroke-linecap="round">${roads}</g>
+        <g class="roads" fill="none" stroke="rgba(236,208,138,.15)" stroke-linecap="round">${roads}</g>
         <path class="main" pathLength="1" d="${main}" fill="none" stroke="#e0b85a" stroke-width="7" stroke-linecap="round" style="filter:drop-shadow(0 0 10px rgba(224,184,90,.8))"/>
       </svg>`,
     )
     gsap.set(map, { transformOrigin: `${pin.x}px ${pin.y}px` })
     const roadEls = map.querySelectorAll('.roads path')
     gsap.set([...roadEls, map.querySelector('.main')], { strokeDasharray: 1, strokeDashoffset: 1 })
-    tl.fromTo(map, { scale: 1.3, rotation: -3 }, { scale: 1, rotation: 0, duration: e - s, ease: 'power1.out' }, s)
-    tl.to(roadEls, { strokeDashoffset: 0, duration: 1.3, stagger: 0.04, ease: 'power2.inOut' }, s)
-    tl.to(map.querySelector('.main'), { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, s + 0.3)
-
-    // Pin com anéis
-    for (let i = 0; i < 3; i++) {
+    tl.fromTo(map, { scale: 1.35, rotation: -4 }, { scale: 1, rotation: 0, duration: e - s, ease: 'power2.out' }, s)
+    tl.to(roadEls, { strokeDashoffset: 0, duration: 0.9, stagger: 0.03, ease: 'power2.inOut' }, s)
+    tl.to(map.querySelector('.main'), { strokeDashoffset: 0, duration: 0.7, ease: 'power2.inOut' }, s + 0.15)
+    for (let i = 0; i < 4; i++) {
       const ring = add(el, `<div class="abs" style="width:120px;height:120px;border-radius:50%;border:3px solid var(--gold-400)"></div>`)
       at(ring, pin.x, pin.y + 10)
-      tl.fromTo(ring, { scale: 0.2, autoAlpha: 0.9 }, { scale: 3.2, autoAlpha: 0, duration: 1.5, ease: 'power2.out' }, s + 0.9 + i * 0.9)
+      tl.fromTo(ring, { scale: 0.2, autoAlpha: 0.9 }, { scale: 3.2, autoAlpha: 0, duration: 1.3, ease: 'power2.out' }, s + 0.5 + i * 1.2)
     }
-    const pinEl = add(el, `<div class="abs" style="width:${V ? 130 : 110}px;height:${V ? 130 : 110}px;color:var(--gold-400);filter:drop-shadow(0 12px 18px rgba(0,0,0,.6))">${icon('pin')}</div>`)
+    const pinEl = add(el, `<div class="abs" style="width:${V ? 140 : 120}px;height:${V ? 140 : 120}px;color:var(--gold-400);filter:drop-shadow(0 12px 18px rgba(0,0,0,.6))">${icon('pin')}</div>`)
     pinEl.querySelector('path').setAttribute('fill', 'currentColor')
     pinEl.querySelector('circle').setAttribute('fill', '#0b0b0c')
     gsap.set(pinEl, { left: pin.x, top: pin.y, xPercent: -50, yPercent: -100, transformOrigin: '50% 100%' })
-    tl.fromTo(pinEl, { y: -320, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, ease: 'bounce.out' }, s + 0.4)
+    tl.fromTo(pinEl, { y: -300, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'bounce.out' }, s + 0.05)
 
-    // Morada e coordenadas
-    const align = V ? 'center' : 'left'
     const info = add(
       el,
-      `<div class="abs" style="text-align:${align};width:${V ? 1000 : 1000}px">
-        <div class="mask"><span class="oswald nowrap" style="font-size:${V ? 92 : 84}px">Rua Robert Mugabe</span></div>
-        <div class="mask" style="margin-top:14px"><span class="kicker" style="font-size:${V ? 34 : 30}px">Quelimane · Moçambique</span></div>
-        <div style="margin-top:14px;font:600 ${V ? 30 : 28}px Inter;color:var(--gold-300);letter-spacing:.08em" class="coords">&nbsp;</div>
-        <div class="chips" style="margin-top:${V ? 34 : 30}px;display:flex;gap:18px;justify-content:${V ? 'center' : 'flex-start'};font-size:${V ? 34 : 30}px">
-          <span class="chip gold">${icon('star')} 4,3 no Google</span>
-          <span class="chip">${icon('clock')} Aberto até à meia-noite</span>
+      `<div class="abs" style="text-align:${V ? 'center' : 'left'};width:${V ? 1000 : 1300}px">
+        <div class="oswald nm nowrap" style="font-size:${V ? 104 : 118}px">Rua Robert Mugabe</div>
+        <div class="mask" style="margin-top:12px"><span class="kicker" style="font-size:${V ? 36 : 34}px">Quelimane · Moçambique</span></div>
+        <div class="open" style="margin-top:${V ? 60 : 50}px;display:flex;justify-content:${V ? 'center' : 'flex-start'}"><span class="chip gold" style="font-size:${V ? 46 : 44}px">${icon('clock')} Aberto até à meia-noite</span></div>
+        <div class="rate" style="margin-top:${V ? 56 : 46}px;display:flex;align-items:center;gap:.35em;justify-content:${V ? 'center' : 'flex-start'};font-size:${V ? 64 : 60}px">
+          <span class="oswald gold-text" style="font-size:1.9em;line-height:1">4,3</span>
+          <span class="stars">${icon('star').repeat(5)}<span class="on" style="width:0%">${icon('star').repeat(5)}</span></span>
+          <span style="font:600 .55em Inter;color:var(--cream-100)">no Google</span>
         </div>
       </div>`,
     )
-    if (V) gsap.set(info, { left: 40, top: 690 })
-    else gsap.set(info, { left: pin.x + 120, top: pin.y - 120 })
-    const [n1, n2] = info.querySelectorAll('.mask > span')
-    rise(n1, s + 0.5)
-    rise(n2, s + 0.8)
-    const coords = info.querySelector('.coords')
-    const COORD = '17°53′S · 36°53′E'
-    const typer = { n: 0 }
-    tl.to(typer, { n: COORD.length, duration: 0.8, ease: 'none', onUpdate: () => (coords.textContent = COORD.slice(0, Math.round(typer.n)) || ' ') }, s + 1.0)
-    const chips = info.querySelectorAll('.chip')
-    pop(chips[0], s + 1.45, { x: -30 })
-    pop(chips[1], s + 1.75, { x: -30 })
-
-    // Fotos reais (polaroids)
-    const pol = V
-      ? [ [300, 1290, -7, 340], [790, 1270, 6, 340] ]
-      : [ [1530, 330, -6, 300], [1720, 700, 7, 300] ]
-    const caps = ['Asinhas &amp; pão de alho', '½ frango grelhado']
-    const imgs = ['real-asinhas-pao-alho', 'real-meio-frango']
-    pol.forEach(([x, y, r, size], i) => {
-      const p = add(el, `<div class="polaroid" style="width:${size + 36}px;height:${size + 82}px"><img src="${PHOTO(imgs[i])}" alt=""><div class="cap" style="font-size:${V ? 40 : 38}px">${caps[i]}</div></div>`)
-      at(p, x, y)
-      tl.fromTo(p, { y: V ? 700 : 600, rotation: r * 4, autoAlpha: 0 }, { y: 0, rotation: r, autoAlpha: 1, duration: 0.9, ease: 'power3.out' }, s + 2.0 + i * 0.25)
-      tl.to(p, { y: -16, duration: 1.5, ease: 'sine.inOut' }, s + 2.9 + i * 0.25)
-    })
-    const credit = add(el, `<div class="abs" style="font:400 ${V ? 22 : 18}px Inter;color:rgba(244,238,225,.6);white-space:nowrap">Fotos: Arsénio Iade · Google Maps</div>`)
-    at(credit, V ? 540 : 1640, V ? 1500 : 1000)
-    tl.fromTo(credit, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, s + 2.6)
-
+    if (V) gsap.set(info, { left: 40, top: 680 })
+    else gsap.set(info, { left: pin.x + 130, top: pin.y - 110 })
+    slam(info.querySelector('.nm'), s + 0.1)
+    rise(info.querySelector('.mask > span'), s + 0.45)
+    pop(info.querySelector('.open .chip'), M.open - 0.05, { x: -40 })
+    const rate = info.querySelector('.rate')
+    pop(rate, M.rating - 0.05, { y: 40 })
+    tl.fromTo(rate.querySelector('.stars .on'), { width: '0%' }, { width: '86%', duration: 0.8, ease: 'power2.out' }, M.rating + 0.2)
+    shakes.push({ t: M.rating + 0.05, amp: 7, dur: 0.3 })
     const root = add(el, '<div class="layer"></div>')
     ;[...el.children].filter((c) => c !== root).forEach((c) => root.appendChild(c))
     gsap.set(root, { transformOrigin: `${pin.x}px ${pin.y}px` })
-    tl.to(root, { scale: 1.6, autoAlpha: 0, filter: 'blur(8px)', duration: 0.34, ease: 'power2.in' }, e - 0.34)
+    tl.to(root, { scale: 1.5, autoAlpha: 0, filter: 'blur(8px)', duration: 0.28, ease: 'power2.in' }, e - 0.28)
+    emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 12)
+  })()
+
+  // =========================================================================
+  // 3. Pratos (cada um com nome, ingredientes e preço quando a voz o diz)
+  // =========================================================================
+  const b3 = BL.b03
+  ;(() => {
+    // Do cardápio para a mesa: linha "Double Stack" no cardápio de pizzas → zoom na foto → prato HD
+    const sc = scene('pizza1')
+    const zoomAt = sc.s + 0.55
+    boardIntro(sc.el, 'board1', sc.s, { rows: [[20, 1030, 790, 1135, sc.s + 0.12]], target: [840, 300, 1060, 580], zoomAt, zoomDur: 0.42 })
+    plateShot(sc, {
+      dishAt: zoomAt + 0.42, fromBoard: true, img: 'pizza-double-stack', bg: '#5c1f0c', ghost: 'Pizza', spin: 22, fx: ['steam', 'ember'],
+      kicker: 'Pizzaria da casa', name: 'Pizza Double Stack', chips: ['Duas camadas', 'Queijo creme', 'Carne ou frango'], price: 1000, priceAt: b3.marks.priceA,
+    })
+  })()
+  plateShot(scene('pizza2'), {
+    img: 'pizza-seafood', bg: '#5a2a0c', ghost: 'Pizza', spin: 22, fx: ['steam'],
+    kicker: 'Pizzaria da casa', name: 'Pizza Seafood', chips: ['Lula', 'Camarão', 'Ananás', 'Pimentos'], price: 700, priceAt: b3.marks.priceB,
+  })
+  plateShot(scene('massa1'), {
+    img: 'massa-carbonara', bg: '#4e3810', ghost: 'Massas', spin: 10, fx: ['steam'],
+    kicker: 'Massas &amp; lasanhas', name: 'Tagliatelle Carbonara', chips: ['Frango', 'Salsicha', 'Natas', 'Cogumelos'], price: 550, priceAt: BL.b04.marks.priceA,
+  })
+  plateShot(scene('massa2'), {
+    img: 'lasanha-carne', bg: '#5a2410', ghost: 'Lasanha', spin: 8, fx: ['steam'],
+    kicker: 'Massas &amp; lasanhas', name: 'Lasanha de Carne Moída', chips: ['Gratinada no forno'], price: 700, priceAt: BL.b04.marks.priceB,
+  })
+  ;(() => {
+    // Combos de mariscos: linhas "Aparelhada" no cardápio → prato
+    const sc = scene('mariscos')
+    const zoomAt = sc.s + 1.0
+    boardIntro(sc.el, 'board3', sc.s, {
+      rows: [[560, 410, 1030, 455, sc.s + 0.15], [560, 460, 1030, 505, sc.s + 0.35], [560, 510, 1030, 560, sc.s + 0.55]],
+      target: [560, 380, 1030, 560], zoomAt, zoomDur: 0.4,
+    })
+    plateShot(sc, {
+      dishAt: zoomAt + 0.4, fromBoard: true, img: 'mariscada', bg: '#0d3b46', ghost: 'Mariscos', spin: 8, fx: ['bokeh'],
+      kicker: 'Combos de mariscos', name: 'Aparelhada de Mariscos', chips: ['Lula', 'Camarão', 'Lagosta'], price: 1500, from: true, priceAt: BL.b05.marks.priceA,
+    })
+  })()
+  plateShot(scene('carne1'), {
+    img: 'carne-grelhada', bg: '#5a1511', ghost: 'Grelhados', spin: 8, fx: ['steam', 'spark'],
+    kicker: 'Carnes', name: 'Bife Grelhado', chips: ['Molho demi-glace', 'Batata chips'], price: 1100, priceAt: BL.b06.marks.priceA,
+  })
+  plateShot(scene('carne2'), {
+    img: 'real-meio-frango', card: true, bg: '#5a2a11', ghost: 'Aves', spin: 6, fx: ['spark'],
+    kicker: 'Aves', name: '½ Galinha Cafreal', chips: ['Ou frango grelhado', 'Batata frita'], price: 800, priceAt: BL.b06.marks.priceB,
+  })
+
+  // Petiscos: linhas no cardápio de entradas → asinhas e pão de alho (fotos reais)
+  ;(() => {
+    const { el, s, e } = scene('petiscos')
+    const m = BL.b07.marks
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 50}%, #4a2a10 0%, #1a120a 40%, #0b0b0c 75%)"></div>`)
+    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 300 : 340}px">Petiscos</div>`)
+    at(ghost, C.x, V ? 800 : 560)
+    tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: e - s, ease: 'none' }, s)
+    const zoomAt = m.asinhas - 0.45
+    boardIntro(el, 'board3', s, { rows: [[25, 150, 535, 188, s + 0.12], [25, 275, 535, 312, s + 0.4]], target: [25, 140, 535, 320], zoomAt, zoomDur: 0.4 })
+    const cards = V
+      ? [['real-asinhas', 'Asinhas crocantes', 300, 780, 470, 600, -4, m.asinhas], ['real-pao-alho', 'Pão de alho c/ queijo', 790, 820, 470, 600, 4, m.pao]]
+      : [['real-asinhas', 'Asinhas crocantes', 1080, 540, 500, 620, -4, m.asinhas], ['real-pao-alho', 'Pão de alho c/ queijo', 1600, 560, 500, 620, 4, m.pao]]
+    cards.forEach(([img, label, x, y, w, h, r, t]) => {
+      const c = makeCard(el, img, label, x, y, w, h, r)
+      tl.fromTo(c.wrap, { y: 500, rotation: r * 5, autoAlpha: 0, scale: 0.8 }, { y: 0, rotation: r, autoAlpha: 1, scale: 1, duration: 0.55, ease: 'expo.out' }, t - 0.1)
+      tl.to(c.wrap, { scale: 1.06, duration: e - t - 0.5, ease: 'sine.inOut' }, t + 0.45)
+      sweep(c, t + 0.6)
+      tl.to(c.wrap, { x: V ? -560 : -800, filter: 'blur(14px)', duration: 0.3, ease: 'power3.in' }, e - 0.3)
+    })
+    const box = dishText(el, { kicker: 'Entradas &amp; petiscos', name: 'Para petiscar!', chips: ['Asinhas 400 MT', 'Pão de alho 350 MT'] }, m.asinhas - 0.15, V ? 1000 : 740)
+    tl.to(box, { autoAlpha: 0, x: -50, duration: 0.25, ease: 'power2.in' }, e - 0.27)
+    const tp = V ? { x: 540, y: 410 } : { x: 1340, y: 170 }
+    const tag = priceTag(el, 350, tp.x, tp.y, V ? 96 : 88, m.priceA, { from: true })
+    tl.to(tag, { autoAlpha: 0, scale: 0.6, duration: 0.22 }, e - 0.25)
     emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 10)
   })()
 
-  // =========================================================================
-  // 4. Pratos (5 planos "slow motion")
-  // =========================================================================
-  const DISHES = [
-    { id: 'dish-pizza', imgs: ['pizza-double-stack'], kicker: 'Pizzaria da casa', name: 'Pizza Double Stack', prices: [['1.000']], phrase: 'Pizzas a sair do forno', ghost: 'Pizza', bg: '#5c1f0c', fx: ['steam', 'ember'], spin: 22 },
-    { id: 'dish-massa', imgs: ['massa-carbonara'], kicker: 'Massas &amp; lasanhas', name: 'Tagliatelle Carbonara', prices: [['550']], phrase: 'Massas cremosas', ghost: 'Massas', bg: '#4e3810', fx: ['steam', 'dust'], spin: 10 },
-    { id: 'dish-mariscos', imgs: ['mariscada'], kicker: 'Combos de mariscos', name: 'Aparelhada de Mariscos', prices: [['1.500', 'desde']], phrase: 'Mariscos do Índico', ghost: 'Mariscos', bg: '#0d3b46', fx: ['dust', 'bokeh'], spin: 8 },
-    { id: 'dish-carne', imgs: ['carne-grelhada'], kicker: 'Grelhados', name: 'Bife Grelhado', prices: [['1.100']], phrase: 'Carnes grelhadas no ponto', ghost: 'Carnes', bg: '#5a1511', fx: ['steam', 'spark'], spin: 8 },
-    { id: 'dish-cocktails', imgs: ['cocktail-mojito', 'cocktail-pina-colada'], kicker: 'Bar &amp; cocktails', name: 'Mojito · Piña Colada', prices: [['300'], ['450']], phrase: 'Cocktails que fazem a noite', ghost: 'Cocktails', bg: '#0b3d39', fx: ['bubbles', 'bokeh'], spin: 4 },
-  ]
-  DISHES.forEach((cfg) => {
-    const { el, s, e, d } = scene(cfg.id)
-    const two = cfg.imgs.length === 2
-    const spots = two
-      ? V ? [[300, 880, 620], [785, 850, 620]] : [[1190, 590, 600], [1620, 550, 600]]
-      : V ? [[540, 860, 940]] : [[1260, 560, 900]]
-    const cx = two ? (V ? 540 : 1400) : spots[0][0]
-    const cy = two ? (V ? 860 : 570) : spots[0][1]
-    add(el, `<div class="layer" style="background:radial-gradient(circle at ${cx}px ${cy}px, ${cfg.bg} 0%, ${cfg.bg}55 30%, #0b0b0c 66%)"></div>`)
-    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 330 : 360}px">${cfg.ghost}</div>`)
-    at(ghost, cx, V ? cy - 40 : cy)
-    tl.fromTo(ghost, { x: 160, autoAlpha: 0 }, { x: -160, autoAlpha: 1, duration: d, ease: 'none' }, s)
-    tl.to(ghost, { autoAlpha: 0, duration: 0.3 }, e - 0.3)
-
-    const dishes = spots.map(([x, y, size], i) => makeDish(el, cfg.imgs[i], x, y, size))
-    const dx = V ? 520 : 760
-    dishes.forEach((dh, i) => {
-      const t = s + i * 0.12
-      tl.fromTo(
-        dh.wrap,
-        { x: dx, scale: 1.5, rotation: cfg.spin, filter: 'blur(18px)', autoAlpha: 0 },
-        { x: 0, scale: 1, rotation: 0, filter: 'blur(0px)', autoAlpha: 1, duration: 0.65, ease: 'expo.out' },
-        t,
-      )
-      // "Slow motion": aproximação lenta e rotação contínua até ao corte
-      tl.to(dh.wrap, { scale: 1.08, rotation: cfg.spin > 15 ? 7 : 2.5, y: -14, duration: d - 0.65 - 0.36 - i * 0.12, ease: 'sine.inOut' }, t + 0.65)
-      tl.to(dh.wrap, { x: -dx, scale: 1.3, filter: 'blur(16px)', duration: 0.36, ease: 'power3.in' }, e - 0.36)
-      sweep(dh, s + 1.25 + i * 0.2, 0.95)
-      // Preço
-      const [price, from] = cfg.prices[i]
-      const bs = two ? (V ? 170 : 160) : V ? 220 : 200
-      const badge = add(el, `<div class="badge" style="width:${bs}px;height:${bs}px;font-size:${bs * 0.3}px">${from ? `<span class="from">${from}</span>` : ''}${price}<small>MT</small></div>`)
-      at(badge, dh.x + dh.size * (two ? 0.3 : 0.34), dh.y - dh.size * (two ? 0.33 : 0.34))
-      pop(badge, s + 0.85 + i * 0.15, { rotation: -40, scale: 0 })
-      tl.to(badge, { rotation: -8, duration: d - 1.6, ease: 'sine.inOut' }, s + 1.45 + i * 0.15)
-      tl.to(badge, { autoAlpha: 0, scale: 0.6, duration: 0.25, ease: 'power2.in' }, e - 0.32)
+  // Bar: linhas Mojito e Piña Colada no cardápio de cocktails → os dois copos
+  ;(() => {
+    const { el, s, e } = scene('bar')
+    const m = BL.b08.marks
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 50}%, #0b3d39 0%, #0a1f24 40%, #0b0b0c 78%)"></div>`)
+    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 280 : 340}px">Cocktails</div>`)
+    at(ghost, C.x, V ? 800 : 560)
+    tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: e - s, ease: 'none' }, s)
+    boardIntro(el, 'board4', s, { rows: [[570, 776, 1050, 896, s + 0.08], [570, 912, 1050, 1028, s + 0.25]], target: [570, 770, 1050, 1030], zoomAt: m.priceA - 0.45, zoomDur: 0.38 })
+    const glasses = V
+      ? [['cocktail-mojito', 300, 800, 600, m.priceA, 'Mojito'], ['cocktail-pina-colada', 790, 780, 600, m.priceB, 'Piña Colada']]
+      : [['cocktail-mojito', 1150, 600, 620, m.priceA, 'Mojito'], ['cocktail-pina-colada', 1620, 570, 620, m.priceB, 'Piña Colada']]
+    const prices = [300, 450]
+    glasses.forEach(([img, x, y, size, t, label], i) => {
+      const d = makeDish(el, img, x, y, size)
+      tl.fromTo(d.wrap, { y: 600, scale: 0.6, autoAlpha: 0, filter: 'blur(10px)' }, { y: 0, scale: 1, autoAlpha: 1, filter: 'blur(0px)', duration: 0.5, ease: 'expo.out' }, t - 0.12)
+      tl.to(d.wrap, { scale: 1.08, y: -12, duration: e - t - 0.45, ease: 'sine.inOut' }, t + 0.38)
+      tl.to(d.wrap, { x: V ? -560 : -800, filter: 'blur(14px)', duration: 0.3, ease: 'power3.in' }, e - 0.3)
+      sweep(d, t + 0.5)
+      const nm = add(el, `<div class="abs oswald nowrap" style="font-size:${V ? 54 : 50}px">${label}</div>`)
+      at(nm, x, y + size * 0.47)
+      slam(nm, t, { shake: 0, flash: 0 })
+      tl.to(nm, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
+      const tag = priceTag(el, prices[i], x + size * 0.28, y - size * 0.36, V ? 84 : 78, t + 0.55)
+      tl.to(tag, { autoAlpha: 0, scale: 0.6, duration: 0.22 }, e - 0.25)
+      emit('bubbles', t + 0.2, e, { x: x - size * 0.12, y: y - size * 0.05, w: size * 0.24, h: size * 0.25 }, 16, { layer: 'front' })
     })
-
-    // Texto
-    let text
-    if (V) {
-      const phrase = add(el, `<div class="abs script gold-text" style="font-size:104px;padding:0 .25em">${cfg.phrase}</div>`)
-      at(phrase, 540, 300)
-      wipe(phrase, s + 0.3, 0.95)
-      text = add(
-        el,
-        `<div class="abs" style="text-align:center;width:1000px">
-          <div class="mask"><span class="kicker" style="font-size:36px">${cfg.kicker}</span></div>
-          <div class="mask"><span class="oswald nowrap fit" data-max="1000" style="font-size:96px">${cfg.name}</span></div>
-        </div>`,
-      )
-      gsap.set(text, { left: 40, top: 1330 })
-      tl.to(phrase, { autoAlpha: 0, y: -30, duration: 0.3, ease: 'power2.in' }, e - 0.32)
-    } else {
-      text = add(
-        el,
-        `<div class="abs" style="width:${two ? 640 : 760}px">
-          <div class="script gold-text phrase" style="font-size:${two ? 70 : 84}px;padding:0 .2em 0 0;display:inline-block">${cfg.phrase}</div>
-          <div class="mask" style="margin-top:18px"><span class="kicker" style="font-size:30px">${cfg.kicker}</span></div>
-          <div class="mask"><span class="oswald fit" data-max="${two ? 640 : 760}" style="font-size:${two ? 96 : 108}px">${cfg.name}</span></div>
-          <div class="line" style="position:relative;width:240px;margin-top:26px"></div>
-        </div>`,
-      )
-      gsap.set(text, { left: 120, top: 540, yPercent: -50 })
-      wipe(text.querySelector('.phrase'), s + 0.3, 0.95)
-      tl.fromTo(text.querySelector('.line'), { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.8, ease: 'expo.out' }, s + 0.8)
-    }
-    const spans = text.querySelectorAll('.mask > span')
-    rise(spans[0], s + 0.45)
-    rise(spans[1], s + 0.55, 0.9)
-    tl.to(text, { autoAlpha: 0, x: -60, duration: 0.3, ease: 'power2.in' }, e - 0.32)
-
-    // Efeitos por prato
-    const main = dishes[0]
-    const r = { x: cx - main.size * 0.28, y: cy - main.size * 0.46, w: main.size * 0.56, h: main.size * 0.22 }
-    if (cfg.fx.includes('steam')) emit('steam', s + 0.4, e, r, 4, { layer: 'front' })
-    if (cfg.fx.includes('ember')) emit('ember', s, e, { x: 0, y: H * 0.75, w: W, h: H * 0.3 }, 24)
-    if (cfg.fx.includes('spark')) emit('spark', s + 0.2, e, { x: cx - main.size * 0.3, y: cy + main.size * 0.05, w: main.size * 0.6, h: main.size * 0.2 }, 30, { layer: 'front' })
-    if (cfg.fx.includes('dust')) emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 14)
-    if (cfg.fx.includes('bokeh')) emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 3, { layer: 'front' })
-    if (cfg.fx.includes('bubbles'))
-      dishes.forEach((dh) => emit('bubbles', s + 0.5, e, { x: dh.x - dh.size * 0.15, y: dh.y - dh.size * 0.05, w: dh.size * 0.3, h: dh.size * 0.25 }, 16, { layer: 'front' }))
-    flashes.push({ t: s, peak: 0.14, decay: 0.25, color: '#ffffff' })
-  })
+    const head = add(
+      el,
+      `<div class="abs" style="text-align:${V ? 'center' : 'left'};width:${V ? 1000 : 700}px">
+        <div class="mask"><span class="kicker" style="font-size:${V ? 34 : 30}px">Bar &amp; cocktails</span></div>
+        <div class="script gold-text hd" style="font-size:${V ? 120 : 130}px;padding:0 .25em;display:inline-block">E no bar…</div>
+      </div>`,
+    )
+    if (V) gsap.set(head, { left: 40, top: 1280 })
+    else gsap.set(head, { left: 110, top: 540, yPercent: -50 })
+    rise(head.querySelector('.mask > span'), s + 0.1)
+    wipe(head.querySelector('.hd'), s + 0.15, 0.6)
+    tl.to(head, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
+    emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 3, { layer: 'front' })
+  })()
 
   // =========================================================================
-  // 5. Menu: cardápios reais em 3D + contador 0 → 135 + 16 secções
+  // 4. Cardápio: 4 cardápios reais + 135 + o menu no telemóvel
   // =========================================================================
   ;(() => {
-    const { el, s, e, d } = scene('menu')
-    const B = V ? { x: 540, y: 640, w: 380, gap: 205 } : { x: 590, y: 560, w: 420, gap: 205 }
-    add(el, `<div class="layer" style="background:radial-gradient(circle at ${B.x}px ${B.y}px, #2c2414 0%, #121110 45%, #0b0b0c 75%)"></div>`)
+    const { el, s, e } = scene('menu')
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% 45%, #2c2414 0%, #121110 45%, #0b0b0c 78%)"></div>`)
+    const B = V ? { x: 540, y: 980, w: 330, gap: 190 } : { x: 600, y: 560, w: 400, gap: 200 }
     const persp = add(el, '<div class="layer" style="perspective:1800px"></div>')
     const group = add(persp, '<div class="layer" style="transform-style:preserve-3d"></div>')
     gsap.set(group, { transformOrigin: `${B.x}px ${B.y}px` })
-    const boards = [1, 2, 3, 4].map((i) => {
-      const b = add(group, `<div class="board" style="width:${B.w}px;height:${B.w * 1.3333}px"><img src="../assets/menu/board${i}.jpg" alt=""></div>`)
+    ;[1, 2, 3, 4].forEach((i) => {
+      const b = add(group, `<div class="board" style="width:${B.w}px;height:${B.w * 1.3333}px"><img src="${BOARD('board' + i)}" alt=""></div>`)
       at(b, B.x, B.y)
-      return b
+      const k = i - 2.5
+      tl.fromTo(b, { y: H * 0.9, rotationX: 55, rotation: k * 18, autoAlpha: 0 }, { x: k * B.gap, y: Math.abs(k) * 30, rotationY: -k * 14, rotation: k * 5, z: -Math.abs(k) * 80, rotationX: 0, autoAlpha: 1, duration: 0.7, ease: 'expo.out' }, s + (i - 1) * 0.07)
     })
-    boards.forEach((b, i) => {
-      const k = i - 1.5
-      tl.fromTo(b, { y: H * 0.9, rotationX: 55, rotation: k * 18, autoAlpha: 0 }, { y: 0, rotationX: 0, rotation: k * 2, autoAlpha: 1, duration: 0.75, ease: 'expo.out' }, s + i * 0.08)
-      tl.to(b, { x: k * B.gap, y: Math.abs(k) * 34, rotationY: -k * 16, rotation: k * 5, z: -Math.abs(k) * 90, duration: 1.0, ease: 'power3.inOut' }, s + 0.95)
-    })
-    tl.fromTo(group, { rotationY: -8, y: 0 }, { rotationY: 8, y: -20, duration: d - 1.9, ease: 'sine.inOut' }, s + 1.9)
+    tl.fromTo(group, { rotationY: -6 }, { rotationY: 6, duration: 1.6, ease: 'sine.inOut' }, s + 0.6)
+    // O menu no site (telemóvel) substitui os cardápios
+    const PH = V ? { x: 540, y: 1075, h: 880 } : { x: 600, y: 560, h: 900 }
+    const pw = (PH.h - 32) * (390 / 844) + 32
+    const phone = add(el, `<div class="phone" style="width:${pw}px;height:${PH.h}px"><img alt=""><div class="island"></div><div class="glare"></div></div>`)
+    at(phone, PH.x, PH.y)
+    const swap = s + 1.45
+    tl.to(group, { x: V ? 0 : 0, scale: 0.7, autoAlpha: 0, filter: 'blur(8px)', duration: 0.35, ease: 'power2.in' }, swap - 0.1)
+    tl.fromTo(phone, { y: H, rotation: 8, autoAlpha: 0 }, { y: 0, rotation: 0, autoAlpha: 1, duration: 0.55, ease: 'expo.out' }, swap)
+    siteMaps.push({ img: phone.querySelector('img'), take: 'mobile', t0: swap, t1: e, from: 0.25, rate: 1.1 })
 
-    const CT = V ? { x: 540, y: 1030 } : { x: 1500, y: 400 }
-    const counter = add(el, `<div class="abs oswald shine" style="font-size:${V ? 270 : 300}px;line-height:1">0</div>`)
+    const CT = V ? { x: 540, y: 330 } : { x: 1440, y: 430 }
+    const counter = add(el, `<div class="abs oswald shine" style="font-size:${V ? 230 : 300}px;line-height:1">0</div>`)
     at(counter, CT.x, CT.y)
-    const label = add(el, `<div class="abs oswald nowrap" style="font-size:${V ? 54 : 50}px;font-weight:600;letter-spacing:.08em">Pratos &amp; bebidas</div>`)
-    at(label, CT.x, CT.y + (V ? 175 : 190))
-    const ctr = { n: 0 }
-    tl.fromTo(counter, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, s + 0.4)
-    tl.to(ctr, { n: 135, duration: 2.2, ease: 'power2.out', onUpdate: () => (counter.textContent = String(Math.round(ctr.n))) }, s + 0.5)
-    tl.fromTo(counter, { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 1.2, ease: 'power1.inOut' }, s + 2.8)
-    tl.fromTo(label, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6 }, s + 1.0)
-
-    const SECTIONS = ['Entradas', 'Sopas', 'Petiscos', 'Saladas', 'Sanduíches', 'Pizzas', 'Massas', 'Arroz', 'Mariscos', 'Combos', 'Aves', 'Carnes', 'Tábuas', 'Guarnições', 'Sobremesas', 'Cocktails']
-    const box = add(
-      el,
-      `<div class="abs" style="width:${V ? 1000 : 700}px;display:flex;flex-wrap:wrap;gap:${V ? 12 : 12}px;justify-content:center;font-size:${V ? 27 : 25}px">
-        ${SECTIONS.map((x, i) => `<span class="chip${i === 0 || i === 14 ? ' gold' : ''}" style="padding:.45em 1em">${x}</span>`).join('')}</div>`,
-    )
-    gsap.set(box, { left: CT.x, top: V ? 1260 : 690, xPercent: -50 })
-    tl.fromTo(box.children, { autoAlpha: 0, y: 30, scale: 0.8 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.07, ease: 'back.out(2)' }, s + 2.35)
-
-    tl.to(group, { scale: 1.7, duration: 0.45, ease: 'power3.in' }, e - 0.45)
-    tl.to([counter, label, box], { autoAlpha: 0, y: -40, duration: 0.3, ease: 'power2.in' }, e - 0.4)
+    const label = add(el, `<div class="abs oswald nowrap" style="font-size:${V ? 50 : 54}px;font-weight:600;letter-spacing:.06em">Pratos &amp; bebidas</div>`)
+    at(label, CT.x, CT.y + (V ? 150 : 195))
+    const sub = add(el, `<div class="abs nowrap" style="font:600 ${V ? 30 : 32}px Inter;color:var(--gold-300)">${icon('list', '', 'width:1.1em;height:1.1em;vertical-align:-.2em')} 16 secções · fotos e preços</div>`)
+    at(sub, CT.x, CT.y + (V ? 210 : 265))
+    const o = { n: 0 }
+    pop(counter, s + 0.15, { y: 0 })
+    tl.to(o, { n: 135, duration: 1.5, ease: 'power2.out', onUpdate: () => (counter.textContent = String(Math.round(o.n))) }, s + 0.2)
+    tl.fromTo(counter, { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 1.0, ease: 'power1.inOut' }, s + 1.7)
+    pop(label, s + 0.5)
+    pop(sub, s + 0.9)
+    shakes.push({ t: s + 1.7, amp: 7, dur: 0.3 })
+    tl.to([counter, label, sub, phone], { autoAlpha: 0, y: -40, duration: 0.25, ease: 'power2.in' }, e - 0.27)
     emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 14)
   })()
 
   // =========================================================================
-  // 6. Website: portátil + telemóvel com a gravação real do site
+  // 5. Website: browser grande com a gravação real (hero → favoritos → reserva)
   // =========================================================================
-  const site = {}
   ;(() => {
     const { el, s, e } = scene('website')
-    add(el, `<div class="layer" style="background:radial-gradient(ellipse at 50% 40%, #241d11 0%, #121110 50%, #0b0b0c 85%)"></div>`)
-    const LP = V ? { x: 540, y: 760, w: 940 } : { x: 800, y: 600, w: 1120 }
-    const PH = V ? { x: 790, y: 1300, w: 430 } : { x: 1490, y: 600, w: 380 }
-    const lpH = (LP.w - 32) / 1.6 + 32
-    const phH = (PH.w - 32) / (390 / 844) + 32
-
+    add(el, `<div class="layer" style="background:radial-gradient(ellipse at 50% 45%, #241d11 0%, #121110 50%, #0b0b0c 85%)"></div>`)
+    const BW = V ? { x: 540, y: 830, w: 1010 } : { x: 760, y: 560, w: 1240 }
+    const vh = (BW.w * 900) / 1440
     const cam = add(el, '<div class="layer"></div>')
     gsap.set(cam, { transformOrigin: `${C.x}px ${C.y}px` })
-    const persp = add(cam, '<div class="layer" style="perspective:2400px"></div>')
-    const rig = add(persp, '<div class="layer" style="transform-style:preserve-3d"></div>')
-    gsap.set(rig, { transformOrigin: `${C.x}px ${C.y}px` })
-    const laptop = add(rig, `<div class="laptop" style="width:${LP.w}px;height:${lpH}px"><div class="screen"><img alt=""><div class="glare"></div></div><div class="base" style="top:${lpH}px"></div></div>`)
-    at(laptop, LP.x, LP.y)
-    const phone = add(rig, `<div class="phone" style="width:${PH.w}px;height:${phH}px"><img alt=""><div class="island"></div><div class="glare"></div></div>`)
-    at(phone, PH.x, PH.y)
-    site.desktop = laptop.querySelector('img')
-    site.mobile = phone.querySelector('img')
-    site.start = s
-    site.end = e
+    const br = add(
+      cam,
+      `<div class="browser" style="width:${BW.w}px"><div class="bar"><b></b><b></b><b></b><span>🔒 Bom Paladar · Restaurante &amp; Bar</span></div><div class="view" style="height:${vh}px"><img alt=""></div></div>`,
+    )
+    at(br, BW.x, BW.y)
+    tl.fromTo(br, { y: 300, scale: 0.85, autoAlpha: 0, rotationX: 18 }, { y: 0, scale: 1, autoAlpha: 1, rotationX: 0, duration: 0.55, ease: 'expo.out' }, s)
+    const take = TL.site.desktop
+    siteMaps.push({ img: br.querySelector('img'), take: 'desktop', t0: s + 0.05, t1: e, from: 0, rate: (take.frames / 30 - 0.1) / (e - s - 0.15) })
+    // Zoom para o formulário de reserva quando a voz diz "reserve a sua mesa"
+    const m = BL.b10.marks
+    const fx = BW.x + BW.w * 0.24
+    const fy = BW.y + 22 + vh * 0.02
+    const k = V ? 1.35 : 1.4
+    const q = V ? { x: C.x, y: 880 } : { x: 760, y: 560 }
+    tl.to(cam, { x: q.x - C.x - k * (fx - C.x), y: q.y - C.y - k * (fy - C.y), scale: k, duration: 0.6, ease: 'power3.inOut' }, m.reserve + 0.15)
 
-    // Câmara: começa com o ecrã do portátil a encher o frame (vem do "zoom" no menu) e recua
-    const k0 = (W / LP.w) * 1.02
-    tl.fromTo(cam, { x: -k0 * (LP.x - C.x), y: -k0 * (LP.y - C.y), scale: k0 }, { x: 0, y: 0, scale: 1, duration: 1.5, ease: 'expo.inOut' }, s)
-    tl.fromTo(laptop, { rotationY: 0, rotationX: 0 }, { rotationY: V ? 10 : 14, rotationX: 3, duration: 1.5, ease: 'expo.inOut' }, s)
-    tl.fromTo(phone, { x: V ? 300 : 500, rotationY: -40, autoAlpha: 0 }, { x: 0, rotationY: V ? -10 : -12, autoAlpha: 1, duration: 1.1, ease: 'expo.out' }, s + 0.9)
-    tl.fromTo(rig, { rotationY: -3, y: 10 }, { rotationY: 3, y: -12, duration: 7, ease: 'sine.inOut' }, s + 1.5)
-    // Aproxima ao telemóvel (pesquisa "camarão")
-    const k1 = V ? 1.32 : 1.5
-    const p = { x: PH.x, y: PH.y - phH * (V ? 0.12 : 0.05) }
-    const q = V ? { x: C.x, y: C.y - 60 } : { x: C.x + 160, y: C.y }
-    tl.to(cam, { x: q.x - C.x - k1 * (p.x - C.x), y: q.y - C.y - k1 * (p.y - C.y), scale: k1, duration: 1.3, ease: 'power2.inOut' }, s + 8.5)
-    tl.to(cam, { x: 0, y: 0, scale: 0.94, duration: 1.0, ease: 'power2.inOut' }, s + 11.3)
-    tl.to(cam, { scale: 0.8, autoAlpha: 0, filter: 'blur(10px)', duration: 0.38, ease: 'power2.in' }, e - 0.38)
-
-    // Título
-    const title = add(
+    const head = add(
       el,
-      `<div class="abs" style="text-align:center;width:1000px">
-        <div class="mask"><span class="kicker" style="font-size:${V ? 36 : 28}px">O nosso website</span></div>
-        <div class="script gold-text" style="font-size:${V ? 104 : 80}px;padding:0 .25em;display:inline-block">Visite-nos online</div>
+      `<div class="abs" style="text-align:${V ? 'center' : 'left'};width:${V ? 1000 : 520}px">
+        <div class="mask"><span class="kicker" style="font-size:${V ? 34 : 30}px">O nosso website</span></div>
+        <div class="oswald nm" style="font-size:${V ? 92 : 84}px">Menu completo online</div>
       </div>`,
     )
-    at(title, C.x, V ? 330 : 120)
-    rise(title.querySelector('.mask > span'), s + 0.9)
-    wipe(title.querySelector('.script'), s + 1.1, 0.9)
-    tl.to(title, { autoAlpha: 0, y: -30, duration: 0.4, ease: 'power2.in' }, s + 8.3)
-
-    // Etiquetas sincronizadas com a voz e com a gravação
-    const fs = V ? 34 : 30
-    const tags = [
-      [`<span class="chip">${icon('list')} Menu completo · 135 pratos</span>`, V ? [330, 520] : [430, 260], 1.7, 5.4],
-      [`<span class="chip wa">${icon('whatsapp', 'ic')} Reserve pelo WhatsApp</span>`, V ? [400, 1110] : [1150, 950], 4.3, 8.2],
-      [`<span class="chip">${icon('grid')} Cartões ou Cardápio</span>`, V ? [330, 1250] : [1500, 160], 5.8, 8.3],
-      [`<span class="chip gold">${icon('search')} Pesquisa rápida</span>`, V ? [540, 1440] : [480, 760], 9.9, 12.2],
-    ]
-    tags.forEach(([html, [x, y], t0, t1]) => {
-      const n = add(el, `<div class="abs" style="font-size:${fs}px">${html}</div>`)
-      at(n, x, y)
-      pop(n, s + t0, { x: -20 })
-      tl.to(n, { y: -10, duration: t1 - t0 - 0.6, ease: 'sine.inOut' }, s + t0 + 0.6)
-      tl.to(n, { autoAlpha: 0, scale: 0.8, duration: 0.25, ease: 'power2.in' }, s + t1)
-    })
-    flashes.push({ t: s, peak: 0.4, decay: 0.5, color: '#ffffff' })
-    emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 2, { layer: 'back' })
+    if (V) gsap.set(head, { left: 40, top: 255 })
+    else gsap.set(head, { left: 1390, top: 200 })
+    rise(head.querySelector('.mask > span'), s + 0.05)
+    slam(head.querySelector('.nm'), s + 0.12, { shake: 4, flash: 0.06 })
+    const chips = add(
+      el,
+      `<div class="abs" style="display:flex;flex-direction:column;gap:18px;align-items:${V ? 'center' : 'flex-start'};width:${V ? 1000 : 520}px;font-size:${V ? 40 : 36}px">
+        <span class="chip">${icon('list')} 135 pratos com preços</span>
+        <span class="chip wa">${icon('whatsapp', 'ic')} Reserva pelo WhatsApp</span>
+      </div>`,
+    )
+    if (V) gsap.set(chips, { left: 40, top: 1300 })
+    else gsap.set(chips, { left: 1390, top: 560 })
+    const cs = chips.querySelectorAll('.chip')
+    if (V) tl.to(head, { autoAlpha: 0, y: -40, duration: 0.3 }, m.reserve + 0.1)
+    pop(cs[0], s + 0.7, { x: -30 })
+    pop(cs[1], m.reserve + 0.9, { x: -30 })
+    shakes.push({ t: m.reserve + 0.95, amp: 6, dur: 0.3 })
+    tl.to([cam, head, chips], { autoAlpha: 0, scale: 0.9, filter: 'blur(8px)', duration: 0.22, ease: 'power2.in' }, e - 0.22)
+    emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 2)
   })()
 
   // =========================================================================
-  // 7. Final: logótipo, RESERVE JÁ, WhatsApp e morada
+  // 6. Final: WhatsApp com o número (dito pela voz), logótipo e RESERVE JÁ
   // =========================================================================
   ;(() => {
     const { el, s, e } = scene('cta')
+    const m = BL.b10.marks
+    add(el, `<div class="layer" style="background:radial-gradient(ellipse at 50% 100%, rgba(214,47,42,.35), transparent 55%), radial-gradient(circle at 50% 35%, #2e2412 0%, #121110 45%, #0b0b0c 80%)"></div>`)
     const L = V
-      ? { mark: [540, 400, 190], name: [540, 600, 160], tag: [540, 700, 32], cta: [540, 880, 200], sub: [540, 1035, 112], wa: [540, 1205, 54], addr: [540, 1320, 36], slogan: [540, 1430, 54] }
-      : { mark: [960, 150, 150], name: [960, 305, 128], tag: [960, 390, 26], cta: [960, 545, 184], sub: [960, 680, 96], wa: [960, 815, 50], addr: [960, 920, 32], slogan: [960, 995, 44] }
-    add(el, `<div class="layer" style="background:radial-gradient(ellipse at 50% 100%, rgba(214,47,42,.35), transparent 55%), radial-gradient(circle at 50% ${V ? 40 : 45}%, #2e2412 0%, #121110 45%, #0b0b0c 80%)"></div>`)
-    const mark = add(el, `<div class="abs" style="height:${L.mark[2]}px;width:${L.mark[2] * 0.875}px;color:var(--gold-400);filter:drop-shadow(0 0 20px rgba(224,184,90,.4))">${LOGO}</div>`)
+      ? { label: [540, 330, 34], wa: [540, 470, 150], num: [540, 680, 150], mark: [540, 930, 150], name: [540, 1090, 140], cta: [540, 1290, 180], addr: [540, 1440, 34] }
+      : { label: [960, 90, 30], wa: [560, 230, 130], num: [1040, 230, 150], mark: [960, 430, 130], name: [960, 570, 130], cta: [960, 760, 180], addr: [960, 930, 34] }
+    const label = add(el, `<div class="abs kicker" style="font-size:${L.label[2]}px">Reservas pelo WhatsApp</div>`)
+    at(label, L.label[0], L.label[1])
+    const wa = add(el, `<div class="abs" style="width:${L.wa[2]}px;height:${L.wa[2]}px;border-radius:50%;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(37,211,102,.55)">${icon('whatsapp', '', 'width:62%;height:62%')}</div>`)
+    at(wa, L.wa[0], L.wa[1])
+    const num = add(
+      el,
+      `<div class="abs oswald nowrap" style="font-size:${L.num[2]}px;display:flex;gap:.28em;letter-spacing:.02em">
+        <span class="g">87</span><span class="g">185</span><span class="g">44</span><span class="g">17</span></div>`,
+    )
+    at(num, L.num[0], L.num[1])
+    const groups = num.querySelectorAll('.g')
+    pop(label, s + 0.05)
+    pop(wa, s + 0.05, { rotation: -90, scale: 0 })
+    ;[m.n1, m.n2, m.n3, m.n4].forEach((t, i) => {
+      slam(groups[i], t - 0.04, { shake: 6, flash: 0.08, from: 1.8 })
+      tl.fromTo(groups[i], { color: '#ecd08a' }, { color: '#fbf8f1', duration: 0.6 }, t + 0.25)
+    })
+    tl.to(wa, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 7, ease: 'sine.inOut' }, s + 0.6)
+
+    const mark = add(el, `<div class="abs" style="height:${L.mark[2]}px;width:${L.mark[2] * 0.875}px;color:var(--gold-400);filter:drop-shadow(0 0 20px rgba(224,184,90,.45))">${LOGO}</div>`)
     at(mark, L.mark[0], L.mark[1])
     const name = add(el, `<div class="abs script gold-text" style="font-size:${L.name[2]}px;padding:0 .2em">Bom Paladar</div>`)
     at(name, L.name[0], L.name[1])
-    const tag = add(el, `<div class="abs kicker" style="font-size:${L.tag[2]}px;letter-spacing:.5em">Restaurante &amp; Bar</div>`)
-    at(tag, L.tag[0], L.tag[1])
-    const cta = add(el, `<div class="abs oswald shine nowrap" style="font-size:${L.cta[2]}px">Reserve já</div>`)
+    const cta = add(el, `<div class="abs oswald shine nowrap" style="font-size:${L.cta[2]}px">Reserve já!</div>`)
     at(cta, L.cta[0], L.cta[1])
-    const sub = add(el, `<div class="abs script" style="font-size:${L.sub[2]}px;color:var(--cream-50);padding:0 .25em">a sua mesa!</div>`)
-    at(sub, L.sub[0], L.sub[1], { rotation: -4 })
-    const wa = add(
-      el,
-      `<div class="abs nowrap" style="display:flex;align-items:center;gap:.45em;font:600 ${L.wa[2]}px Oswald;letter-spacing:.04em;padding:.28em .9em .28em .32em;border-radius:999px;background:rgba(37,211,102,.12);border:3px solid var(--wa);box-shadow:0 0 40px rgba(37,211,102,.25)">
-        <span style="width:1.35em;height:1.35em;border-radius:50%;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center">${icon('whatsapp')}</span>+258 87 185 4417</div>`,
-    )
-    wa.querySelector('svg').setAttribute('style', 'width:.95em;height:.95em')
-    at(wa, L.wa[0], L.wa[1])
     const addr = add(
       el,
-      `<div class="abs nowrap" style="display:flex;align-items:center;gap:.4em;font:400 ${L.addr[2]}px Inter;color:var(--cream-100)"><span style="color:var(--gold-400);width:1.2em;height:1.2em;display:flex">${icon('pin')}</span>Rua Robert Mugabe · Quelimane</div>`,
+      `<div class="abs nowrap" style="display:flex;align-items:center;gap:.4em;font:500 ${L.addr[2]}px Inter;color:var(--cream-100)"><span style="color:var(--gold-400);width:1.2em;height:1.2em;display:flex">${icon('pin')}</span>Rua Robert Mugabe · Quelimane · Aberto até à meia-noite</div>`,
     )
     at(addr, L.addr[0], L.addr[1])
-    const slogan = add(el, `<div class="abs script gold-text" style="font-size:${L.slogan[2]}px;padding:0 .25em">Sabor, qualidade e boa companhia!</div>`)
-    at(slogan, L.slogan[0], L.slogan[1])
-
-    drawLogo(mark, s + 0.1, 0.8)
-    tl.fromTo(mark, { scale: 0.7, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.0, ease: 'expo.out' }, s)
-    wipe(name, s + 0.5, 0.9)
-    tl.fromTo(tag, { autoAlpha: 0, letterSpacing: '0.1em' }, { autoAlpha: 1, letterSpacing: '0.5em', duration: 1.1, ease: 'expo.out' }, s + 1.0)
-    tl.fromTo(cta, { scale: 1.7, autoAlpha: 0, filter: 'blur(24px)' }, { scale: 1, autoAlpha: 1, filter: 'blur(0px)', duration: 0.6, ease: 'expo.out' }, s + 1.5)
-    tl.fromTo(cta, { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 1.1, ease: 'power1.inOut' }, s + 2.1)
-    wipe(sub, s + 2.0, 0.8)
-    tl.fromTo(wa, { autoAlpha: 0, y: 70, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.8)' }, s + 2.6)
-    tl.fromTo(addr, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6 }, s + 2.95)
-    wipe(slogan, s + 3.3, 1.0)
-    // Pulsar à batida (a cada 2 batidas) e brilho a passar de novo
-    TL.beats.filter((b, i) => b > s + 3.6 && b < e - 0.4 && i % 2 === 0).forEach((b) => {
-      tl.to(cta, { scale: 1.045, duration: 0.07, ease: 'power1.out' }, b)
-      tl.to(cta, { scale: 1, duration: 0.42, ease: 'power2.out' }, b + 0.07)
+    drawLogo(mark, m.brand - 0.1, 0.5)
+    tl.fromTo(mark, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, m.brand - 0.1)
+    wipe(name, m.brand, 0.6)
+    slam(cta, m.cta - 0.04, { shake: 14, flash: 0.4, from: 2.6 })
+    tl.fromTo(cta, { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 1.0, ease: 'power1.inOut' }, m.cta + 0.4)
+    pop(addr, m.cta + 0.5, { y: 30 })
+    TL.beats.filter((b, i) => b > m.cta + 1 && b < e - 0.4 && i % 2 === 0).forEach((b) => {
+      tl.to(cta, { scale: 1.05, duration: 0.07, ease: 'power1.out' }, b)
+      tl.to(cta, { scale: 1, duration: 0.4, ease: 'power2.out' }, b + 0.07)
     })
-    tl.fromTo(cta, { backgroundPosition: '100% 0' }, { immediateRender: false, backgroundPosition: '0% 0', duration: 1.1, ease: 'power1.inOut' }, s + 5.6)
-    tl.fromTo(wa, { boxShadow: '0 0 40px rgba(37,211,102,.25)' }, { boxShadow: '0 0 70px rgba(37,211,102,.55)', duration: 0.8, repeat: 5, yoyo: true, ease: 'sine.inOut' }, s + 3.4)
-    flashes.push({ t: s, peak: 0.45, decay: 0.6, color: '#f3d48a' })
+    tl.fromTo(cta, { backgroundPosition: '100% 0' }, { immediateRender: false, backgroundPosition: '0% 0', duration: 1.0, ease: 'power1.inOut' }, m.cta + 2.6)
+    flashes.push({ t: s, peak: 0.35, decay: 0.5, color: '#f3d48a' })
     emit('ember', s, e, { x: 0, y: H * 0.8, w: W, h: H * 0.25 }, 30)
     emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 14)
-    emit('burst', s + 1.5, s + 4, { x: L.cta[0], y: L.cta[1], w: 0, h: 0 }, 110)
+    emit('burst', m.cta, m.cta + 2.5, { x: L.cta[0], y: L.cta[1], w: 0, h: 0 }, 120)
   })()
+
+  // ---- Faixa de informação fixa (nos pratos) ------------------------------------
+  ;(() => {
+    const t0 = S.pizza1.start + 1.2
+    const t1 = S.menu.start
+    const bar = add(
+      overlay,
+      `<div class="infobar" style="font-size:${V ? 27 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 87 185 4417</div>`,
+    )
+    if (V) at(bar, C.x, 262)
+    else gsap.set(bar, { left: 60, top: 1000, yPercent: -50 })
+    gsap.set(bar, { autoAlpha: 0 })
+    tl.fromTo(bar, { autoAlpha: 0, y: V ? -30 : 30 }, { autoAlpha: 1, y: 0, duration: 0.4 }, t0)
+    tl.to(bar, { autoAlpha: 0, duration: 0.25 }, t1 - 0.25)
+  })()
+
+  // Faixas douradas a varrer entre dois pratos do mesmo bloco
+  ;['pizza2', 'massa2', 'carne2', 'website'].forEach((id) => wipes.push({ t: S[id].start, dur: 0.38 }))
 
   tl.set({}, {}, TL.duration)
 
   // =========================================================================
-  // Partículas
+  // Partículas (deterministas)
   // =========================================================================
   const fxBack = document.getElementById('fxBack')
   const fxFront = document.getElementById('fxFront')
@@ -627,17 +715,15 @@
           const x = em.rect.x + Math.cos(ang) * dist
           const y = em.rect.y + Math.sin(ang) * dist + 40 * age * age
           const size = lerp(T.size[0], T.size[1], r())
-          const a = Math.min(1, age / 0.05) * (1 - age / life)
-          ctx.globalAlpha = a
+          ctx.globalAlpha = Math.min(1, age / 0.05) * (1 - age / life)
           const sp = sprite(T.colors[Math.floor(r() * T.colors.length)])
           ctx.drawImage(sp, x - size * 2, y - size * 2, size * 4, size * 4)
         }
         continue
       }
       if (t < em.t0 - 8 || t > em.t1 + 8) continue
-      const maxLife = T.life[1]
       const n1 = Math.floor((Math.min(t, em.t1) - em.t0) * em.rate)
-      const n0 = Math.max(0, Math.floor((t - maxLife - em.t0) * em.rate))
+      const n0 = Math.max(0, Math.floor((t - T.life[1] - em.t0) * em.rate))
       for (let i = n0; i <= n1; i++) {
         const r = mulberry(em.seed * 131 + i * 7919)
         const birth = em.t0 + (i + r()) / em.rate
@@ -660,7 +746,6 @@
         let a = Math.min(1, k / 0.15) * Math.min(1, (1 - k) / 0.35)
         if (T.twinkle) a *= 0.45 + 0.55 * Math.abs(Math.sin(ph + age * 4))
         if (em.type === 'ember') a *= 0.75 + 0.25 * Math.sin(ph + age * 13)
-        // Desvanece fora do intervalo da cena (os que já nasceram não "saltam")
         if (t > em.t1) a *= Math.max(0, 1 - (t - em.t1) / 0.25)
         if (a <= 0.003) continue
         ctx.globalAlpha = a
@@ -684,7 +769,7 @@
     ctxB.globalAlpha = ctxF.globalAlpha = 1
   }
 
-  // ---- Grão de filme --------------------------------------------------------
+  // ---- Grão, desfoque nos cortes, flashes, tremor, faixas douradas ---------------
   const grainEl = document.getElementById('grain')
   const grainTiles = [0, 1, 2, 3].map((k) => {
     const c = document.createElement('canvas')
@@ -706,26 +791,36 @@
     grainEl.style.backgroundImage = grainTiles[f % 4]
     grainEl.style.backgroundPosition = `${Math.floor(r() * 256)}px ${Math.floor(r() * 256)}px`
   }
-
-  // ---- Desfoque horizontal nos cortes e flashes (analíticos) ----------------
   const blurF = document.getElementById('hblurf')
-  function hblur(t) {
+  const flashEl = document.getElementById('flash')
+  const wipeEl = add(document.getElementById('wipes'), '<div class="wipe"></div>')
+  function post(t) {
+    // Desfoque horizontal (whip pan) nos cortes
     let v = 0
     for (const c of cuts) {
       const dt = t - c
-      if (dt > -0.2 && dt < 0) v = Math.max(v, 42 * Math.pow((dt + 0.2) / 0.2, 2))
-      else if (dt >= 0 && dt < 0.26) v = Math.max(v, 42 * Math.pow(1 - dt / 0.26, 2))
+      if (dt > -0.18 && dt < 0) v = Math.max(v, 40 * Math.pow((dt + 0.18) / 0.18, 2))
+      else if (dt >= 0 && dt < 0.22) v = Math.max(v, 40 * Math.pow(1 - dt / 0.22, 2))
     }
+    // Tremor de câmara
+    let sx = 0
+    let sy = 0
+    for (const sh of shakes) {
+      const dt = t - sh.t
+      if (dt < 0 || dt > sh.dur) continue
+      const a = sh.amp * Math.exp(-dt / (sh.dur / 3))
+      sx += a * Math.sin(dt * 71 + sh.t * 13)
+      sy += a * Math.cos(dt * 63 + sh.t * 7)
+    }
+    scenesEl.style.transform = sx || sy ? `translate(${sx.toFixed(2)}px, ${sy.toFixed(2)}px) scale(1.012)` : 'none'
     if (v > 0.4) {
       blurF.setAttribute('stdDeviation', `${v.toFixed(2)} 0`)
       scenesEl.style.filter = 'url(#hblur)'
     } else scenesEl.style.filter = 'none'
-  }
-  const flashEl = document.getElementById('flash')
-  function flash(t) {
+    // Flash
     let best = 0
     let color = '#fff'
-    for (const f of flashes) {
+    for (const f of [...flashes, ...cuts.map((c) => ({ t: c, peak: 0.1, decay: 0.25, color: '#ffffff' }))]) {
       const dt = t - f.t
       const a = dt < -0.05 ? 0 : dt < 0 ? f.peak * (1 + dt / 0.05) : f.peak * Math.exp(-dt / (f.decay / 3))
       if (a > best) {
@@ -735,49 +830,62 @@
     }
     flashEl.style.opacity = best.toFixed(3)
     flashEl.style.background = color
+    // Faixa dourada
+    let shown = false
+    for (const w of wipes) {
+      const p = (t - (w.t - w.dur / 2)) / w.dur
+      if (p < 0 || p > 1) continue
+      wipeEl.style.opacity = '1'
+      wipeEl.style.left = `${(-0.8 + p * 1.9) * W}px`
+      shown = true
+    }
+    if (!shown) wipeEl.style.opacity = '0'
   }
 
-  // ---- Gravações do site -----------------------------------------------------
+  // ---- Gravações do site -----------------------------------------------------------
   const pad = (n) => String(n).padStart(5, '0')
   async function siteFrame(t) {
-    if (t < site.start - 0.5 || t > site.end) return
-    const f = Math.max(1, Math.min(TL.site.frames, Math.floor((t - site.start) * TL.fps) + 1))
     const jobs = []
-    for (const k of ['desktop', 'mobile']) {
-      const src = `../assets/${TL.site[k]}/f${pad(f)}.jpg`
-      if (site[k].dataset.src !== src) {
-        site[k].dataset.src = src
-        site[k].src = src
-        jobs.push(site[k].decode().catch(() => 0))
+    for (const m of siteMaps) {
+      if (t < m.t0 - 0.6 || t > m.t1) continue
+      const take = TL.site[m.take]
+      const f = Math.max(1, Math.min(take.frames, Math.floor((m.from + Math.max(0, t - m.t0) * m.rate) * TL.fps) + 1))
+      const src = `../assets/${take.dir}/f${pad(f)}.jpg`
+      if (m.img.dataset.src !== src) {
+        m.img.dataset.src = src
+        m.img.src = src
+        jobs.push(m.img.decode().catch(() => 0))
       }
     }
     await Promise.all(jobs)
   }
 
-  // ---- Arranque ---------------------------------------------------------------
+  // ---- Arranque ---------------------------------------------------------------------
   async function ready() {
-    await Promise.all(
-      ['500 40px Oswald', '600 40px Oswald', '700 40px Oswald', '400 40px Inter', '600 40px Inter', '40px "Great Vibes"'].map((f) => document.fonts.load(f)),
-    )
+    await Promise.all(['500 40px Oswald', '600 40px Oswald', '700 40px Oswald', '400 40px Inter', '600 40px Inter', '40px "Great Vibes"'].map((f) => document.fonts.load(f)))
     await document.fonts.ready
-    // Nomes compridos cabem na largura máxima
     document.querySelectorAll('.fit').forEach((n) => {
+      // A cena pode estar com display:none: mostra-a só durante a medição
+      const sc = n.closest('.scene')
+      const scDisplay = sc.style.display
+      sc.style.display = 'block'
       const max = Number(n.dataset.max)
       let fs = parseFloat(n.style.fontSize)
+      const prev = n.style.display
       n.style.display = 'inline-block'
       while (n.scrollWidth > max && fs > 40) n.style.fontSize = `${(fs -= 2)}px`
-      n.style.display = 'block'
+      n.style.display = prev || 'block'
+      sc.style.display = scDisplay
     })
-    await Promise.all([...document.images].map((i) => (i.complete ? Promise.resolve() : new Promise((r) => (i.onload = i.onerror = r))).then(() => i.decode && i.src && i.decode().catch(() => 0))))
-    await siteFrame(site.start)
+    await Promise.all([...document.images].map((i) => (i.complete ? Promise.resolve() : new Promise((r) => (i.onload = i.onerror = r))).then(() => i.src && i.decode().catch(() => 0))))
+    for (const m of siteMaps) await siteFrame(m.t0)
   }
 
   async function seek(t) {
     tl.seek(t, false)
     drawFx(t)
     grain(t)
-    hblur(t)
-    flash(t)
+    post(t)
     await siteFrame(t)
   }
 

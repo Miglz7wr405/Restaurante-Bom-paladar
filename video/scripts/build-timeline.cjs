@@ -1,10 +1,11 @@
 /**
- * Gera video/timeline.json: cenas alinhadas à batida da música, posição de cada fala e dos efeitos.
+ * Gera video/timeline.json a partir da voz: os blocos de locução ficam seguidos (sem buracos),
+ * as cenas seguem a fala e a música é estendida na grelha de batidas até ao fim.
  *
  *   node scripts/build-timeline.cjs
  *
- * Entradas: assets/audio/music/music.mp3 (+ beats.py), assets/audio/vo/vo1..vo8.mp3.
- * Uma fala em falta usa a duração estimada (a fala 8 pode ainda não existir).
+ * Entradas: assets/audio/vo2/b01..b10.mp3 (um take por bloco), assets/audio/music/music.mp3.
+ * Saídas: timeline.json e assets/audio/music/music-ext.wav.
  */
 const fs = require('node:fs')
 const path = require('node:path')
@@ -13,82 +14,135 @@ const { execFileSync } = require('node:child_process')
 const ROOT = path.resolve(__dirname, '..')
 const A = (p) => path.join(ROOT, 'assets/audio', p)
 const FPS = 30
-const DURATION = 57
+const START = 0.35 // a voz entra depois de um flash curto
+const GAP = 0.1 // entre blocos
 
 const probe = (file) => Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file]).toString().trim())
-const music = JSON.parse(execFileSync('python3', [path.join(__dirname, 'beats.py'), A('music/music.mp3'), '112']).toString())
-const beat = (n) => +(music.offset + n * (60 / music.bpm)).toFixed(3)
-
-// Duração de cada fala (estimativa se o ficheiro ainda não existir)
-const estimates = { vo8: 2.3 }
-const vo = {}
-for (let i = 1; i <= 8; i++) {
-  const f = A(`vo/vo${i}.mp3`)
-  vo[`vo${i}`] = fs.existsSync(f) ? { file: `vo/vo${i}.mp3`, dur: +probe(f).toFixed(3) } : { file: null, dur: estimates[`vo${i}`] }
+function silences(file, db = -40, d = 0.05) {
+  const out = execFileSync('bash', ['-c', `ffmpeg -hide_banner -i "${file}" -af silencedetect=n=${db}dB:d=${d} -f null - 2>&1`]).toString()
+  const starts = [...out.matchAll(/silence_start: ([\d.]+)/g)].map((m) => +m[1])
+  const ends = [...out.matchAll(/silence_end: ([\d.]+)/g)].map((m) => +m[1])
+  return starts.map((s, i) => [s, ends[i] ?? Infinity])
 }
 
-// Cenas: limites em batidas (6 batidas por prato ≈ 3,2 s a 112 BPM)
-const sceneBeats = [
-  ['hook', 0, 6],
-  ['logo', 6, 14],
-  ['restaurant', 14, 22],
-  ['dish-pizza', 22, 28],
-  ['dish-massa', 28, 34],
-  ['dish-mariscos', 34, 40],
-  ['dish-carne', 40, 46],
-  ['dish-cocktails', 46, 52],
-  ['menu', 52, 64],
-  ['website', 64, 88],
-  ['cta', 88, null],
+/**
+ * Guião. `marks` são tempos dentro do take original (s), medidos nas pausas da fala
+ * (silencedetect -34 dB): onde começa cada prato e onde a voz diz cada preço.
+ * Se um bloco for regerado, os tempos mudam: confirmar com silencedetect e atualizar aqui.
+ */
+const BLOCKS = [
+  { id: 'b01', text: 'Bom Paladar, Restaurante e Bar! O sabor que Quelimane ADORA!', marks: { slogan: 2.25 } },
+  { id: 'b02', text: 'Na Rua Robert Mugabe, aberto até à meia-noite, com nota quatro vírgula três no Google!', marks: { open: 1.59, rating: 3.64 } },
+  { id: 'b03', text: 'Pizza Double Stack, duas camadas de puro sabor: MIL meticais! Pizza Seafood, com lula e camarão: setecentos!', marks: { priceA: 2.48, dishB: 4.5, priceB: 6.93 } },
+  { id: 'b04', text: 'Tagliatelle Carbonara, bem cremosa: quinhentos e cinquenta! Lasanha de carne moída: setecentos!', marks: { priceA: 2.4, dishB: 3.72, priceB: 5.85 } },
+  { id: 'b05', text: 'Aparelhada de mariscos, com lula, camarão e lagosta: a partir de mil e quinhentos meticais!', marks: { priceA: 3.77 } },
+  { id: 'b06', text: 'Bife grelhado com molho demi-glace: mil e cem! Meia galinha cafreal: oitocentos!', marks: { priceA: 2.53, dishB: 3.55, priceB: 5.13 } },
+  { id: 'b07', text: 'Para petiscar: asinhas crocantes e pão de alho com queijo, a partir de trezentos e cinquenta!', marks: { asinhas: 1.08, pao: 2.32, priceA: 3.8 } },
+  { id: 'b08', text: 'E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!', marks: { priceA: 0.84, priceB: 2.1 } },
+  { id: 'b09', text: 'São mais de cento e trinta pratos e bebidas no nosso cardápio!', marks: {} },
+  {
+    id: 'b10',
+    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: oitenta e sete... cento e oitenta e cinco... quarenta e quatro... dezassete! Bom Paladar: reserve JÁ!',
+    marks: { reserve: 2.0, n1: 4.27, n2: 5.56, n3: 7.18, n4: 8.25, brand: 9.4, cta: 10.43 },
+  },
 ]
-const scenes = sceneBeats.map(([id, b0, b1]) => ({ id, start: b0 === 0 ? 0 : beat(b0), end: b1 === null ? DURATION : beat(b1) }))
-const S = Object.fromEntries(scenes.map((s) => [s.id, s]))
 
-// Falas. A fala 4 é cortada nas pausas: uma frase por prato.
-const vo4cuts = [0, 1.27, 2.41, 3.34, vo.vo4.dur]
-const lines = [
-  { id: 'vo1', at: 0.5, text: 'Em Quelimane, há um sabor que fica na memória.' },
-  { id: 'vo2', at: S.logo.start + 0.35, text: 'Bom Paladar, Restaurante e Bar. Sabor, qualidade e boa companhia.' },
-  { id: 'vo3', at: S.restaurant.start + 0.4, text: 'Na Rua Robert Mugabe, abertos até à meia-noite.' },
-  { id: 'vo4', from: vo4cuts[0], to: vo4cuts[1], at: S['dish-pizza'].start + 0.3, text: 'Pizzas a sair do forno.' },
-  { id: 'vo4', from: vo4cuts[1], to: vo4cuts[2], at: S['dish-massa'].start + 0.3, text: 'Massas cremosas.' },
-  { id: 'vo4', from: vo4cuts[2], to: vo4cuts[3], at: S['dish-mariscos'].start + 0.3, text: 'Mariscos do Índico.' },
-  { id: 'vo4', from: vo4cuts[3], to: vo4cuts[4], at: S['dish-carne'].start + 0.3, text: 'Carnes grelhadas no ponto.' },
-  { id: 'vo5', at: S['dish-cocktails'].start + 0.35, text: 'E cocktails que fazem a noite!' },
-  { id: 'vo6', at: S.menu.start + 0.5, text: 'Mais de cento e trinta pratos e bebidas, das entradas às sobremesas.' },
-  { id: 'vo7', at: S.website.start + 0.6, text: 'Visite o nosso website: veja o menu completo e reserve a sua mesa pelo WhatsApp.' },
-  { id: 'vo8', at: S.cta.start + 0.7, text: 'Bom Paladar. Reserve já a sua mesa!' },
-].map((l) => {
-  const v = vo[l.id]
-  const from = l.from ?? 0
-  const to = l.to ?? v.dur
-  return { ...l, file: v.file, from, to, at: +l.at.toFixed(3), end: +(l.at + to - from).toFixed(3) }
-})
+// ---- Voz: corta o silêncio das pontas e põe os blocos seguidos ----------------
+let t = START
+const blocks = {}
+const lines = []
+for (const b of BLOCKS) {
+  const file = A(`vo2/${b.id}.mp3`)
+  const dur = probe(file)
+  const sil = silences(file)
+  const lead = sil.length && sil[0][0] < 0.01 ? sil[0][1] : 0
+  const tail = sil.length && sil[sil.length - 1][1] >= dur - 0.02 ? sil[sil.length - 1][0] : dur
+  const from = Math.max(0, lead - 0.02)
+  const to = Math.min(dur, tail + 0.04)
+  const at = +t.toFixed(3)
+  const abs = Object.fromEntries(Object.entries(b.marks).map(([k, v]) => [k, +(at + v - from).toFixed(3)]))
+  blocks[b.id] = { start: at, end: +(at + to - from).toFixed(3), marks: abs }
+  lines.push({ id: b.id, file: `vo2/${b.id}.mp3`, from: +from.toFixed(3), to: +to.toFixed(3), at, end: blocks[b.id].end, text: b.text })
+  t = at + (to - from) + GAP
+}
+const voiceEnd = blocks.b10.end
 
-// Efeitos
-const cuts = scenes.slice(1).map((s) => s.start)
+// ---- Música estendida na grelha de batidas ------------------------------------
+const music = JSON.parse(execFileSync('python3', [path.join(__dirname, 'beats.py'), A('music/music.mp3'), '112']).toString())
+const beatLen = 60 / music.bpm
+const bar = 4 * beatLen
+const BUTTON = 55.4 // fim ("botão") da música original
+const nBars = Math.max(0, Math.ceil((voiceEnd + 2.4 - (BUTTON - 0.0)) / bar))
+const insertAt = music.offset + 70 * beatLen // início de compasso a meio da música
+const ext = nBars * bar
+execFileSync('ffmpeg', [
+  '-v', 'error', '-y', '-i', A('music/music.mp3'),
+  '-filter_complex',
+  `[0:a]asplit=3[a][b][c];[a]atrim=0:${insertAt.toFixed(4)},asetpts=PTS-STARTPTS[p1];` +
+    `[b]atrim=${(insertAt - ext).toFixed(4)}:${insertAt.toFixed(4)},asetpts=PTS-STARTPTS[p2];` +
+    `[c]atrim=${insertAt.toFixed(4)},asetpts=PTS-STARTPTS[p3];` +
+    `[p1][p2]acrossfade=d=0.03:c1=tri:c2=tri[q];[q][p3]acrossfade=d=0.03:c1=tri:c2=tri[out]`,
+  '-map', '[out]', '-ar', '48000', A('music/music-ext.wav'),
+])
+const DURATION = +Math.max(BUTTON + ext + 1.6, voiceEnd + 2.4).toFixed(2)
+const beats = []
+for (let b = music.offset; b < DURATION; b += beatLen) beats.push(+b.toFixed(3))
+
+// ---- Cenas (seguem a voz; cortes puxados para a batida mais próxima, até 0,12 s) ----
+const snap = (x) => {
+  const near = beats.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a), beats[0])
+  return Math.abs(near - x) <= 0.12 ? near : x
+}
+const B = blocks
+const cutsRaw = [
+  ['intro', 0],
+  ['local', B.b02.start - 0.05],
+  ['pizza1', B.b03.start - 0.05],
+  ['pizza2', B.b03.marks.dishB - 0.1],
+  ['massa1', B.b04.start - 0.05],
+  ['massa2', B.b04.marks.dishB - 0.1],
+  ['mariscos', B.b05.start - 0.05],
+  ['carne1', B.b06.start - 0.05],
+  ['carne2', B.b06.marks.dishB - 0.1],
+  ['petiscos', B.b07.start - 0.05],
+  ['bar', B.b08.start - 0.05],
+  ['menu', B.b09.start - 0.05],
+  ['website', B.b10.start - 0.05],
+  ['cta', B.b10.marks.n1 - 0.12],
+]
+const scenes = cutsRaw.map(([id, s], i) => ({ id, start: i === 0 ? 0 : +snap(s).toFixed(3) }))
+scenes.forEach((s, i) => (s.end = i + 1 < scenes.length ? scenes[i + 1].start : DURATION))
+
+// ---- Efeitos sonoros ----------------------------------------------------------
+const marks = Object.assign({}, ...Object.values(B).map((b) => b.marks))
+const priceHits = []
+for (const [id, b] of Object.entries(B)) for (const [k, v] of Object.entries(b.marks)) if (k.startsWith('price')) priceHits.push({ block: id, key: k, at: v })
 const sfx = [
-  ...cuts.map((c) => ({ file: 'sfx/whoosh.mp3', at: +(c - 0.42).toFixed(3), gain: -6 })),
-  { file: 'sfx/logo.mp3', at: S.logo.start, gain: -4 },
-  { file: 'sfx/sizzle.mp3', at: S['dish-carne'].start + 0.15, gain: -6 },
-  { file: 'sfx/ice.mp3', at: S['dish-cocktails'].start + 0.2, gain: -7 },
-  // Cliques sincronizados com a gravação do site (ver capture-site.cjs: separador aos 6,8 s, Cardápio aos 6,2 s)
-  { file: 'sfx/click.mp3', at: S.website.start + 6.2, gain: -10 },
-  { file: 'sfx/click.mp3', at: S.website.start + 6.8, gain: -10 },
-  { file: 'sfx/logo.mp3', at: S.cta.start + 0.1, gain: -5 },
+  ...scenes.slice(1).map((s) => ({ file: 'sfx/whoosh.mp3', at: +(s.start - 0.42).toFixed(3), gain: -11 })),
+  ...priceHits.map((p) => ({ file: 'sfx/logo.mp3', at: +(p.at - 0.05).toFixed(3), gain: -12 })),
+  { file: 'sfx/logo.mp3', at: 0.3, gain: -6 },
+  { file: 'sfx/sizzle.mp3', at: scenes.find((s) => s.id === 'carne1').start + 0.1, gain: -9 },
+  { file: 'sfx/ice.mp3', at: scenes.find((s) => s.id === 'bar').start + 0.1, gain: -9 },
+  { file: 'sfx/click.mp3', at: B.b10.marks.reserve + 0.6, gain: -12 },
+  { file: 'sfx/logo.mp3', at: B.b10.marks.cta - 0.05, gain: -6 },
 ]
 
 const timeline = {
   fps: FPS,
   duration: DURATION,
-  frames: DURATION * FPS,
-  music: { file: 'music/music.mp3', bpm: music.bpm, offset: music.offset, fadeOut: [DURATION - 1.2, DURATION] },
-  beats: music.beats.filter((b) => b < DURATION),
+  frames: Math.round(DURATION * FPS),
+  music: { file: 'music/music-ext.wav', bpm: music.bpm, offset: music.offset, extendedBars: nBars, fadeOut: [+(DURATION - 0.8).toFixed(2), DURATION] },
+  beats,
+  blocks,
+  marks,
   scenes,
   lines,
   sfx,
-  site: { start: S.website.start, desktop: 'site/desktop', mobile: 'site/mobile', frames: 405 },
+  site: {
+    desktop: { dir: 'site/desktop', frames: fs.readdirSync(path.join(ROOT, 'assets/site/desktop')).length },
+    mobile: { dir: 'site/mobile', frames: fs.readdirSync(path.join(ROOT, 'assets/site/mobile')).length },
+  },
 }
 fs.writeFileSync(path.join(ROOT, 'timeline.json'), JSON.stringify(timeline, null, 2) + '\n')
-console.log(scenes.map((s) => `${s.id.padEnd(15)} ${s.start.toFixed(2)} → ${s.end.toFixed(2)}`).join('\n'))
-console.log(lines.map((l) => `${l.id} ${l.at.toFixed(2)}–${l.end.toFixed(2)} ${l.file ? '' : '(em falta)'} ${l.text}`).join('\n'))
+console.log(`duração ${DURATION}s · voz ${START}–${voiceEnd}s (${((voiceEnd - START) / (DURATION) * 100).toFixed(0)}% do vídeo) · música +${nBars} compassos`)
+console.log(scenes.map((s) => `${s.id.padEnd(9)} ${s.start.toFixed(2)} → ${s.end.toFixed(2)}`).join('\n'))
