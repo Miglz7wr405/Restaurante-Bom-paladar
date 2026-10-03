@@ -1,0 +1,107 @@
+/* Composição do anúncio. Tokens da marca iguais aos do site (tailwind.config.ts). */
+@font-face { font-family: 'Oswald'; font-weight: 500; src: url(../node_modules/@fontsource/oswald/files/oswald-latin-500-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Oswald'; font-weight: 600; src: url(../node_modules/@fontsource/oswald/files/oswald-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Oswald'; font-weight: 700; src: url(../node_modules/@fontsource/oswald/files/oswald-latin-700-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 400; src: url(../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url(../node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Great Vibes'; font-weight: 400; src: url(../node_modules/@fontsource/great-vibes/files/great-vibes-latin-400-normal.woff2) format('woff2'); }
+
+:root {
+  --ink-950: #0b0b0c; --ink-900: #131315; --ink-800: #1c1c1f; --ink-700: #2a2a2e;
+  --gold-200: #f3e2b3; --gold-300: #ecd08a; --gold-400: #e0b85a; --gold-500: #c99a3b; --gold-600: #a87c27;
+  --ember-400: #ef4a3f; --ember-500: #d62f2a; --ember-700: #8c1b17;
+  --cream-50: #fbf8f1; --cream-100: #f4eee1;
+  --wa: #25d366;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #000; overflow: hidden; }
+#stage { position: relative; overflow: hidden; background: var(--ink-950); color: var(--cream-50); font-family: Inter, sans-serif; }
+#stage > * { position: absolute; inset: 0; }
+.scene { position: absolute; inset: 0; visibility: hidden; overflow: hidden; }
+.abs { position: absolute; left: 0; top: 0; }
+.layer { position: absolute; inset: 0; }
+canvas { position: absolute; inset: 0; pointer-events: none; }
+#flash { background: #fff; opacity: 0; mix-blend-mode: screen; }
+#vignette { background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.6) 100%); }
+#grain { inset: -64px; opacity: 0.075; mix-blend-mode: overlay; }
+
+/* Tipografia */
+.oswald { font-family: Oswald, sans-serif; font-weight: 700; text-transform: uppercase; line-height: 0.95; }
+.script { font-family: 'Great Vibes', cursive; line-height: 1.1; white-space: nowrap; }
+.kicker { font-family: Oswald, sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.35em; color: var(--gold-400); white-space: nowrap; }
+.gold-text {
+  background: linear-gradient(180deg, var(--gold-200) 0%, var(--gold-400) 48%, var(--gold-600) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.shine {
+  background: linear-gradient(100deg, var(--gold-600) 0%, var(--gold-400) 35%, #fff6dc 50%, var(--gold-400) 65%, var(--gold-600) 100%);
+  background-size: 300% 100%; background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.mask { overflow: hidden; display: block; padding: 0.06em 0.02em; }
+.mask > span { display: block; }
+.nowrap { white-space: nowrap; }
+
+/* Pratos: foto em fundo preto, recortada por máscara radial */
+.dish { position: absolute; border-radius: 50%; }
+.dish .plate {
+  position: absolute; inset: 0;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 70.5%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 70.5%);
+}
+.dish img { width: 100%; height: 100%; display: block; }
+.dish .sweep {
+  position: absolute; inset: -20%;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 244, 214, 0.38) 50%, transparent 62%);
+  mix-blend-mode: screen; transform: translateX(-120%);
+}
+.dish .shadow { position: absolute; inset: 8% 4% -6% 4%; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.8), transparent); filter: blur(30px); transform: translateY(6%); }
+
+.ghost {
+  font-family: Oswald, sans-serif; font-weight: 700; text-transform: uppercase; white-space: nowrap; line-height: 1;
+  color: transparent; -webkit-text-stroke: 2px rgba(224, 184, 90, 0.2);
+}
+.badge {
+  position: absolute; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, var(--ember-400), var(--ember-500) 55%, var(--ember-700));
+  box-shadow: 0 0 0 6px rgba(11, 11, 12, 0.9), 0 0 0 9px var(--gold-500), 0 20px 50px rgba(0, 0, 0, 0.6);
+  font-family: Oswald, sans-serif; font-weight: 700; color: var(--cream-50); line-height: 1;
+}
+.badge small { font-size: 0.42em; letter-spacing: 0.15em; margin-top: 0.12em; }
+.badge .from { font-size: 0.32em; letter-spacing: 0.2em; margin-bottom: 0.15em; text-transform: uppercase; }
+
+/* Chips e etiquetas */
+.chip {
+  display: inline-flex; align-items: center; gap: 0.5em; padding: 0.5em 1.1em; border-radius: 999px;
+  background: rgba(28, 28, 31, 0.92); border: 2px solid rgba(224, 184, 90, 0.45); color: var(--cream-100);
+  font-family: Inter, sans-serif; font-weight: 600; white-space: nowrap;
+}
+.chip svg { width: 1.3em; height: 1.3em; flex: none; }
+.chip.gold { background: var(--gold-400); color: var(--ink-950); border-color: var(--gold-300); }
+.chip.wa { background: rgba(11, 11, 12, 0.92); border-color: var(--wa); }
+.chip.wa .ic { background: var(--wa); color: #fff; border-radius: 50%; padding: 0.2em; width: 1.6em; height: 1.6em; }
+
+/* Polaroids */
+.polaroid { position: absolute; background: #f7f3ea; padding: 18px 18px 64px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); }
+.polaroid img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.polaroid .cap { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; font-family: 'Great Vibes', cursive; color: #2a2a2e; }
+
+/* Dispositivos em CSS */
+.devices { position: absolute; inset: 0; }
+.laptop { position: absolute; }
+.laptop .screen { position: absolute; inset: 0; border-radius: 22px; background: #050506; padding: 16px; border: 2px solid #3a3a40; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7), 0 0 0 1px #000; }
+.laptop .screen img { width: 100%; height: 100%; display: block; border-radius: 6px; }
+.laptop .base { position: absolute; left: -7%; right: -7%; height: 26px; border-radius: 0 0 26px 26px; background: linear-gradient(180deg, #d9d9de, #8d8d95 60%, #4b4b52); box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6); }
+.laptop .base::after { content: ''; position: absolute; left: 42%; right: 42%; top: 0; height: 9px; border-radius: 0 0 10px 10px; background: #6f6f77; }
+.phone { position: absolute; border-radius: 64px; background: #050506; padding: 16px; border: 3px solid #3a3a40; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.75), inset 0 0 0 2px #111; }
+.phone img { width: 100%; height: 100%; display: block; border-radius: 48px; }
+.phone .island { position: absolute; left: 50%; top: 30px; width: 30%; height: 30px; transform: translateX(-50%); border-radius: 20px; background: #000; }
+.glare { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(120deg, rgba(255, 255, 255, 0.10), transparent 40%); pointer-events: none; }
+
+/* Cardápios em 3D */
+.board { position: absolute; border-radius: 14px; overflow: hidden; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(224, 184, 90, 0.35); background: #000; }
+.board img { width: 100%; height: 100%; display: block; }
+
+.line { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-400)); }
+.line.r { background: linear-gradient(270deg, transparent, var(--gold-400)); }

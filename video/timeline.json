@@ -1,0 +1,368 @@
+{
+  "fps": 30,
+  "duration": 57,
+  "frames": 1710,
+  "music": {
+    "file": "music/music.mp3",
+    "bpm": 111.75,
+    "offset": 0.415,
+    "fadeOut": [
+      55.8,
+      57
+    ]
+  },
+  "beats": [
+    0.415,
+    0.9519,
+    1.4888,
+    2.0257,
+    2.5627,
+    3.0996,
+    3.6365,
+    4.1734,
+    4.7103,
+    5.2472,
+    5.7841,
+    6.321,
+    6.858,
+    7.3949,
+    7.9318,
+    8.4687,
+    9.0056,
+    9.5425,
+    10.0794,
+    10.6163,
+    11.1533,
+    11.6902,
+    12.2271,
+    12.764,
+    13.3009,
+    13.8378,
+    14.3747,
+    14.9116,
+    15.4486,
+    15.9855,
+    16.5224,
+    17.0593,
+    17.5962,
+    18.1331,
+    18.67,
+    19.2069,
+    19.7439,
+    20.2808,
+    20.8177,
+    21.3546,
+    21.8915,
+    22.4284,
+    22.9653,
+    23.5022,
+    24.0392,
+    24.5761,
+    25.113,
+    25.6499,
+    26.1868,
+    26.7237,
+    27.2606,
+    27.7976,
+    28.3345,
+    28.8714,
+    29.4083,
+    29.9452,
+    30.4821,
+    31.019,
+    31.5559,
+    32.0929,
+    32.6298,
+    33.1667,
+    33.7036,
+    34.2405,
+    34.7774,
+    35.3143,
+    35.8512,
+    36.3882,
+    36.9251,
+    37.462,
+    37.9989,
+    38.5358,
+    39.0727,
+    39.6096,
+    40.1465,
+    40.6835,
+    41.2204,
+    41.7573,
+    42.2942,
+    42.8311,
+    43.368,
+    43.9049,
+    44.4418,
+    44.9788,
+    45.5157,
+    46.0526,
+    46.5895,
+    47.1264,
+    47.6633,
+    48.2002,
+    48.7371,
+    49.2741,
+    49.811,
+    50.3479,
+    50.8848,
+    51.4217,
+    51.9586,
+    52.4955,
+    53.0324,
+    53.5694,
+    54.1063,
+    54.6432,
+    55.1801,
+    55.717,
+    56.2539,
+    56.7908
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 3.636
+    },
+    {
+      "id": "logo",
+      "start": 3.636,
+      "end": 7.932
+    },
+    {
+      "id": "restaurant",
+      "start": 7.932,
+      "end": 12.227
+    },
+    {
+      "id": "dish-pizza",
+      "start": 12.227,
+      "end": 15.449
+    },
+    {
+      "id": "dish-massa",
+      "start": 15.449,
+      "end": 18.67
+    },
+    {
+      "id": "dish-mariscos",
+      "start": 18.67,
+      "end": 21.892
+    },
+    {
+      "id": "dish-carne",
+      "start": 21.892,
+      "end": 25.113
+    },
+    {
+      "id": "dish-cocktails",
+      "start": 25.113,
+      "end": 28.334
+    },
+    {
+      "id": "menu",
+      "start": 28.334,
+      "end": 34.777
+    },
+    {
+      "id": "website",
+      "start": 34.777,
+      "end": 47.663
+    },
+    {
+      "id": "cta",
+      "start": 47.663,
+      "end": 57
+    }
+  ],
+  "lines": [
+    {
+      "id": "vo1",
+      "at": 0.5,
+      "text": "Em Quelimane, há um sabor que fica na memória.",
+      "file": "vo/vo1.mp3",
+      "from": 0,
+      "to": 2.273,
+      "end": 2.773
+    },
+    {
+      "id": "vo2",
+      "at": 3.986,
+      "text": "Bom Paladar, Restaurante e Bar. Sabor, qualidade e boa companhia.",
+      "file": "vo/vo2.mp3",
+      "from": 0,
+      "to": 3.37,
+      "end": 7.356
+    },
+    {
+      "id": "vo3",
+      "at": 8.332,
+      "text": "Na Rua Robert Mugabe, abertos até à meia-noite.",
+      "file": "vo/vo3.mp3",
+      "from": 0,
+      "to": 2.273,
+      "end": 10.605
+    },
+    {
+      "id": "vo4",
+      "from": 0,
+      "to": 1.27,
+      "at": 12.527,
+      "text": "Pizzas a sair do forno.",
+      "file": "vo/vo4.mp3",
+      "end": 13.797
+    },
+    {
+      "id": "vo4",
+      "from": 1.27,
+      "to": 2.41,
+      "at": 15.749,
+      "text": "Massas cremosas.",
+      "file": "vo/vo4.mp3",
+      "end": 16.889
+    },
+    {
+      "id": "vo4",
+      "from": 2.41,
+      "to": 3.34,
+      "at": 18.97,
+      "text": "Mariscos do Índico.",
+      "file": "vo/vo4.mp3",
+      "end": 19.9
+    },
+    {
+      "id": "vo4",
+      "from": 3.34,
+      "to": 4.833,
+      "at": 22.192,
+      "text": "Carnes grelhadas no ponto.",
+      "file": "vo/vo4.mp3",
+      "end": 23.685
+    },
+    {
+      "id": "vo5",
+      "at": 25.463,
+      "text": "E cocktails que fazem a noite!",
+      "file": "vo/vo5.mp3",
+      "from": 0,
+      "to": 1.567,
+      "end": 27.03
+    },
+    {
+      "id": "vo6",
+      "at": 28.834,
+      "text": "Mais de cento e trinta pratos e bebidas, das entradas às sobremesas.",
+      "file": "vo/vo6.mp3",
+      "from": 0,
+      "to": 3.84,
+      "end": 32.674
+    },
+    {
+      "id": "vo7",
+      "at": 35.377,
+      "text": "Visite o nosso website: veja o menu completo e reserve a sua mesa pelo WhatsApp.",
+      "file": "vo/vo7.mp3",
+      "from": 0,
+      "to": 4.545,
+      "end": 39.922
+    },
+    {
+      "id": "vo8",
+      "at": 48.363,
+      "text": "Bom Paladar. Reserve já a sua mesa!",
+      "file": "vo/vo8.mp3",
+      "from": 0,
+      "to": 1.855,
+      "end": 50.218
+    }
+  ],
+  "sfx": [
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 3.216,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 7.512,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 11.807,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 15.029,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 18.25,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 21.472,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 24.693,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 27.914,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 34.357,
+      "gain": -6
+    },
+    {
+      "file": "sfx/whoosh.mp3",
+      "at": 47.243,
+      "gain": -6
+    },
+    {
+      "file": "sfx/logo.mp3",
+      "at": 3.636,
+      "gain": -4
+    },
+    {
+      "file": "sfx/sizzle.mp3",
+      "at": 22.041999999999998,
+      "gain": -6
+    },
+    {
+      "file": "sfx/ice.mp3",
+      "at": 25.313,
+      "gain": -7
+    },
+    {
+      "file": "sfx/click.mp3",
+      "at": 40.977000000000004,
+      "gain": -10
+    },
+    {
+      "file": "sfx/click.mp3",
+      "at": 41.577,
+      "gain": -10
+    },
+    {
+      "file": "sfx/logo.mp3",
+      "at": 47.763,
+      "gain": -5
+    }
+  ],
+  "site": {
+    "start": 34.777,
+    "desktop": "site/desktop",
+    "mobile": "site/mobile",
+    "frames": 405
+  }
+}

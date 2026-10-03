@@ -61,6 +61,39 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 - **Equipa e novidades**: textos provisórios; substituir por nomes/fotos e notícias reais.
 - **Domínio**: `siteUrl` em `restaurant.ts` (usado no canonical, OG e sitemap).
 
+## Vídeo publicitário (`video/`)
+
+Anúncio de ~57 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Voz (Dinis, PT), música e efeitos foram gerados na ElevenLabs.
+
+Ordem do vídeo: gancho com a pizza → logótipo → o restaurante (morada, ★ 4,3, aberto até à meia-noite, fotos reais) → 5 pratos em "slow motion" → os cardápios reais e o contador 0→135 → o website (gravação real em portátil e telemóvel) → final com **RESERVE JÁ**, WhatsApp e morada.
+
+| Ficheiro | O quê |
+| --- | --- |
+| `video/timeline.json` | Fonte única: cenas alinhadas à batida, tempo de cada fala e de cada efeito (gerado) |
+| `video/comp/` | A composição (`index.html?format=9x16` ou `16x9`), com `comp.seek(t)` determinístico |
+| `video/scripts/beats.py` | Deteta o BPM e a grelha de batidas da música |
+| `video/scripts/build-timeline.cjs` | Gera o `timeline.json` a partir da música e das durações das falas |
+| `video/scripts/capture-site.cjs` | Grava o site frame a frame com relógio falso (desktop 1440×900 e mobile 390×844) |
+| `video/scripts/render.cjs` | Renderiza os frames da composição (vários workers) |
+| `video/scripts/mix.cjs` | Mistura voz + música (com ducking) + efeitos, normaliza a −14 LUFS / −1 dBTP |
+| `video/scripts/encode.sh` | Junta frames e áudio num MP4 H.264/AAC e tira a capa |
+
+Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo/vo1..vo8.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/board1..4.jpg`, e depois:
+
+```bash
+npm run build && npx vite preview &           # site em http://localhost:4173
+cd video && npm install
+export NODE_PATH=$(npm root -g)               # Playwright instalado globalmente
+node scripts/capture-site.cjs                 # gravações do site
+node scripts/build-timeline.cjs
+node scripts/render.cjs --format 9x16 --workers 4
+node scripts/render.cjs --format 16x9 --workers 4
+node scripts/mix.cjs
+bash scripts/encode.sh 9x16 && bash scripts/encode.sh 16x9
+```
+
+**Licença do áudio:** a voz, a música e os efeitos foram gerados numa conta ElevenLabs. Para uso comercial (anúncios pagos), a conta tem de estar num plano pago no momento da geração. Se o áudio foi gerado no plano gratuito, gere-o de novo depois do upgrade e volte a correr `build-timeline`, `render`, `mix` e `encode`.
+
 ## Estrutura
 
 ```

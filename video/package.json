@@ -1,0 +1,17 @@
+{
+  "name": "bom-paladar-video",
+  "private": true,
+  "description": "Anúncio em vídeo do Bom Paladar: composição motion design renderizada frame a frame",
+  "scripts": {
+    "timeline": "node scripts/build-timeline.cjs",
+    "capture": "node scripts/capture-site.cjs",
+    "render": "node scripts/render.cjs",
+    "mix": "node scripts/mix.cjs",
+    "encode": "bash scripts/encode.sh"
+  },
+  "dependencies": {
+    "@fontsource/great-vibes": "^5.1.0",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/oswald": "^5.1.0"
+  }
+}
