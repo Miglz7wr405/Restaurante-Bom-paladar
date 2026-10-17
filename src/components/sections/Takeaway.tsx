@@ -34,7 +34,7 @@ function TakeawayBag() {
       ))}
       <rect x="44" y="182" width="96" height="24" rx="12" className="fill-ember-500" />
       <text x="92" y="199" textAnchor="middle" className="fill-white font-display" fontSize="13" letterSpacing="3">
-        PIZZA
+        PASTA
       </text>
       <g className="animate-float">
         <path d="M110 92c10-16 30-16 36 0-12 8-26 8-36 0z" className="fill-basil-500" />
@@ -47,7 +47,7 @@ export function Takeaway() {
   return (
     <section aria-labelledby="takeaway-title" className="relative overflow-hidden bg-gold-400 text-ink-950">
       <div className="absolute -left-16 -top-16 h-64 w-64 animate-spin-slow opacity-15" aria-hidden="true">
-        <DishArt kind="pizza" className="h-full w-full" />
+        <DishArt kind="pasta" className="h-full w-full" />
       </div>
       <div className="container-site relative grid items-center gap-10 py-16 md:py-20 lg:grid-cols-[1.1fr_1fr]">
         <RevealGroup>

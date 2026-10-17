@@ -6,8 +6,8 @@ import { Reveal, RevealGroup } from '../ui/Reveal'
 import { Visual } from '../ui/Visual'
 
 const SHOWCASE: { photo: Photo; alt: string; className: string }[] = [
-  { photo: photos.pizzaDoubleStack, alt: 'Pizza Double Stack', className: 'left-[2%] top-[18%] w-40 xl:w-52 animate-float-slow' },
-  { photo: photos.mariscada, alt: 'Aparelhada de mariscos', className: 'right-[3%] top-[12%] w-44 xl:w-56 animate-float' },
+  { photo: photos.feijoada, alt: 'Feijoada à Bom Paladar', className: 'left-[2%] top-[18%] w-40 xl:w-52 animate-float-slow' },
+  { photo: photos.lagostaGrelhada, alt: 'Lagosta grelhada', className: 'right-[3%] top-[12%] w-44 xl:w-56 animate-float' },
   { photo: photos.mojito, alt: 'Mojito', className: 'right-[16%] bottom-[-8%] w-28 xl:w-36 animate-float' },
 ]
 
@@ -17,7 +17,7 @@ export function MenuHero() {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_40%,theme(colors.gold.500/0.22),transparent_60%)]" aria-hidden="true" />
       {SHOWCASE.map((s) => (
         <div key={s.alt} className={`pointer-events-none absolute -z-10 hidden lg:block ${s.className}`} aria-hidden="true">
-          <Visual visual={{ art: 'pizza', photo: s.photo, alt: '' }} sizes="14rem" className="photo-fade aspect-square w-full object-cover" />
+          <Visual visual={{ art: 'grill', photo: s.photo, alt: '' }} sizes="14rem" className="photo-fade aspect-square w-full object-cover" />
         </div>
       ))}
       <RevealGroup className="container-site mx-auto max-w-2xl">

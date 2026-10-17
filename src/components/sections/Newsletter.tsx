@@ -30,10 +30,10 @@ export function Newsletter() {
   return (
     <section aria-labelledby="ofertas-title" className="relative overflow-hidden bg-cream-100 py-16 md:py-24">
       <div className="pointer-events-none absolute -left-20 top-1/2 hidden w-72 -translate-y-1/2 md:block lg:w-80" aria-hidden="true">
-        <Visual visual={{ art: 'pizza', photo: photos.pizzaMexicana, alt: '' }} sizes="20rem" className="photo-fade h-full w-full animate-float-slow object-cover" />
+        <Visual visual={{ art: 'grill', photo: photos.galinhaZambeziana, alt: '' }} sizes="20rem" className="photo-fade h-full w-full animate-float-slow object-cover" />
       </div>
       <div className="pointer-events-none absolute -right-16 top-1/2 hidden w-64 -translate-y-1/2 md:block lg:w-72" aria-hidden="true">
-        <Visual visual={{ art: 'pizza-seafood', photo: photos.pizzaSeafood, alt: '' }} sizes="18rem" className="photo-fade h-full w-full animate-float object-cover" />
+        <Visual visual={{ art: 'seafood', photo: photos.lagostaGrelhada, alt: '' }} sizes="18rem" className="photo-fade h-full w-full animate-float object-cover" />
       </div>
 
       <RevealGroup className="container-site relative mx-auto max-w-xl text-center">

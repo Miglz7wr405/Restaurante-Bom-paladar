@@ -1,4 +1,4 @@
-import type { MenuItem, MenuSection, Visual as VisualData } from '@/content/types'
+import type { GalleryEntry, MenuItem, MenuSection, Visual as VisualData } from '@/content/types'
 import { formatItemPrice, formatPrice } from '@/content/restaurant'
 import { LogoMark } from '../ui/Logo'
 import { Reveal, RevealGroup } from '../ui/Reveal'
@@ -51,6 +51,60 @@ function TextCard({ item }: { item: MenuItem }) {
   )
 }
 
+/** Buffet option: photo, price per person and every course that is served. */
+function BuffetCard({ item }: { item: MenuItem }) {
+  return (
+    <article className="card-lift flex h-full flex-col overflow-hidden rounded-card bg-ink-950 text-cream-50">
+      {item.visual && (
+        <div className="relative aspect-[16/10] overflow-hidden">
+          <Visual visual={item.visual} sizes="(min-width: 1024px) 30vw, 92vw" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent" aria-hidden="true" />
+          <div className="absolute inset-x-5 bottom-4 flex flex-wrap items-end justify-between gap-2">
+            <h3 className="font-display text-3xl font-bold uppercase leading-none">{item.name}</h3>
+            <p className="rounded-full bg-gold-400 px-4 py-1.5 font-display text-lg font-bold text-ink-950">
+              <span className="sr-only">Preço: </span>
+              {formatItemPrice(item.price)}
+              {item.priceUnit && <span className="ml-1 text-sm font-semibold">{item.priceUnit}</span>}
+            </p>
+          </div>
+        </div>
+      )}
+      <div className="flex-1 p-5">
+        {item.description && <p className="text-sm text-gold-200/85">{item.description}</p>}
+        <dl className="mt-4 space-y-3">
+          {item.groups?.map((group) => (
+            <div key={group.label} className="border-t border-cream-50/10 pt-3">
+              <dt className="font-display text-sm font-semibold uppercase tracking-wider text-gold-400">{group.label}</dt>
+              <dd className="mt-1 text-sm text-cream-100/85">{group.items.join(' · ')}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </article>
+  )
+}
+
+function Gallery({ entries }: { entries: GalleryEntry[] }) {
+  return (
+    <RevealGroup as="ul" className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
+      {entries.map((entry) => (
+        <Reveal as="li" key={entry.label}>
+          <figure className="group relative aspect-square overflow-hidden rounded-xl bg-ink-950">
+            <Visual
+              visual={entry.visual}
+              sizes="(min-width: 1280px) 11rem, (min-width: 1024px) 18vw, (min-width: 640px) 30vw, 46vw"
+              className="h-full w-full object-cover transition-transform duration-500 ease-smooth group-hover:scale-110"
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-950/95 to-transparent px-3 pb-2.5 pt-8 text-sm font-semibold leading-tight text-cream-50">
+              {entry.label}
+            </figcaption>
+          </figure>
+        </Reveal>
+      ))}
+    </RevealGroup>
+  )
+}
+
 const GRID = 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
 
 export function MenuCardsView({ sections }: { sections: MenuSection[] }) {
@@ -59,8 +113,10 @@ export function MenuCardsView({ sections }: { sections: MenuSection[] }) {
       <div className="container-site space-y-14 md:space-y-20">
         {sections.map((section) => {
           // Cards with a picture first so each grid row has cards of the same height.
-          const withVisual = section.items.flatMap((item) => (item.visual ? [{ item, visual: item.visual }] : []))
-          const textOnly = section.items.filter((i) => !i.visual)
+          const buffets = section.items.filter((i) => i.groups)
+          const dishes = section.items.filter((i) => !i.groups)
+          const withVisual = dishes.flatMap((item) => (item.visual ? [{ item, visual: item.visual }] : []))
+          const textOnly = dishes.filter((i) => !i.visual)
           return (
             <section key={section.id} id={section.id} aria-labelledby={`${section.id}-cards-title`} className="!scroll-mt-36">
               <header className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b-2 border-gold-400/60 pb-3">
@@ -74,6 +130,22 @@ export function MenuCardsView({ sections }: { sections: MenuSection[] }) {
                   </p>
                 )}
               </header>
+              {section.intro && <p className="-mt-2 mb-6 max-w-3xl text-lg text-muted">{section.intro}</p>}
+              {section.cover?.photo && (
+                <div className="mb-6 aspect-[16/9] overflow-hidden rounded-card bg-ink-950 sm:aspect-[3/1]">
+                  <Visual visual={section.cover} sizes="(min-width: 1280px) 76rem, 100vw" className="h-full w-full object-cover" />
+                </div>
+              )}
+              {section.gallery && <Gallery entries={section.gallery} />}
+              {buffets.length > 0 && (
+                <RevealGroup as="ul" className="grid gap-5 lg:grid-cols-3">
+                  {buffets.map((item) => (
+                    <Reveal as="li" key={item.id}>
+                      <BuffetCard item={item} />
+                    </Reveal>
+                  ))}
+                </RevealGroup>
+              )}
               {withVisual.length > 0 && (
                 <RevealGroup as="ul" className={GRID}>
                   {withVisual.map(({ item, visual }) => (

@@ -60,6 +60,7 @@ export function PopularMenu() {
                       <p className="ml-auto shrink-0 font-display text-lg font-bold text-gold-400">
                         <span className="sr-only">Preço: </span>
                         {formatItemPrice(item.price)}
+                        {item.priceUnit && <span className="ml-1 text-sm font-normal text-cream-100/70">{item.priceUnit}</span>}
                       </p>
                     </div>
                     {item.description && <p className="mt-1 text-sm text-cream-100/70">{item.description}</p>}

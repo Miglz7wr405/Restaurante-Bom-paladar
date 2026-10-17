@@ -34,9 +34,12 @@ export function DishOfMonth() {
             ))}
           </ul>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <p className="font-display text-5xl font-bold text-ember-600">{formatItemPrice(item.price)}</p>
+            <p className="font-display text-5xl font-bold text-ember-600">
+              {formatItemPrice(item.price)}
+              {item.priceUnit && <span className="ml-2 text-xl font-semibold text-ink-900">{item.priceUnit}</span>}
+            </p>
             <ButtonLink href="/#reservas" variant="dark" arrow>
-              Pedir agora
+              Reservar mesa
             </ButtonLink>
           </div>
         </m.div>

@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 
-// Brand tokens taken from the physical Bom Paladar menus: black boards, gold script, red pizza accent.
+// Brand tokens taken from the physical Bom Paladar menus: black boards, gold script, red accent.
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {

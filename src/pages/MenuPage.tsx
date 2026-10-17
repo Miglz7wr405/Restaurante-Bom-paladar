@@ -5,7 +5,7 @@ import { MenuHero } from '@/components/menu/MenuHero'
 import { MenuListView } from '@/components/menu/MenuListView'
 import { MenuToolbar, type MenuView } from '@/components/menu/MenuToolbar'
 import { ButtonLink } from '@/components/ui/Button'
-import { barNote, menuSections } from '@/content/menu'
+import { barNote, menuSections, priceNote } from '@/content/menu'
 import { MENU_URL, RESERVE_URL, restaurant } from '@/content/restaurant'
 import { filterSections } from '@/lib/menuSearch'
 
@@ -76,6 +76,7 @@ export default function MenuPage() {
         <div className="container-site mx-auto max-w-2xl">
           <p className="font-script text-3xl text-gold-400">Bar</p>
           <p className="mt-2 text-cream-100/85">{barNote}</p>
+          <p className="mt-2 text-sm text-cream-100/60">{priceNote}</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <ButtonLink href={RESERVE_URL} arrow>
               Reservar mesa

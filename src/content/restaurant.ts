@@ -1,13 +1,13 @@
 import type { DaySchedule, SocialLink } from './types'
 
-const phoneDigits = '258871854417'
+const phoneDigits = '258870624564'
 
 export const restaurant = {
   name: 'Bom Paladar',
   legalName: 'Bom Paladar Restaurante & Bar',
   tagline: 'Restaurante & Bar',
   description:
-    'Restaurante & Bar em Quelimane com pizzas, massas, lasanhas, mariscos, carnes grelhadas e uma carta de cocktails de assinatura.',
+    'Restaurante & Bar em Quelimane com buffet de comida moçambicana e mariscos, massas, lasanhas, cocktails de assinatura e uma carta de vinhos.',
   // TODO: replace with the final production domain before deploying (used in canonical, OG, sitemap).
   siteUrl: 'https://bompaladar.co.mz',
   locale: 'pt_MZ',
@@ -20,7 +20,7 @@ export const restaurant = {
     countryCode: 'MZ',
   },
   phone: {
-    display: '+258 87 185 4417',
+    display: '+258 87 062 4564',
     href: `tel:+${phoneDigits}`,
     whatsapp: `https://wa.me/${phoneDigits}`,
   },

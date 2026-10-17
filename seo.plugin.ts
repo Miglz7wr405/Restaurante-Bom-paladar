@@ -13,13 +13,13 @@ interface PageSeo {
 const PAGES: Record<'home' | 'menu', PageSeo> = {
   home: {
     path: '/',
-    title: `${restaurant.legalName} | Pizzas, Mariscos e Cocktails em Quelimane`,
+    title: `${restaurant.legalName} | Buffet, Massas, Cocktails e Vinhos em Quelimane`,
     description: restaurant.description,
   },
   menu: {
     path: MENU_URL,
     title: `Menu | ${restaurant.legalName}, Quelimane`,
-    description: `Menu completo do ${restaurant.legalName}: ${menuItemCount} pratos e bebidas, de entradas, mariscos e carnes a pizzas, massas, sobremesas e cocktails, com preços em meticais.`,
+    description: `Menu do ${restaurant.legalName}: buffet a partir de 1.500 MT por pessoa, massas, lasanhas, cocktails e carta de vinhos. ${menuItemCount} opções com preços em meticais.`,
   },
 }
 
@@ -36,7 +36,7 @@ function jsonLd() {
     url: `${siteUrl}/`,
     image: `${siteUrl}/og-image.png`,
     telephone: restaurant.phone.display.replace(/\s/g, ''),
-    servesCuisine: ['Moçambicana', 'Portuguesa', 'Mariscos', 'Pizza', 'Grelhados', 'Cocktails'],
+    servesCuisine: ['Moçambicana', 'Portuguesa', 'Mariscos', 'Massas', 'Grelhados', 'Cocktails'],
     priceRange: `${formatPrice(Math.min(...prices))} – ${formatPrice(Math.max(...prices))}`,
     currenciesAccepted: restaurant.currency,
     acceptsReservations: true,
@@ -62,12 +62,16 @@ function jsonLd() {
       hasMenuSection: menuSections.map((section) => ({
         '@type': 'MenuSection',
         name: section.label,
-        hasMenuItem: section.items.map((item) => ({
-          '@type': 'MenuItem',
-          name: item.name,
-          ...(item.description ? { description: item.description } : {}),
-          ...(item.price !== undefined ? { offers: { '@type': 'Offer', price: item.price, priceCurrency: restaurant.currency } } : {}),
-        })),
+        hasMenuItem: section.items.map((item) => {
+          // Buffets list every course in the description.
+          const description = [item.description, ...(item.groups ?? []).map((g) => `${g.label}: ${g.items.join(', ')}.`)].filter(Boolean).join(' ')
+          return {
+            '@type': 'MenuItem',
+            name: item.name,
+            ...(description ? { description } : {}),
+            ...(item.price !== undefined ? { offers: { '@type': 'Offer', price: item.price, priceCurrency: restaurant.currency } } : {}),
+          }
+        }),
       })),
     },
   }

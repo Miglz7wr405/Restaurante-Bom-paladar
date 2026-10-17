@@ -32,21 +32,43 @@ export interface Visual {
   alt: string
 }
 
+/** A course inside a buffet, e.g. "Carnes" with the dishes served. */
+export interface MenuGroup {
+  label: string
+  items: string[]
+}
+
 export interface MenuItem {
   id: string
   name: string
   description?: string
   /** Price in meticais (MT). Undefined means "ask the staff". */
   price?: number
+  /** Shown after the price, e.g. "p/ pessoa". */
+  priceUnit?: string
   visual?: Visual
+  /** Buffets: what is served, course by course. */
+  groups?: MenuGroup[]
+}
+
+/** A photo with a caption, e.g. dishes you will find at the buffet. */
+export interface GalleryEntry {
+  label: string
+  visual: Visual
 }
 
 export interface MenuSection {
   id: string
   label: string
   note?: string
+  /** Short line under the section title. */
+  intro?: string
   /** Every item costs the same; the printed-menu view shows it once in the header. */
   flatPrice?: number
+  /** Wide photo at the top of the section in the cards view. */
+  cover?: Visual
+  /** Captioned photos shown before the items in the cards view. */
+  gallery?: GalleryEntry[]
   items: MenuItem[]
 }
 

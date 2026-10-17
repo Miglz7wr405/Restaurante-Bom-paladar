@@ -16,10 +16,10 @@ O site tem duas páginas (Vite multi-page): a página inicial (`index.html`) e o
 ## Página do menu (`/menu/`)
 
 - Duas formas de ver, com o botão **Cartões | Cardápio** (a escolha fica no URL: `/menu/?vista=cardapio`):
-  - **Cartões**: grelha de cartões, com foto quando existe.
+  - **Cartões**: grelha de cartões, com foto quando existe. O Buffet mostra primeiro uma galeria com os pratos servidos e depois as 3 opções (1.500, 2.000 e 2.800 MT por pessoa) com tudo o que inclui, prato a prato.
   - **Cardápio**: lista clássica preto e dourado, como o menu impresso.
 - Barra de categorias fixa (marca a secção atual), pesquisa sem acentos ("camarao" encontra "Camarão") e botão **Imprimir / PDF** (imprime o Cardápio em A4, fundo branco).
-- Links diretos para secções: `/menu/#pizzas`, `/menu/#mariscos`, etc.
+- Links diretos para secções: `/menu/#buffet`, `/menu/#massas`, `/menu/#lasanhas`, `/menu/#cocktails`, `/menu/#vinhos-tintos`, `/menu/#vinhos-brancos`. A pesquisa também procura dentro do conteúdo dos buffets ("feijoada" encontra os 3 buffets).
 
 ## Editar conteúdo
 
@@ -28,7 +28,7 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 | Ficheiro | O quê |
 | --- | --- |
 | `restaurant.ts` | Nome, morada, telefone/WhatsApp, horário, redes sociais, domínio do site |
-| `menu.ts` | Menu completo: 16 secções, 135 itens (nome, descrição, preço em MT; `price` vazio = "Consultar") |
+| `menu.ts` | Menu de outubro de 2026: Buffet (3 opções, com os pratos de cada uma em `groups`), Menu Pasta, Lasanhas, Cocktails, Vinhos Tintos e Brancos/Verdes/Rosé. 6 secções, 59 itens (nome, descrição, preço em MT; `price` vazio = "Consultar") |
 | `photos.ts` | Catálogo de fotos dos pratos |
 | `home.ts` | Slides do hero, categorias, prato do mês, destaques, separadores "Os mais pedidos", promoções, take-away, equipa, novidades |
 
@@ -36,10 +36,9 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 
 As fotos dos pratos estão em `public/images/dishes/` e são ligadas aos pratos em `src/content/photos.ts`:
 
-- **16 fotos de estúdio geradas com IA** (Lovable, 1024 px, fundo preto): 6 pizzas, 4 massas, 2 lasanhas, mariscada, carne grelhada, mojito e piña colada. Servidas em 512 e 1024 px.
-- **3 fotos reais** recortadas de fotos publicadas no Google Maps pelo cliente Arsénio Iade: asinhas crocantes, pão de alho recheado e ½ frango grelhado. Aparecem com o crédito "Foto: Arsénio Iade (Google Maps)". **Recomenda-se pedir-lhe autorização** ou substituí-las por fotos do restaurante.
+- **Fotos de estúdio geradas com IA** (Lovable, 1024 px, fundo preto), servidas em 512 e 1024 px: os pratos do buffet (salgados, feijoada, bife na panela, galinha à Zambeziana, peixe grelhado, camarão tigre, lulas, lagosta, cabrito, espetada, mucuane, arroz de legumes, sopa de abóbora, mousse de malambe, vista geral do buffet), as 4 massas e 3 lasanhas, mojito, piña colada, shots e uma foto para a carta de vinhos. **Faltam fotos** de 10 cocktails (Margarita, Intense Girl, Caipirinha, Caipirosca, Tequila Sunrise, Gin Tónico, Sexy on the Beach, Blue Lagoon, Blue Hawaii, Caipirinha de Cerveja) e da Sangria: a geração parou porque acabaram os créditos de imagem do Lovable; até lá aparecem com a ilustração SVG do cocktail na cor da bebida. As fotos de Fettuccine (molho branco) e Putanesca (com mexilhão) são do menu anterior e não batem certo com a descrição nova; convém refazê-las. As fotos pequenas dos menus impressos serviram de referência para o aspeto dos pratos.
 
-Os pratos sem foto aparecem como cartão de texto (vista Cartões); os cocktails sem foto mostram a ilustração SVG da marca. Para adicionar ou trocar uma foto:
+Os vinhos aparecem como cartão de texto na vista Cartões. Para adicionar ou trocar uma foto:
 
 1. Coloque `<nome>-512.webp`, `<nome>-512.jpg`, `<nome>-1024.webp` e `<nome>-1024.jpg` em `public/images/dishes/`.
 2. Adicione `<chave>: dish('<nome>')` em `src/content/photos.ts`.
@@ -49,14 +48,13 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 ## Por confirmar com o restaurante
 
-- **Fotos**: as fotos de estúdio foram geradas com IA; idealmente substituir por fotos reais dos pratos. Pedir autorização ao autor das 3 fotos do Google Maps.
-- **Nomes corrigidos** (as imagens do menu recebidas foram ampliadas com IA, que alterou algumas palavras): Dorrada → Dobrada, Girouipa → Garoupa, Atum brasrado → Atum braseado, Pato malal → Arroz de Pato, Macapaza → Matapa, Mousse de Marambé → Mousse de Malambe, Camarão alinho → Camarão ao alho, Bacalhau à "Zonas de Sé" → à Zé do Pipo, Galinha "caprão/caprina" → Galinha cafreal, "mabo de vaca" (tábuas) → lombo de vaca, Something "Meating" → Meeting (como no menu novo); as duas linhas "Galinha … à pastora" foram juntadas numa só.
-- **Nomes que ficaram como estavam, por confirmar**: Congue, Xima Caracata, Xatiné c/ Maço (aparece em Guarnições a 150 MT e em Aves a 1.500 MT), Peixe Peru, Camarão Tô, Frango à Mamãe. Também se retiraram textos ilegíveis entre parênteses (petiscos "Carne de vaca" e "Galinha caipira", "Bife à Milanesa").
-- **Preços**: Massas & Lasanhas vêm da imagem antiga em baixa resolução (não vieram no envio novo). Os Shots não têm preço no menu ("Consultar").
-- **Cocktails**: confirmados com a imagem nítida do menu de cocktails (preços e ingredientes).
-- **Restante carta de bebidas** (águas, refrigerantes, sumos, cafetaria, cervejas, vinhos, espumantes, whisky, aguardentes, licores): as páginas recebidas eram ilegíveis; o site mostra só uma nota. Enviar fotos nítidas para as acrescentar.
+- **Fotos**: as fotos de estúdio foram geradas com IA; idealmente substituir por fotos reais dos pratos.
+- **Menu antigo**: substituído pelo menu de outubro de 2026 (buffets, pasta, cocktails e vinhos). Pizzas, à la carte de mariscos, carnes, petiscos, etc. saíram do site.
+- **Carta de vinhos, nomes por confirmar**: o cartão impresso tem gralhas e foi interpretado assim: "Mucho Más", "Reguengos", "Segredos de S. Miguel", "Duas Quintas", "Pé Tinto", "Portada", "Quinta da Bolota". Ficaram como se leem, a confirmar: **Cadão** (Novo e Reserva), **Spylano** e **Petusco Verde**. O cartão tem um segundo **Mucho Más a 2.330 MT** (destacado a azul) que não foi incluído; confirmar se é outro vinho.
+- **Grafias**: "galinha cafrial" ficou "galinha cafreal" e "Massa Putanesca" ficou como no menu. Os Shots não têm preço no menu ("Consultar").
+- **Bebidas avulsas** (águas, refrigerantes, sumos, cafetaria, cervejas): não vieram no menu novo; o site mostra só uma nota.
 - **Hora de abertura e dias**: só a hora de fecho (00:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 00:00" e o JSON-LD omite o horário.
-- **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 87 185 4417`. Confirmar que o número tem WhatsApp.
+- **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 87 062 4564` (o número dos menus novos). Confirmar que o número tem WhatsApp.
 - **Facebook / Instagram**: adicionar os links em `socials` (vazios não aparecem).
 - **Equipa e novidades**: textos provisórios; substituir por nomes/fotos e notícias reais.
 - **Domínio**: `siteUrl` em `restaurant.ts` (usado no canonical, OG e sitemap).
@@ -64,6 +62,8 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 ## Vídeo publicitário (`video/`)
 
 Anúncio de ~68 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Dinis", sotaque de Portugal, ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros.
+
+> **Atenção:** o vídeo foi feito com o menu anterior (pizzas, mariscos à la carte, carbonara a 550 MT) e o número antigo (87 185 4417). Para o atualizar ao menu novo é preciso refazer o guião, a voz e a gravação do site.
 
 Ordem do vídeo, conduzida pela voz:
 1. Logótipo e "O sabor que Quelimane adora!".

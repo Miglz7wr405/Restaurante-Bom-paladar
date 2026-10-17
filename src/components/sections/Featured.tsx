@@ -33,6 +33,7 @@ export function Featured() {
                   <span className="sr-only">Preço: </span>
                   <span className="inline-block rounded-full bg-ink-950 px-4 py-1.5 font-display text-lg font-bold text-gold-300 transition-[opacity,transform] duration-200 ease-out hover-hover:translate-y-2 hover-hover:opacity-0 hover-hover:group-hover:translate-y-0 hover-hover:group-hover:opacity-100 hover-hover:group-focus-within:translate-y-0 hover-hover:group-focus-within:opacity-100">
                     {formatItemPrice(item.price)}
+                    {item.priceUnit && <span className="ml-1 text-sm font-normal">{item.priceUnit}</span>}
                   </span>
                 </p>
               </article>

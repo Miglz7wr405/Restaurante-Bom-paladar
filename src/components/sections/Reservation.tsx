@@ -65,7 +65,7 @@ export function Reservation() {
           className="brick-wall relative isolate flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-card p-8 text-cream-50 md:p-10"
         >
           <div className="absolute -right-10 -top-6 -z-10 w-[70%] max-w-sm animate-float-slow" aria-hidden="true">
-            <Visual visual={{ art: 'pizza', photo: photos.pizzaChickenMushroom, alt: '' }} sizes="24rem" className="photo-fade h-full w-full object-cover" />
+            <Visual visual={{ art: 'seafood', photo: photos.camaraoTigre, alt: '' }} sizes="24rem" className="photo-fade h-full w-full object-cover" />
           </div>
           <div className="absolute right-[38%] top-[26%] -z-10 w-[32%] max-w-[10rem] animate-float" aria-hidden="true">
             <Visual visual={{ art: 'cocktail', tint: 'blue', photo: photos.mojito, alt: '' }} sizes="10rem" className="photo-fade h-full w-full object-cover" />

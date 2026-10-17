@@ -36,6 +36,7 @@ export function MenuListView({ sections }: { sections: MenuSection[] }) {
                 </h2>
                 <span className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-gold-400 print:bg-gold-500" aria-hidden="true" />
               </header>
+              {section.intro && <p className="-mt-2 mb-4 text-center font-script text-xl text-gold-300 print:text-gold-600">{section.intro}</p>}
 
               <ul className="space-y-3 print:space-y-1.5">
                 {section.items.map((item) => (
@@ -50,12 +51,23 @@ export function MenuListView({ sections }: { sections: MenuSection[] }) {
                           <p className="shrink-0 font-display text-base font-bold text-gold-400 md:text-lg print:text-sm print:text-ink-950">
                             <span className="sr-only">Preço: </span>
                             {formatItemPrice(item.price)}
+                            {item.priceUnit && <span className="ml-1 text-sm font-normal">{item.priceUnit}</span>}
                           </p>
                         </>
                       )}
                     </div>
                     {item.description && (
                       <p className="mt-0.5 text-sm text-gold-200/75 print:text-xs print:text-ink-600">{item.description}</p>
+                    )}
+                    {item.groups && (
+                      <dl className="mt-2 space-y-1 text-sm print:text-xs">
+                        {item.groups.map((group) => (
+                          <div key={group.label}>
+                            <dt className="inline font-semibold text-gold-400 print:text-ink-950">{group.label}: </dt>
+                            <dd className="inline text-cream-100/80 print:text-ink-600">{group.items.join(', ')}</dd>
+                          </div>
+                        ))}
+                      </dl>
                     )}
                   </li>
                 ))}

@@ -10,7 +10,9 @@ export function filterSections(sections: MenuSection[], query: string): MenuSect
   if (!q) return sections
   return sections.flatMap((section) => {
     if (normalize(section.label).includes(q)) return [section]
-    const items = section.items.filter((item) => normalize(`${item.name} ${item.description ?? ''}`).includes(q))
+    const items = section.items.filter((item) =>
+      normalize([item.name, item.description, ...(item.groups ?? []).flatMap((g) => g.items)].join(' ')).includes(q),
+    )
     return items.length ? [{ ...section, items }] : []
   })
 }

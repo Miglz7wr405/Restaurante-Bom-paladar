@@ -1,7 +1,7 @@
 import { findSection } from '@/content/menu'
 import { MENU_URL, navLinks, restaurant, socials } from '@/content/restaurant'
 
-const FOOTER_SECTIONS = ['entradas', 'pizzas', 'massas', 'mariscos', 'carnes', 'cocktails'].map(findSection)
+const FOOTER_SECTIONS = ['buffet', 'massas', 'lasanhas', 'cocktails', 'vinhos-tintos', 'vinhos-brancos'].map(findSection)
 import { Icon } from '../ui/Icon'
 import { Logo } from '../ui/Logo'
 

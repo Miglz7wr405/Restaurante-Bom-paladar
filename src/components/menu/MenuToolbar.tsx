@@ -85,7 +85,7 @@ export function MenuToolbar({ view, onViewChange, query, onQueryChange, onPrint,
               type="search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="Pesquisar: camarão, pizza, mousse…"
+              placeholder="Pesquisar: camarão, mojito, vinho…"
               className="w-full rounded-full border border-cream-50/15 bg-ink-800 py-2.5 pl-11 pr-4 text-sm text-cream-50 placeholder:text-cream-50/50 focus:border-gold-400 focus:outline-none focus:ring-2 focus:ring-gold-400/50"
             />
           </label>
