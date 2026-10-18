@@ -6,7 +6,7 @@ import { Reveal, RevealGroup } from '../ui/Reveal'
 import { Visual } from '../ui/Visual'
 
 const SHOWCASE: { photo: Photo; alt: string; className: string }[] = [
-  { photo: photos.feijoada, alt: 'Feijoada à Bom Paladar', className: 'left-[2%] top-[18%] w-40 xl:w-52 animate-float-slow' },
+  { photo: photos.galinhaZambeziana, alt: 'Galinha à Zambeziana', className: 'left-[2%] top-[18%] w-40 xl:w-52 animate-float-slow' },
   { photo: photos.lagostaGrelhada, alt: 'Lagosta grelhada', className: 'right-[3%] top-[12%] w-44 xl:w-56 animate-float' },
   { photo: photos.mojito, alt: 'Mojito', className: 'right-[16%] bottom-[-8%] w-28 xl:w-36 animate-float' },
 ]
