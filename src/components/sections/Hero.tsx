@@ -202,7 +202,7 @@ export function Hero() {
                   {slide.script}
                 </span>
                 {slide.badge && (
-                  <div className="absolute right-[2%] top-[10%] grid h-20 w-20 place-items-center rounded-full bg-ember-500 text-center font-display uppercase leading-none text-white shadow-card-hover md:h-24 md:w-24">
+                  <div className="absolute bottom-[8%] right-[2%] grid h-20 w-20 place-items-center rounded-full bg-ember-500 text-center font-display uppercase leading-none text-white shadow-card-hover md:h-24 md:w-24">
                     <span className="absolute inset-1.5 animate-spin-slow rounded-full border-2 border-dashed border-white/50" aria-hidden="true" />
                     <span>
                       <span className="block text-xl font-bold md:text-2xl">{slide.badge.top}</span>

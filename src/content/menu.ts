@@ -149,27 +149,27 @@ const drink = (p: Photo, alt: string): Visual => photo(p, 'cocktail', alt)
 const mixed = (tint: CocktailTint, alt: string): Visual => ({ art: 'cocktail', tint, alt })
 
 const cocktails: MenuItem[] = [
-  it('margarita', 'Margarita', 350, 'Tequila branca, triple sec, lima e sumo de lima.', mixed('lime', 'Cocktail Margarita com sal e lima')),
+  it('margarita', 'Margarita', 350, 'Tequila branca, triple sec, lima e sumo de lima.', drink(photos.margarita, 'Margarita com sal e lima')),
   it(
     'intense-girl',
     'Bom Paladar Intense Girl',
     400,
     'Licor de morango, piña colada, rum e sumo de ananás.',
-    mixed('berry', 'Cocktail de assinatura Intense Girl, cor-de-rosa'),
+    drink(photos.intenseGirl, 'Cocktail de assinatura Intense Girl, de morango e ananás'),
   ),
   it(
     'caipirinha',
     'Caipirinha',
     350,
     'Cachaça, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.',
-    mixed('lime', 'Caipirinha de maracujá e frutos vermelhos'),
+    drink(photos.caipirinha, 'Caipirinha de maracujá'),
   ),
   it(
     'caipirosca',
     'Caipirosca',
     300,
     'Vodka, lima, maracujá, frutos vermelhos, kiwi, tangerina e xarope de açúcar.',
-    mixed('berry', 'Caipirosca de frutos vermelhos'),
+    drink(photos.caipirosca, 'Caipirosca de morango e lima'),
   ),
   it('mojito', 'Mojito', 300, 'Rum branco, lima, hortelã, Sprite ou água tónica.', drink(photos.mojito, 'Mojito com hortelã e lima')),
   it(
@@ -177,9 +177,9 @@ const cocktails: MenuItem[] = [
     'Tequila Sunrise',
     500,
     'Tequila branca, sumo de laranja e grenadine.',
-    mixed('sunrise', 'Tequila Sunrise em degradê de laranja e vermelho'),
+    drink(photos.tequilaSunrise, 'Tequila Sunrise em degradê de laranja e vermelho'),
   ),
-  it('gin-tonico', 'Gin Tónico à Bom Paladar', 400, undefined, mixed('mint', 'Gin tónico em copo balão com lima')),
+  it('gin-tonico', 'Gin Tónico à Bom Paladar', 400, undefined, drink(photos.ginTonico, 'Gin tónico em copo balão')),
   it('sexy-on-the-beach', 'Sexy on the Beach', 400, 'Vodka, licor de pêssego e sumo de laranja.', mixed('sunrise', 'Cocktail Sexy on the Beach')),
   it('blue-lagoon', 'Blue Lagoon', 300, 'Vodka, licor Blue Curaçao, sumo de limão e Sprite.', mixed('blue', 'Cocktail Blue Lagoon azul')),
   it('blue-hawaii', 'Blue Hawaii', 350, 'Vodka, licor de pêssego, licor Piña Curaçao e Sprite.', mixed('blue', 'Cocktail Blue Hawaii')),

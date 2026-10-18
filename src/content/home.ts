@@ -121,7 +121,7 @@ export const dishOfMonth: {
   points: ['Água, sumo e refrigerante incluídos', 'Camarão médio e lulas', 'Também a 1.500 e 2.800 MT'],
 }
 
-export const featuredIds = ['buffet-2800', 'carbonara', 'puttanesca-marisco', 'lasanha-legumes', 'pina-colada'] as const
+export const featuredIds = ['buffet-2800', 'carbonara', 'lasanha-carne', 'intense-girl', 'pina-colada'] as const
 export const featured: MenuItem[] = featuredIds.map(findItem)
 
 // Home page "Os mais pedidos" tabs: a short pick per category; the full list lives on /menu/.

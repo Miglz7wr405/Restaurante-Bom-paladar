@@ -36,7 +36,10 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 
 As fotos dos pratos estão em `public/images/dishes/` e são ligadas aos pratos em `src/content/photos.ts`:
 
-- **Fotos de estúdio geradas com IA** (Lovable, 1024 px, fundo preto), servidas em 512 e 1024 px: os pratos do buffet (salgados, feijoada, bife na panela, galinha à Zambeziana, peixe grelhado, camarão tigre, lulas, lagosta, cabrito, espetada, mucuane, arroz de legumes, sopa de abóbora, mousse de malambe, vista geral do buffet), as 4 massas e 3 lasanhas, mojito, piña colada, shots e uma foto para a carta de vinhos. **Faltam fotos** de 10 cocktails (Margarita, Intense Girl, Caipirinha, Caipirosca, Tequila Sunrise, Gin Tónico, Sexy on the Beach, Blue Lagoon, Blue Hawaii, Caipirinha de Cerveja) e da Sangria: a geração parou porque acabaram os créditos de imagem do Lovable; até lá aparecem com a ilustração SVG do cocktail na cor da bebida. As fotos de Fettuccine (molho branco) e Putanesca (com mexilhão) são do menu anterior e não batem certo com a descrição nova; convém refazê-las. As fotos pequenas dos menus impressos serviram de referência para o aspeto dos pratos.
+- **Fotos escolhidas pelo cliente na internet** (28): buffet, salgados, bife na panela, galinha à Zambeziana, peixe grelhado, camarão tigre, lulas, lagosta, cabrito, espetada, mucuane, arroz de legumes, sopa de abóbora, mousse, as 3 massas (carbonara, fettuccine, bolonhesa), as 3 lasanhas e 8 cocktails (Margarita, Intense Girl, Caipirinha, Caipirosca, Mojito, Tequila Sunrise, Gin Tónico, Piña Colada). Recortadas em quadrado e servidas em 512 e 1024 px (as de Mucuane, Bolonhesa e Cabrito vieram pequenas, por isso são ampliadas). **Atenção aos direitos de autor**: são fotos de terceiros; o ideal é substituí-las por fotos tiradas no restaurante.
+- **Ainda geradas com IA**: Feijoada, Putanesca de marisco (com mexilhão, não bate com a descrição), Shots e Vinhos.
+- **Sem foto** (ilustração SVG na cor da bebida): Sexy on the Beach, Blue Lagoon, Blue Hawaii, Caipirinha de Cerveja e Sangria.
+- **Timbre**: todas as fotos têm o logótipo "Bom Paladar · Restaurante & Bar" no canto superior direito, um pouco para dentro para não ser cortado nos cartões nem nas molduras redondas.
 
 Os vinhos aparecem como cartão de texto na vista Cartões. Para adicionar ou trocar uma foto:
 
