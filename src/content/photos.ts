@@ -43,7 +43,12 @@ export const photos = {
   mojito: dish('cocktail-mojito'),
   tequilaSunrise: dish('cocktail-tequila-sunrise'),
   ginTonico: dish('cocktail-gin-tonico'),
+  sexyOnTheBeach: dish('cocktail-sexy-on-the-beach'),
+  blueLagoon: dish('cocktail-blue-lagoon'),
+  blueHawaii: dish('cocktail-blue-hawaii'),
   pinaColada: dish('cocktail-pina-colada'),
   shots: dish('shots'),
+  caipirinhaCerveja: dish('cocktail-caipirinha-cerveja'),
+  sangria: dish('sangria'),
   vinhos: dish('vinhos'),
 }

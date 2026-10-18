@@ -1,6 +1,6 @@
 import { photos } from './photos'
 import { formatPrice } from './restaurant'
-import type { ArtKind, CocktailTint, GalleryEntry, MenuGroup, MenuItem, MenuSection, Photo, Visual } from './types'
+import type { ArtKind, GalleryEntry, MenuGroup, MenuItem, MenuSection, Photo, Visual } from './types'
 
 // Transcribed from the restaurant's printed menus (buffets, pasta, cocktails and wine list).
 // Wine names marked "por confirmar" in the README were hard to read on the printed card.
@@ -145,8 +145,6 @@ const lasanhas: MenuItem[] = [
 ]
 
 const drink = (p: Photo, alt: string): Visual => photo(p, 'cocktail', alt)
-// Cocktails still without a studio photo use the brand illustration in the drink's colour.
-const mixed = (tint: CocktailTint, alt: string): Visual => ({ art: 'cocktail', tint, alt })
 
 const cocktails: MenuItem[] = [
   it('margarita', 'Margarita', 350, 'Tequila branca, triple sec, lima e sumo de lima.', drink(photos.margarita, 'Margarita com sal e lima')),
@@ -180,9 +178,9 @@ const cocktails: MenuItem[] = [
     drink(photos.tequilaSunrise, 'Tequila Sunrise em degradê de laranja e vermelho'),
   ),
   it('gin-tonico', 'Gin Tónico à Bom Paladar', 400, undefined, drink(photos.ginTonico, 'Gin tónico em copo balão')),
-  it('sexy-on-the-beach', 'Sexy on the Beach', 400, 'Vodka, licor de pêssego e sumo de laranja.', mixed('sunrise', 'Cocktail Sexy on the Beach')),
-  it('blue-lagoon', 'Blue Lagoon', 300, 'Vodka, licor Blue Curaçao, sumo de limão e Sprite.', mixed('blue', 'Cocktail Blue Lagoon azul')),
-  it('blue-hawaii', 'Blue Hawaii', 350, 'Vodka, licor de pêssego, licor Piña Curaçao e Sprite.', mixed('blue', 'Cocktail Blue Hawaii')),
+  it('sexy-on-the-beach', 'Sexy on the Beach', 400, 'Vodka, licor de pêssego e sumo de laranja.', drink(photos.sexyOnTheBeach, 'Cocktail Sexy on the Beach com laranja e cereja')),
+  it('blue-lagoon', 'Blue Lagoon', 300, 'Vodka, licor Blue Curaçao, sumo de limão e Sprite.', drink(photos.blueLagoon, 'Blue Lagoon azul com limão')),
+  it('blue-hawaii', 'Blue Hawaii', 350, 'Vodka, licor de pêssego, licor Piña Curaçao e Sprite.', drink(photos.blueHawaii, 'Blue Hawaii com ananás e cereja')),
   it(
     'pina-colada',
     'Piña Colada',
@@ -190,13 +188,13 @@ const cocktails: MenuItem[] = [
     'Rum branco, cocktail base de piña colada e sumo de ananás.',
     drink(photos.pinaColada, 'Piña Colada cremosa com ananás'),
   ),
-  it('caipirinha-cerveja', 'Caipirinha de Cerveja à Bom Paladar', 400, undefined, mixed('amber', 'Caipirinha de cerveja com lima')),
+  it('caipirinha-cerveja', 'Caipirinha de Cerveja à Bom Paladar', 400, undefined, drink(photos.caipirinhaCerveja, 'Caipirinha de cerveja com lima numa caneca')),
   it(
     'sangria',
     'Sangria de Vinho Branco / Tinto',
     800,
     'Aguardente de cana, triple sec, xarope de menta, brandy, vinho e Sprite.',
-    { art: 'wine', alt: 'Copo de sangria com fruta' },
+    photo(photos.sangria, 'wine', 'Copo de sangria com fruta e jarro ao fundo'),
   ),
   it(
     'shots',

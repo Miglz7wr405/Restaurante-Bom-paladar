@@ -37,8 +37,7 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 As fotos dos pratos estão em `public/images/dishes/` e são ligadas aos pratos em `src/content/photos.ts`:
 
 - **Fotos escolhidas pelo cliente na internet** (28): buffet, salgados, bife na panela, galinha à Zambeziana, peixe grelhado, camarão tigre, lulas, lagosta, cabrito, espetada, mucuane, arroz de legumes, sopa de abóbora, mousse, as 3 massas (carbonara, fettuccine, bolonhesa), as 3 lasanhas e 8 cocktails (Margarita, Intense Girl, Caipirinha, Caipirosca, Mojito, Tequila Sunrise, Gin Tónico, Piña Colada). Recortadas em quadrado e servidas em 512 e 1024 px (as de Mucuane, Bolonhesa e Cabrito vieram pequenas, por isso são ampliadas). **Atenção aos direitos de autor**: são fotos de terceiros; o ideal é substituí-las por fotos tiradas no restaurante.
-- **Ainda geradas com IA**: Feijoada, Putanesca de marisco (com mexilhão, não bate com a descrição), Shots e Vinhos.
-- **Sem foto** (ilustração SVG na cor da bebida): Sexy on the Beach, Blue Lagoon, Blue Hawaii, Caipirinha de Cerveja e Sangria.
+- **Geradas com IA em estilo de foto real** (Lovable, mesa de madeira e restaurante desfocado ao fundo): Feijoada, Putanesca de marisco, Shots, Vinhos, Sexy on the Beach, Blue Lagoon, Blue Hawaii, Caipirinha de Cerveja e Sangria.
 - **Timbre**: todas as fotos têm o logótipo "Bom Paladar · Restaurante & Bar" no canto superior direito, um pouco para dentro para não ser cortado nos cartões nem nas molduras redondas.
 
 Os vinhos aparecem como cartão de texto na vista Cartões. Para adicionar ou trocar uma foto:
