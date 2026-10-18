@@ -15,7 +15,7 @@ export function Promos() {
               }`}
             >
               <div
-                className="absolute -right-12 top-1/2 -z-10 aspect-square w-[62%] -translate-y-1/2 transition-transform duration-700 ease-smooth group-hover:rotate-12 group-hover:scale-105 sm:-right-6 sm:w-[52%]"
+                className="absolute -right-4 top-1/2 -z-10 aspect-square w-[62%] -translate-y-1/2 transition-transform duration-700 ease-smooth group-hover:rotate-12 group-hover:scale-105 sm:-right-6 sm:w-[52%]"
                 aria-hidden="true"
               >
                 <Visual visual={promo.visual} sizes="(min-width: 768px) 25vw, 60vw" className="photo-fade h-full w-full object-cover" />
