@@ -194,7 +194,7 @@ export const team: TeamMember[] = [
     name: 'Cozinha',
     role: 'Chef de cozinha',
     bio: 'Feijoada, galinha à Zambeziana e mucuane, como em casa.',
-    visual: { art: 'grill', photo: photos.teamCozinha, alt: 'Chef a empratar galinha à Zambeziana ao lado da panela de feijoada' },
+    visual: { art: 'grill', photo: photos.galinhaZambeziana, alt: 'Galinha à Zambeziana' },
     socials: [],
   },
   {
@@ -202,7 +202,7 @@ export const team: TeamMember[] = [
     name: 'Grelha',
     role: 'Peixe & marisco',
     bio: 'Camarão tigre, lulas, lagosta e peixe grelhados no ponto.',
-    visual: { art: 'seafood', photo: photos.teamGrelha, alt: 'Camarão tigre, lulas, lagosta e peixe na grelha a carvão' },
+    visual: { art: 'seafood', photo: photos.camaraoTigre, alt: 'Camarão tigre grelhado' },
     socials: [],
   },
   {
@@ -210,7 +210,7 @@ export const team: TeamMember[] = [
     name: 'Bar',
     role: 'Mixologia',
     bio: 'Os cocktails de assinatura que dão fama à casa.',
-    visual: { art: 'cocktail', tint: 'sunrise', photo: photos.teamBar, alt: 'Barman a servir um cocktail no balcão' },
+    visual: { art: 'cocktail', tint: 'lime', photo: photos.margarita, alt: 'Margarita com sal e lima' },
     socials: [],
   },
   {
@@ -218,7 +218,7 @@ export const team: TeamMember[] = [
     name: 'Sala',
     role: 'Serviço',
     bio: 'Recebe-o com a hospitalidade de Quelimane.',
-    visual: { art: 'grill', photo: photos.teamSala, alt: 'Empregado a servir pratos à mesa na sala do restaurante' },
+    visual: { art: 'grill', photo: photos.buffet, alt: 'Travessas do buffet na sala do restaurante' },
     socials: [],
   },
 ]

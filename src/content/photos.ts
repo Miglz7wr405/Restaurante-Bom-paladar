@@ -64,9 +64,4 @@ export const photos = {
   caipirinhaCerveja: dish('cocktail-caipirinha-cerveja'),
   sangria: dish('sangria'),
   vinhos: dish('vinhos'),
-  // Equipa
-  teamCozinha: dish('team-cozinha'),
-  teamGrelha: dish('team-grelha'),
-  teamBar: dish('team-bar'),
-  teamSala: dish('team-sala'),
 }
