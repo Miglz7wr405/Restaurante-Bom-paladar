@@ -67,7 +67,7 @@ export const categoryLinks: CategoryLink[] = [
     id: 'buffet',
     label: 'Buffet',
     art: 'grill',
-    photo: photos.galinhaZambeziana,
+    photo: photos.buffetMesa,
     section: 'buffet',
   },
   {
@@ -158,8 +158,8 @@ export const promos: Promo[] = [
     href: '/#reservas',
     visual: {
       art: 'grill',
-      photo: photos.bifePanela,
-      alt: 'Bife na panela com molho de cebola',
+      photo: photos.buffetVariado,
+      alt: 'Buffet com carnes, frango, legumes, saladas, sobremesas e fruta',
     },
     tone: 'ember',
   },
@@ -172,9 +172,9 @@ export const promos: Promo[] = [
     href: '/menu/#cocktails',
     visual: {
       art: 'cocktail',
-      tint: 'berry',
-      photo: photos.intenseGirl,
-      alt: 'Cocktail Intense Girl de morango e ananás',
+      tint: 'mint',
+      photo: photos.mojito,
+      alt: 'Mojito com hortelã e lima',
     },
     tone: 'ink',
   },
@@ -231,7 +231,7 @@ export const team: TeamMember[] = [
     name: 'Sala',
     role: 'Serviço',
     bio: 'Recebe-o com a hospitalidade de Quelimane.',
-    visual: { art: 'pasta', photo: photos.massaCarbonara, alt: 'Massa servida à mesa' },
+    visual: { art: 'grill', photo: photos.buffet, alt: 'Travessas do buffet na sala do restaurante' },
     socials: [],
   },
 ]
@@ -245,8 +245,8 @@ export const news: NewsPost[] = [
     excerpt: 'Três opções, de 1.500 a 2.800 MT por pessoa, com bebidas, sobremesa e o melhor da cozinha moçambicana.',
     visual: {
       art: 'grill',
-      photo: photos.salgados,
-      alt: 'Chamuças, rissóis e coxinhas',
+      photo: photos.buffetCapa,
+      alt: 'Mesa de buffet com arroz, feijão, carnes, frango, saladas e batata frita',
     },
   },
   {
@@ -267,9 +267,9 @@ export const news: NewsPost[] = [
     excerpt: 'Bom Paladar Intense Girl, Tequila Sunrise e a nova Caipirinha de Cerveja. Venha provar ao fim da tarde.',
     visual: {
       art: 'cocktail',
-      tint: 'cream',
-      photo: photos.pinaColada,
-      alt: 'Piña Colada no balcão',
+      tint: 'berry',
+      photo: photos.intenseGirl,
+      alt: 'Cocktail Intense Girl de morango e ananás',
     },
   },
 ]

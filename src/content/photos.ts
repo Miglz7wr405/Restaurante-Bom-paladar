@@ -10,9 +10,22 @@ const dish = (name: string): Photo => ({
   height: 1024,
 })
 
+// Wide (16:9) photo for section covers, served at 800/1440 px.
+const wide = (name: string): Photo => ({
+  webp: `/images/dishes/${name}-1440.webp`,
+  jpg: `/images/dishes/${name}-1440.jpg`,
+  webpSet: `/images/dishes/${name}-800.webp 800w, /images/dishes/${name}-1440.webp 1440w`,
+  jpgSet: `/images/dishes/${name}-800.jpg 800w, /images/dishes/${name}-1440.jpg 1440w`,
+  width: 1440,
+  height: 810,
+})
+
 export const photos = {
   // Buffet
   buffet: dish('buffet'),
+  buffetMesa: dish('buffet-mesa'),
+  buffetVariado: dish('buffet-variado'),
+  buffetCapa: wide('buffet-capa'),
   salgados: dish('salgados'),
   sopaAbobora: dish('sopa-abobora'),
   bifePanela: dish('bife-panela'),
