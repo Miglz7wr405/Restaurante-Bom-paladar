@@ -66,7 +66,7 @@ const takes = {
       [3.55, '84 123 4567', 0.05, '#res-phone'],
     ],
   },
-  // Mobile: /menu/ em Cartões com fotos → toggle para Cardápio
+  // Mobile: /menu/ em Cartões (galeria do buffet) → toggle para Cardápio
   mobile: {
     url: '/menu/',
     viewport: { width: 390, height: 844 },
@@ -74,13 +74,13 @@ const takes = {
     mobile: true,
     duration: 4.4,
     scroll: [
-      [0.3, 1.6, top('#pizzas', 110)],
-      [2.6, 4.2, top('#pizzas', -260)],
+      [0.3, 1.6, top('#buffet', 110)],
+      [2.6, 4.2, top('#buffet', -260)],
     ],
     act: [
       [2.2, `[...document.querySelectorAll('button[aria-pressed]')].find(b => b.textContent.includes('Cardápio'))?.click()`],
-      // A troca de vista muda a altura da página: volta às pizzas no frame seguinte
-      [2.24, `window.scrollTo({ top: ${top('#pizzas', 110)}, behavior: 'instant' })`],
+      // A troca de vista muda a altura da página: volta ao buffet no frame seguinte
+      [2.24, `window.scrollTo({ top: ${top('#buffet', 110)}, behavior: 'instant' })`],
     ],
   },
 }

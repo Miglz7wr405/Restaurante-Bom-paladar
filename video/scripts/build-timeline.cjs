@@ -30,21 +30,21 @@ function silences(file, db = -40, d = 0.05) {
  * (silencedetect -34 dB): onde começa cada prato e onde a voz diz cada preço.
  * Se um bloco for regerado, os tempos mudam: confirmar com silencedetect e atualizar aqui.
  */
-const VO_DIR = 'vo3' // voz Dinis (sotaque de Portugal), eleven_v3
+const VO_DIR = 'vo4' // voz Dinis (sotaque de Portugal), eleven_v3; b01, b02 e b07 reaproveitados do vo3
 const BLOCKS = [
   { id: 'b01', text: 'Bom Paladar, Restaurante e Bar! O sabor que Quelimane ADORA!', marks: { slogan: 2.1 } },
   { id: 'b02', text: 'Na Rua Robert Mugabe, aberto até à meia-noite, com nota quatro vírgula três no Google!', marks: { open: 2.38, rating: 4.08 } },
-  { id: 'b03', text: 'Pizza Double Stack, duas camadas de puro sabor: MIL meticais! Pizza Seafood, com lula e camarão: setecentos!', marks: { priceA: 4.02, dishB: 5.9, priceB: 8.43 } },
-  { id: 'b04', text: 'Tagliatelle Carbonara, bem cremosa: quinhentos e cinquenta! Lasanha de carne moída: setecentos!', marks: { priceA: 2.84, dishB: 4.25, priceB: 5.77 } },
-  { id: 'b05', text: 'Aparelhada de mariscos, com lula, camarão e lagosta: a partir de mil e quinhentos meticais!', marks: { priceA: 3.4 } },
-  { id: 'b06', text: 'Bife grelhado com molho demi-glace: mil e cem! Meia galinha cafreal: oitocentos!', marks: { priceA: 2.42, dishB: 3.6, priceB: 5.24 } },
-  { id: 'b07', text: 'Para petiscar: asinhas crocantes e pão de alho com queijo, a partir de trezentos e cinquenta!', marks: { asinhas: 1.11, pao: 2.21, priceA: 3.7 } },
-  { id: 'b08', text: 'E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!', marks: { priceA: 1.32, priceB: 2.95 } },
-  { id: 'b09', text: 'São mais de cento e trinta pratos e bebidas no nosso cardápio!', marks: {} },
+  { id: 'b03', text: 'Buffet à vontade, com bebidas e sobremesa incluídas: a partir de MIL E QUINHENTOS meticais por pessoa!', marks: { price: 0 } },
+  { id: 'b04', text: 'Com camarão e lulas: DOIS MIL! E com lagosta e camarão tigre: DOIS MIL E OITOCENTOS!', marks: { priceA: 1.55, dishB: 2.78, priceB: 4.56 } },
+  { id: 'b05', text: 'Chamuças, bife na panela, galinha à zambeziana, peixe grelhado e mousse de malambe… tudo no buffet!', marks: { w1: 0, w2: 0, w3: 0, w4: 0, w5: 0, tudo: 0 } },
+  { id: 'b06', text: 'Tagliatelle Carbonara, bem cremosa: novecentos e cinquenta! Lasanha de carne moída: setecentos!', marks: { priceA: 2.82, dishB: 4.9, priceB: 6.17 } },
+  { id: 'b07', text: 'E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!', marks: { priceA: 1.32, priceB: 2.95 } },
+  { id: 'b08', text: 'Bom Paladar Intense Girl: quatrocentos! Tequila Sunrise: quinhentos!', marks: { priceA: 0, dishB: 0, priceB: 0 } },
+  { id: 'b09', text: 'Vinhos, cervejas, gins e whiskies: são mais de cento e vinte pratos e bebidas no nosso cardápio!', marks: {} },
   {
     id: 'b10',
-    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: oitenta e sete... cento e oitenta e cinco... quarenta e quatro... dezassete! Bom Paladar: reserve JÁ!',
-    marks: { reserve: 1.96, n1: 4.16, n2: 5.44, n3: 7.07, n4: 8.24, brand: 9.49, cta: 10.67 },
+    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: oitenta e sete… zero seis dois… quarenta e cinco… sessenta e quatro! Bom Paladar: reserve JÁ!',
+    marks: { reserve: 0, n1: 0, n2: 0, n3: 0, n4: 0, brand: 0, cta: 0 },
   },
 ]
 
@@ -98,15 +98,14 @@ const B = blocks
 const cutsRaw = [
   ['intro', 0],
   ['local', B.b02.start - 0.05],
-  ['pizza1', B.b03.start - 0.05],
-  ['pizza2', B.b03.marks.dishB - 0.1],
-  ['massa1', B.b04.start - 0.05],
-  ['massa2', B.b04.marks.dishB - 0.1],
-  ['mariscos', B.b05.start - 0.05],
-  ['carne1', B.b06.start - 0.05],
-  ['carne2', B.b06.marks.dishB - 0.1],
-  ['petiscos', B.b07.start - 0.05],
-  ['bar', B.b08.start - 0.05],
+  ['buffet1', B.b03.start - 0.05],
+  ['buffet2', B.b04.start - 0.05],
+  ['buffet3', B.b04.marks.dishB - 0.1],
+  ['pratos', B.b05.start - 0.05],
+  ['massa1', B.b06.start - 0.05],
+  ['massa2', B.b06.marks.dishB - 0.1],
+  ['bar', B.b07.start - 0.05],
+  ['bar2', B.b08.start - 0.05],
   ['menu', B.b09.start - 0.05],
   ['website', B.b10.start - 0.05],
   ['cta', B.b10.marks.n1 - 0.12],
@@ -122,7 +121,7 @@ const sfx = [
   ...scenes.slice(1).map((s) => ({ file: 'sfx/whoosh.mp3', at: +(s.start - 0.42).toFixed(3), gain: -11 })),
   ...priceHits.map((p) => ({ file: 'sfx/logo.mp3', at: +(p.at - 0.05).toFixed(3), gain: -12 })),
   { file: 'sfx/logo.mp3', at: 0.3, gain: -6 },
-  { file: 'sfx/sizzle.mp3', at: scenes.find((s) => s.id === 'carne1').start + 0.1, gain: -9 },
+  { file: 'sfx/sizzle.mp3', at: scenes.find((s) => s.id === 'buffet2').start + 0.1, gain: -9 },
   { file: 'sfx/ice.mp3', at: scenes.find((s) => s.id === 'bar').start + 0.1, gain: -9 },
   { file: 'sfx/click.mp3', at: B.b10.marks.reserve + 0.6, gain: -12 },
   { file: 'sfx/logo.mp3', at: B.b10.marks.cta - 0.05, gain: -6 },

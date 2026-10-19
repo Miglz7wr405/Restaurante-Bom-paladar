@@ -1,6 +1,6 @@
 /* global gsap */
 /**
- * Composição do anúncio do Bom Paladar (v2: conduzida pela voz).
+ * Composição do anúncio do Bom Paladar (v3: menu de outubro de 2026, conduzida pela voz).
  *
  * Uma timeline GSAP em pausa. O render chama `await comp.seek(t)` em cada frame: tudo o que aparece
  * é função de `t` (tweens, partículas com seed fixa, grão, tremor de câmara, gravações do site),
@@ -21,6 +21,8 @@
   const BL = TL.blocks
   const PHOTO = (n) => `../assets/photos/${n}.jpg`
   const BOARD = (n) => `../assets/menu/${n}.jpg`
+  // Tamanho (px) de cada cardápio em assets/menu: as coordenadas das linhas a destacar são nesta escala
+  const BOARD_SIZE = { 'buffet-1500': [1195, 1600], pasta: [1195, 1600], cocktails: [1195, 1600], bebidas: [1200, 1600] }
 
   const stage = document.getElementById('stage')
   const scenesEl = document.getElementById('scenes')
@@ -170,11 +172,12 @@
 
   /** Cardápio real em ecrã inteiro: destaca as linhas do prato e faz zoom (na foto do cardápio, se houver). */
   function boardIntro(parent, board, t0, { rows = [], target, zoomAt, zoomDur = 0.5 }) {
-    const bw = V ? 1080 : 810
-    const bh = (bw * 1448) / 1086
+    const [nw, nh] = BOARD_SIZE[board] || [1086, 1448]
+    const bh = V ? (1080 * nh) / nw : 1020
+    const bw = (bh * nw) / nh
     const bx = (W - bw) / 2
     const by = (H - bh) / 2
-    const k = bw / 1086
+    const k = bw / nw
     const layer = add(parent, '<div class="layer"></div>')
     gsap.set(layer, { transformOrigin: `${C.x}px ${C.y}px` })
     add(layer, `<img src="${BOARD(board)}" alt="" style="position:absolute;left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.7)">`)
@@ -235,7 +238,7 @@
     add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 45}%, #3a2a10 0%, #16120b 40%, #0b0b0c 75%)"></div>`)
     // Montagem rápida por trás das palavras
     const mont = add(el, '<div class="layer"></div>')
-    const shots = ['pizza-double-stack', 'mariscada', 'carne-grelhada', 'cocktail-mojito', 'massa-carbonara']
+    const shots = ['buffet', 'lagosta', 'carbonara', 'mojito-cliente', 'galinha']
     const t1 = M.slogan
     const step = (e - t1) / shots.length
     shots.forEach((n, i) => {
@@ -361,113 +364,112 @@
   })()
 
   // =========================================================================
-  // 3. Pratos (cada um com nome, ingredientes e preço quando a voz o diz)
+  // 3. Buffet, massas e bar (nome, ingredientes e preço quando a voz o diz)
   // =========================================================================
-  const b3 = BL.b03
   ;(() => {
-    // Do cardápio para a mesa: linha "Double Stack" no cardápio de pizzas → zoom na foto → prato HD
-    const sc = scene('pizza1')
-    const zoomAt = sc.s + 0.55
-    boardIntro(sc.el, 'board1', sc.s, { rows: [[20, 1030, 790, 1135, sc.s + 0.12]], target: [840, 300, 1060, 580], zoomAt, zoomDur: 0.42 })
-    plateShot(sc, {
-      dishAt: zoomAt + 0.42, fromBoard: true, img: 'pizza-double-stack', bg: '#5c1f0c', ghost: 'Pizza', spin: 22, fx: ['steam', 'ember'],
-      kicker: 'Pizzaria da casa', name: 'Pizza Double Stack', chips: ['Duas camadas', 'Queijo creme', 'Carne ou frango'], price: 1000, priceAt: b3.marks.priceA,
-    })
-  })()
-  plateShot(scene('pizza2'), {
-    img: 'pizza-seafood-cliente', bg: '#5a2a0c', ghost: 'Pizza', spin: 22, fx: ['steam'],
-    kicker: 'Pizzaria da casa', name: 'Pizza Seafood', chips: ['Lula', 'Camarão', 'Ananás', 'Pimentos'], price: 700, priceAt: b3.marks.priceB,
-  })
-  plateShot(scene('massa1'), {
-    img: 'massa-carbonara', bg: '#4e3810', ghost: 'Massas', spin: 10, fx: ['steam'],
-    kicker: 'Massas &amp; lasanhas', name: 'Tagliatelle Carbonara', chips: ['Frango', 'Salsicha', 'Natas', 'Cogumelos'], price: 550, priceAt: BL.b04.marks.priceA,
-  })
-  plateShot(scene('massa2'), {
-    img: 'lasanha-carne', bg: '#5a2410', ghost: 'Lasanha', spin: 8, fx: ['steam'],
-    kicker: 'Massas &amp; lasanhas', name: 'Lasanha de Carne Moída', chips: ['Gratinada no forno'], price: 700, priceAt: BL.b04.marks.priceB,
-  })
-  ;(() => {
-    // Combos de mariscos: linhas "Aparelhada" no cardápio → prato
-    const sc = scene('mariscos')
+    // Do cardápio para a mesa: "Menu Buffet · 1.500,00 MTs p/ pessoa" no cardápio → foto do buffet
+    const sc = scene('buffet1')
     const zoomAt = sc.s + 1.0
-    boardIntro(sc.el, 'board3', sc.s, {
-      rows: [[560, 410, 1030, 455, sc.s + 0.15], [560, 460, 1030, 505, sc.s + 0.35], [560, 510, 1030, 560, sc.s + 0.55]],
-      target: [560, 380, 1030, 560], zoomAt, zoomDur: 0.4,
-    })
+    boardIntro(sc.el, 'buffet-1500', sc.s, { rows: [[685, 70, 1060, 310, sc.s + 0.15], [685, 318, 1045, 390, sc.s + 0.5]], target: [685, 70, 1060, 390], zoomAt, zoomDur: 0.42 })
     plateShot(sc, {
-      dishAt: zoomAt + 0.4, fromBoard: true, img: 'mariscada', bg: '#0d3b46', ghost: 'Mariscos', spin: 8, fx: ['bokeh'],
-      kicker: 'Combos de mariscos', name: 'Aparelhada de Mariscos', chips: ['Lula', 'Camarão', 'Lagosta'], price: 1500, from: true, priceAt: BL.b05.marks.priceA,
+      dishAt: zoomAt + 0.42, fromBoard: true, img: 'buffet', bg: '#5a3410', ghost: 'Buffet', spin: 8, fx: ['steam', 'ember'],
+      kicker: 'Buffet à vontade', name: 'Menu Buffet', chips: ['Bebidas incluídas', 'Sobremesa', 'Por pessoa'], price: 1500, from: true, priceAt: BL.b03.marks.price,
     })
   })()
-  plateShot(scene('carne1'), {
-    img: 'carne-grelhada', bg: '#5a1511', ghost: 'Grelhados', spin: 8, fx: ['steam', 'spark'],
-    kicker: 'Carnes', name: 'Bife Grelhado', chips: ['Molho demi-glace', 'Batata chips'], price: 1100, priceAt: BL.b06.marks.priceA,
+  plateShot(scene('buffet2'), {
+    img: 'camarao-tigre', bg: '#5a2a0c', ghost: 'Buffet', spin: 10, fx: ['steam', 'spark'],
+    kicker: 'Com camarão e lulas', name: 'Buffet 2.000', chips: ['Camarão', 'Lulas', 'Bebidas incluídas'], price: 2000, priceAt: BL.b04.marks.priceA,
   })
-  plateShot(scene('carne2'), {
-    img: 'real-meio-frango', card: true, bg: '#5a2a11', ghost: 'Aves', spin: 6, fx: ['spark'],
-    kicker: 'Aves', name: '½ Galinha Cafreal', chips: ['Ou frango grelhado', 'Batata frita'], price: 800, priceAt: BL.b06.marks.priceB,
+  plateShot(scene('buffet3'), {
+    img: 'lagosta', bg: '#0d3b46', ghost: 'Mariscos', spin: 8, fx: ['bokeh'],
+    kicker: 'Com lagosta e camarão tigre', name: 'Buffet 2.800', chips: ['Lagosta', 'Camarão tigre', 'Cabrito no forno'], price: 2800, priceAt: BL.b04.marks.priceB,
   })
 
-  // Petiscos: linhas no cardápio de entradas → asinhas e pão de alho (fotos reais)
+  // Pratos do buffet: um cartão (foto do cliente) por prato, quando a voz o diz
   ;(() => {
-    const { el, s, e } = scene('petiscos')
-    const m = BL.b07.marks
-    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 50}%, #4a2a10 0%, #1a120a 40%, #0b0b0c 75%)"></div>`)
-    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 300 : 340}px">Petiscos</div>`)
-    at(ghost, C.x, V ? 800 : 560)
+    const { el, s, e } = scene('pratos')
+    const m = BL.b05.marks
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 55}%, #4a2a10 0%, #1a120a 40%, #0b0b0c 75%)"></div>`)
+    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 300 : 340}px">Buffet</div>`)
+    at(ghost, C.x, V ? 800 : 600)
     tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: e - s, ease: 'none' }, s)
-    const zoomAt = m.asinhas - 0.45
-    boardIntro(el, 'board3', s, { rows: [[25, 150, 535, 188, s + 0.12], [25, 275, 535, 312, s + 0.4]], target: [25, 140, 535, 320], zoomAt, zoomDur: 0.4 })
-    const cards = V
-      ? [['real-asinhas', 'Asinhas crocantes', 300, 780, 470, 600, -4, m.asinhas], ['real-pao-alho', 'Pão de alho c/ queijo', 790, 820, 470, 600, 4, m.pao]]
-      : [['real-asinhas', 'Asinhas crocantes', 1080, 540, 500, 620, -4, m.asinhas], ['real-pao-alho', 'Pão de alho c/ queijo', 1600, 560, 500, 620, 4, m.pao]]
-    cards.forEach(([img, label, x, y, w, h, r, t]) => {
-      const c = makeCard(el, img, label, x, y, w, h, r)
-      tl.fromTo(c.wrap, { y: 500, rotation: r * 5, autoAlpha: 0, scale: 0.8 }, { y: 0, rotation: r, autoAlpha: 1, scale: 1, duration: 0.55, ease: 'expo.out' }, t - 0.1)
-      tl.to(c.wrap, { scale: 1.06, duration: e - t - 0.5, ease: 'sine.inOut' }, t + 0.45)
-      sweep(c, t + 0.6)
+    const items = [
+      ['salgados', 'Chamuças', m.w1],
+      ['bife-panela', 'Bife na panela', m.w2],
+      ['galinha', 'Galinha à zambeziana', m.w3],
+      ['peixe', 'Peixe grelhado', m.w4],
+      ['mousse', 'Mousse de malambe', m.w5],
+    ]
+    const pos = V
+      ? [[290, 720, -4], [790, 740, 4], [290, 1170, 3], [790, 1190, -3], [540, 1580, 2]]
+      : [[250, 610, -5], [605, 650, 3], [960, 610, -2], [1315, 650, 4], [1670, 610, -3]]
+    const cw = V ? 440 : 330
+    const ch = V ? 420 : 410
+    items.forEach(([img, label, t], i) => {
+      const [x, y, r] = pos[i]
+      const c = makeCard(el, img, label, x, y, cw, ch, r)
+      tl.fromTo(c.wrap, { y: 500, rotation: r * 5, autoAlpha: 0, scale: 0.8 }, { y: 0, rotation: r, autoAlpha: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, t - 0.1)
+      tl.to(c.wrap, { scale: 1.05, duration: Math.max(0.3, e - t - 0.5), ease: 'sine.inOut' }, t + 0.4)
+      sweep(c, t + 0.45)
       tl.to(c.wrap, { x: V ? -560 : -800, filter: 'blur(14px)', duration: 0.3, ease: 'power3.in' }, e - 0.3)
+      shakes.push({ t: t + 0.05, amp: 5, dur: 0.25 })
     })
-    const box = dishText(el, { kicker: 'Entradas &amp; petiscos', name: 'Para petiscar!', chips: ['Asinhas 400 MT', 'Pão de alho 350 MT'] }, m.asinhas - 0.15, V ? 1000 : 740)
-    tl.to(box, { autoAlpha: 0, x: -50, duration: 0.25, ease: 'power2.in' }, e - 0.27)
-    const tp = V ? { x: 540, y: 410 } : { x: 1340, y: 170 }
-    const tag = priceTag(el, 350, tp.x, tp.y, V ? 96 : 88, m.priceA, { from: true })
-    tl.to(tag, { autoAlpha: 0, scale: 0.6, duration: 0.22 }, e - 0.25)
+    const head = add(
+      el,
+      `<div class="abs" style="text-align:center;width:${V ? 1000 : 1600}px">
+        <div class="mask"><span class="kicker" style="font-size:${V ? 34 : 30}px">O que vai encontrar</span></div>
+        <div class="script gold-text hd" style="font-size:120px;padding:0 .25em;display:inline-block">Tudo no buffet!</div>
+      </div>`,
+    )
+    at(head, C.x, V ? 330 : 190)
+    rise(head.querySelector('.mask > span'), s + 0.1)
+    wipe(head.querySelector('.hd'), m.tudo - 0.1, 0.55)
+    tl.to(head, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
+    emit('steam', s + 0.3, e, { x: 0, y: H * 0.35, w: W, h: H * 0.2 }, 3, { layer: 'front' })
     emit('dust', s, e, { x: 0, y: 0, w: W, h: H }, 10)
   })()
 
-  // Bar: linhas Mojito e Piña Colada no cardápio de cocktails → os dois copos
   ;(() => {
-    const { el, s, e } = scene('bar')
-    const m = BL.b08.marks
-    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 50}%, #0b3d39 0%, #0a1f24 40%, #0b0b0c 78%)"></div>`)
-    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 280 : 340}px">Cocktails</div>`)
-    at(ghost, C.x, V ? 800 : 560)
-    tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: e - s, ease: 'none' }, s)
-    boardIntro(el, 'board4', s, { rows: [[570, 776, 1050, 896, s + 0.08], [570, 912, 1050, 1028, s + 0.25]], target: [570, 770, 1050, 1030], zoomAt: m.priceA - 0.45, zoomDur: 0.38 })
-    const glasses = V
-      ? [['cocktail-mojito', 300, 800, 600, m.priceA, 'Mojito'], ['cocktail-pina-colada', 790, 780, 600, m.priceB, 'Piña Colada']]
-      : [['cocktail-mojito', 1150, 600, 620, m.priceA, 'Mojito'], ['cocktail-pina-colada', 1620, 570, 620, m.priceB, 'Piña Colada']]
-    const prices = [300, 450]
-    glasses.forEach(([img, x, y, size, t, label], i) => {
+    // Do cardápio para a mesa: linha "Massa Tagliatelle Carbonara" no Menu Pasta → prato
+    const sc = scene('massa1')
+    const zoomAt = sc.s + 0.55
+    boardIntro(sc.el, 'pasta', sc.s, { rows: [[118, 505, 840, 590, sc.s + 0.12]], target: [118, 505, 840, 590], zoomAt, zoomDur: 0.42 })
+    plateShot(sc, {
+      dishAt: zoomAt + 0.42, fromBoard: true, img: 'carbonara', bg: '#4e3810', ghost: 'Pasta', spin: 10, fx: ['steam'],
+      kicker: 'Menu Pasta', name: 'Tagliatelle Carbonara', chips: ['Peito de frango', 'Salsicha', 'Natas', 'Cogumelos'], price: 950, priceAt: BL.b06.marks.priceA,
+    })
+  })()
+  plateShot(scene('massa2'), {
+    img: 'lasanha-carne-cliente', bg: '#5a2410', ghost: 'Lasanha', spin: 8, fx: ['steam'],
+    kicker: 'Lasanhas', name: 'Lasanha de Carne Moída', chips: ['Gratinada no forno', 'Também de frango ou legumes'], price: 700, priceAt: BL.b06.marks.priceB,
+  })
+
+  /** Dois copos lado a lado: cada um entra com o nome e leva o preço quando a voz o diz. */
+  function glassPair(el, e, items) {
+    const pos = V ? [[300, 800, 600], [790, 780, 600]] : [[1150, 600, 620], [1620, 570, 620]]
+    items.forEach(({ img, label, at: t, price, priceAt }, i) => {
+      const [x, y, size] = pos[i]
       const d = makeDish(el, img, x, y, size)
       tl.fromTo(d.wrap, { y: 600, scale: 0.6, autoAlpha: 0, filter: 'blur(10px)' }, { y: 0, scale: 1, autoAlpha: 1, filter: 'blur(0px)', duration: 0.5, ease: 'expo.out' }, t - 0.12)
-      tl.to(d.wrap, { scale: 1.08, y: -12, duration: e - t - 0.45, ease: 'sine.inOut' }, t + 0.38)
+      tl.to(d.wrap, { scale: 1.08, y: -12, duration: Math.max(0.3, e - t - 0.45), ease: 'sine.inOut' }, t + 0.38)
       tl.to(d.wrap, { x: V ? -560 : -800, filter: 'blur(14px)', duration: 0.3, ease: 'power3.in' }, e - 0.3)
       sweep(d, t + 0.5)
       const nm = add(el, `<div class="abs oswald nowrap" style="font-size:${V ? 54 : 50}px">${label}</div>`)
       at(nm, x, y + size * 0.47)
       slam(nm, t, { shake: 0, flash: 0 })
       tl.to(nm, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
-      const tag = priceTag(el, prices[i], x + size * 0.28, y - size * 0.36, V ? 84 : 78, t + 0.55)
+      const tag = priceTag(el, price, x + size * 0.28, y - size * 0.36, V ? 84 : 78, priceAt)
       tl.to(tag, { autoAlpha: 0, scale: 0.6, duration: 0.22 }, e - 0.25)
       emit('bubbles', t + 0.2, e, { x: x - size * 0.12, y: y - size * 0.05, w: size * 0.24, h: size * 0.25 }, 16, { layer: 'front' })
     })
+  }
+  /** Título do lado esquerdo (16:9) ou em baixo (9:16): categoria + palavra em script. */
+  function barHead(el, s, e, kicker, word) {
     const head = add(
       el,
       `<div class="abs" style="text-align:${V ? 'center' : 'left'};width:${V ? 1000 : 700}px">
-        <div class="mask"><span class="kicker" style="font-size:${V ? 34 : 30}px">Bar &amp; cocktails</span></div>
-        <div class="script gold-text hd" style="font-size:${V ? 120 : 130}px;padding:0 .25em;display:inline-block">E no bar…</div>
+        <div class="mask"><span class="kicker" style="font-size:${V ? 34 : 30}px">${kicker}</span></div>
+        <div class="script gold-text hd" style="font-size:${V ? 120 : 130}px;padding:0 .25em;display:inline-block">${word}</div>
       </div>`,
     )
     if (V) gsap.set(head, { left: 40, top: 1280 })
@@ -475,24 +477,56 @@
     rise(head.querySelector('.mask > span'), s + 0.1)
     wipe(head.querySelector('.hd'), s + 0.15, 0.6)
     tl.to(head, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
+  }
+
+  // Bar: linhas Mojito e Piña Colada no cardápio de cocktails → os dois copos
+  ;(() => {
+    const { el, s, e } = scene('bar')
+    const m = BL.b07.marks
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 50}%, #0b3d39 0%, #0a1f24 40%, #0b0b0c 78%)"></div>`)
+    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 280 : 340}px">Cocktails</div>`)
+    at(ghost, C.x, V ? 800 : 560)
+    tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: e - s, ease: 'none' }, s)
+    boardIntro(el, 'cocktails', s, { rows: [[140, 1025, 590, 1170, s + 0.08], [637, 868, 1070, 985, s + 0.25]], target: [140, 868, 1070, 1170], zoomAt: m.priceA - 0.45, zoomDur: 0.38 })
+    glassPair(el, e, [
+      { img: 'mojito-cliente', label: 'Mojito', at: m.priceA, price: 300, priceAt: m.priceA + 0.55 },
+      { img: 'pina-colada-cliente', label: 'Piña Colada', at: m.priceB, price: 450, priceAt: m.priceB + 0.55 },
+    ])
+    barHead(el, s, e, 'Bar &amp; cocktails', 'E no bar…')
+    emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 3, { layer: 'front' })
+  })()
+
+  // Cocktails de assinatura: Intense Girl e Tequila Sunrise
+  ;(() => {
+    const { el, s, e } = scene('bar2')
+    const m = BL.b08.marks
+    add(el, `<div class="layer" style="background:radial-gradient(circle at 50% ${V ? 42 : 50}%, #4a0f2e 0%, #24101c 40%, #0b0b0c 78%)"></div>`)
+    const ghost = add(el, `<div class="abs ghost" style="font-size:${V ? 280 : 340}px">Cocktails</div>`)
+    at(ghost, C.x, V ? 800 : 560)
+    tl.fromTo(ghost, { x: 140, autoAlpha: 0 }, { x: -140, autoAlpha: 1, duration: e - s, ease: 'none' }, s)
+    glassPair(el, e, [
+      { img: 'intense-girl', label: 'Intense Girl', at: s + 0.15, price: 400, priceAt: m.priceA },
+      { img: 'tequila-sunrise', label: 'Tequila Sunrise', at: m.dishB, price: 500, priceAt: m.priceB },
+    ])
+    barHead(el, s, e, 'Cocktails de assinatura', 'Da casa!')
     emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 3, { layer: 'front' })
   })()
 
   // =========================================================================
-  // 4. Cardápio: 4 cardápios reais + 135 + o menu no telemóvel
+  // 4. Cardápio: 5 cardápios reais + 126 + o menu no telemóvel
   // =========================================================================
   ;(() => {
     const { el, s, e } = scene('menu')
     add(el, `<div class="layer" style="background:radial-gradient(circle at 50% 45%, #2c2414 0%, #121110 45%, #0b0b0c 78%)"></div>`)
-    const B = V ? { x: 540, y: 980, w: 330, gap: 190 } : { x: 600, y: 560, w: 400, gap: 200 }
+    const B = V ? { x: 540, y: 980, w: 300, gap: 150 } : { x: 600, y: 560, w: 360, gap: 165 }
     const persp = add(el, '<div class="layer" style="perspective:1800px"></div>')
     const group = add(persp, '<div class="layer" style="transform-style:preserve-3d"></div>')
     gsap.set(group, { transformOrigin: `${B.x}px ${B.y}px` })
-    ;[1, 2, 3, 4].forEach((i) => {
-      const b = add(group, `<div class="board" style="width:${B.w}px;height:${B.w * 1.3333}px"><img src="${BOARD('board' + i)}" alt=""></div>`)
+    ;['buffet-1500', 'pasta', 'cocktails', 'vinhos', 'bebidas'].forEach((n, i) => {
+      const b = add(group, `<div class="board" style="width:${B.w}px;height:${B.w * 1.339}px"><img src="${BOARD(n)}" alt=""></div>`)
       at(b, B.x, B.y)
-      const k = i - 2.5
-      tl.fromTo(b, { y: H * 0.9, rotationX: 55, rotation: k * 18, autoAlpha: 0 }, { x: k * B.gap, y: Math.abs(k) * 30, rotationY: -k * 14, rotation: k * 5, z: -Math.abs(k) * 80, rotationX: 0, autoAlpha: 1, duration: 0.7, ease: 'expo.out' }, s + (i - 1) * 0.07)
+      const k = i - 2
+      tl.fromTo(b, { y: H * 0.9, rotationX: 55, rotation: k * 18, autoAlpha: 0 }, { x: k * B.gap, y: Math.abs(k) * 30, rotationY: -k * 14, rotation: k * 5, z: -Math.abs(k) * 80, rotationX: 0, autoAlpha: 1, duration: 0.7, ease: 'expo.out' }, s + i * 0.07)
     })
     tl.fromTo(group, { rotationY: -6 }, { rotationY: 6, duration: 1.6, ease: 'sine.inOut' }, s + 0.6)
     // O menu no site (telemóvel) substitui os cardápios
@@ -510,11 +544,11 @@
     at(counter, CT.x, CT.y)
     const label = add(el, `<div class="abs oswald nowrap" style="font-size:${V ? 50 : 54}px;font-weight:600;letter-spacing:.06em">Pratos &amp; bebidas</div>`)
     at(label, CT.x, CT.y + (V ? 150 : 195))
-    const sub = add(el, `<div class="abs nowrap" style="font:600 ${V ? 30 : 32}px Inter;color:var(--gold-300)">${icon('list', '', 'width:1.1em;height:1.1em;vertical-align:-.2em')} 16 secções · fotos e preços</div>`)
+    const sub = add(el, `<div class="abs nowrap" style="font:600 ${V ? 30 : 32}px Inter;color:var(--gold-300)">${icon('list', '', 'width:1.1em;height:1.1em;vertical-align:-.2em')} 17 secções · fotos e preços</div>`)
     at(sub, CT.x, CT.y + (V ? 210 : 265))
     const o = { n: 0 }
     pop(counter, s + 0.15, { y: 0 })
-    tl.to(o, { n: 135, duration: 1.5, ease: 'power2.out', onUpdate: () => (counter.textContent = String(Math.round(o.n))) }, s + 0.2)
+    tl.to(o, { n: 126, duration: 1.5, ease: 'power2.out', onUpdate: () => (counter.textContent = String(Math.round(o.n))) }, s + 0.2)
     tl.fromTo(counter, { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 1.0, ease: 'power1.inOut' }, s + 1.7)
     pop(label, s + 0.5)
     pop(sub, s + 0.9)
@@ -563,7 +597,7 @@
     const chips = add(
       el,
       `<div class="abs" style="display:flex;flex-direction:column;gap:18px;align-items:${V ? 'center' : 'flex-start'};width:${V ? 1000 : 520}px;font-size:${V ? 40 : 36}px">
-        <span class="chip">${icon('list')} 135 pratos com preços</span>
+        <span class="chip">${icon('list')} 126 pratos e bebidas com preços</span>
         <span class="chip wa">${icon('whatsapp', 'ic')} Reserva pelo WhatsApp</span>
       </div>`,
     )
@@ -595,7 +629,7 @@
     const num = add(
       el,
       `<div class="abs oswald nowrap" style="font-size:${L.num[2]}px;display:flex;gap:.28em;letter-spacing:.02em">
-        <span class="g">87</span><span class="g">185</span><span class="g">44</span><span class="g">17</span></div>`,
+        <span class="g">87</span><span class="g">062</span><span class="g">45</span><span class="g">64</span></div>`,
     )
     at(num, L.num[0], L.num[1])
     const groups = num.querySelectorAll('.g')
@@ -637,11 +671,11 @@
 
   // ---- Faixa de informação fixa (nos pratos) ------------------------------------
   ;(() => {
-    const t0 = S.pizza1.start + 1.2
+    const t0 = S.buffet1.start + 1.2
     const t1 = S.menu.start
     const bar = add(
       overlay,
-      `<div class="infobar" style="font-size:${V ? 27 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 87 185 4417</div>`,
+      `<div class="infobar" style="font-size:${V ? 27 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 87 062 4564</div>`,
     )
     if (V) at(bar, C.x, 262)
     else gsap.set(bar, { left: 60, top: 1000, yPercent: -50 })
@@ -651,7 +685,7 @@
   })()
 
   // Faixas douradas a varrer entre dois pratos do mesmo bloco
-  ;['pizza2', 'massa2', 'carne2', 'website'].forEach((id) => wipes.push({ t: S[id].start, dur: 0.38 }))
+  ;['buffet2', 'buffet3', 'massa2', 'bar2', 'website'].forEach((id) => wipes.push({ t: S[id].start, dur: 0.38 }))
 
   tl.set({}, {}, TL.duration)
 
