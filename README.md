@@ -63,7 +63,7 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 ## Vídeo publicitário (`video/`)
 
-Anúncio de ~68 s em **16:9** (1920×1080, YouTube/Facebook), feito para o menu de outubro de 2026. É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Dinis", sotaque de Portugal, ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros. A composição também tem um layout 9:16, mas não foi revista para este menu.
+Anúncio de ~68 s em dois formatos, feito para o menu de outubro de 2026: **16:9** (1920×1080, YouTube/Facebook) e **9:16** (1080×1920, Reels/TikTok/Status). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Dinis", sotaque de Portugal, ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros.
 
 Ordem do vídeo, conduzida pela voz:
 1. Logótipo e "O sabor que Quelimane adora!", com uma montagem das fotos do restaurante.
@@ -101,9 +101,10 @@ cd video && npm install
 export NODE_PATH=$(npm root -g)               # Playwright instalado globalmente
 node scripts/capture-site.cjs                 # gravações do site
 node scripts/build-timeline.cjs
+node scripts/render.cjs --format 9x16 --workers 4
 node scripts/render.cjs --format 16x9 --workers 4
 node scripts/mix.cjs
-bash scripts/encode.sh 16x9
+bash scripts/encode.sh 9x16 && bash scripts/encode.sh 16x9
 ```
 
 **Licença do áudio:** a voz, a música e os efeitos foram gerados numa conta ElevenLabs. Para uso comercial (anúncios pagos), a conta tem de estar num plano pago no momento da geração. Se o áudio foi gerado no plano gratuito, gere-o de novo depois do upgrade e volte a correr `build-timeline`, `render`, `mix` e `encode`.

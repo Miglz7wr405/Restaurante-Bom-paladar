@@ -403,10 +403,10 @@
       ['mousse', 'Mousse de malambe', m.w5],
     ]
     const pos = V
-      ? [[290, 720, -4], [790, 740, 4], [290, 1170, 3], [790, 1190, -3], [540, 1580, 2]]
+      ? [[295, 740, -4], [785, 755, 4], [295, 1150, 3], [785, 1165, -3], [540, 1600, 2]]
       : [[250, 610, -5], [605, 650, 3], [960, 610, -2], [1315, 650, 4], [1670, 610, -3]]
-    const cw = V ? 440 : 330
-    const ch = V ? 420 : 410
+    const cw = V ? 430 : 330
+    const ch = V ? 400 : 410
     items.forEach(([img, label, t], i) => {
       const [x, y, r] = pos[i]
       const c = makeCard(el, img, label, x, y, cw, ch, r)
@@ -423,7 +423,7 @@
         <div class="script gold-text hd" style="font-size:120px;padding:0 .25em;display:inline-block">Tudo no buffet!</div>
       </div>`,
     )
-    at(head, C.x, V ? 330 : 190)
+    at(head, C.x, V ? 410 : 190)
     rise(head.querySelector('.mask > span'), s + 0.1)
     wipe(head.querySelector('.hd'), m.tudo - 0.1, 0.55)
     tl.to(head, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
@@ -448,7 +448,7 @@
 
   /** Dois copos lado a lado: cada um entra com o nome e leva o preço quando a voz o diz. */
   function glassPair(el, e, items) {
-    const pos = V ? [[300, 800, 600], [790, 780, 600]] : [[1150, 600, 620], [1620, 570, 620]]
+    const pos = V ? [[290, 800, 500], [790, 780, 500]] : [[1150, 600, 620], [1620, 570, 620]]
     items.forEach(({ img, label, at: t, price, priceAt }, i) => {
       const [x, y, size] = pos[i]
       const d = makeDish(el, img, x, y, size)
@@ -460,7 +460,7 @@
       at(nm, x, y + size * 0.47)
       slam(nm, t, { shake: 0, flash: 0 })
       tl.to(nm, { autoAlpha: 0, duration: 0.2 }, e - 0.25)
-      const tag = priceTag(el, price, x + size * 0.28, y - size * 0.36, V ? 84 : 78, priceAt)
+      const tag = priceTag(el, price, x + size * (V ? 0.2 : 0.28), y - size * 0.36, V ? 76 : 78, priceAt)
       tl.to(tag, { autoAlpha: 0, scale: 0.6, duration: 0.22 }, e - 0.25)
       emit('bubbles', t + 0.2, e, { x: x - size * 0.12, y: y - size * 0.05, w: size * 0.24, h: size * 0.25 }, 16, { layer: 'front' })
     })
@@ -494,7 +494,8 @@
       { img: 'mojito-cliente', label: 'Mojito', at: m.priceA, price: 300, priceAt: m.priceA + 0.55 },
       { img: 'pina-colada-cliente', label: 'Piña Colada', at: m.priceB, price: 450, priceAt: m.priceB + 0.55 },
     ])
-    barHead(el, s, e, 'Bar &amp; cocktails', 'E no bar…')
+    // 9:16: o título ficava por cima do cardápio, por isso só entra depois do zoom
+    barHead(el, V ? m.priceA - 0.1 : s, e, 'Bar &amp; cocktails', 'E no bar…')
     emit('bokeh', s - 1, e, { x: 0, y: 0, w: W, h: H }, 3, { layer: 'front' })
   })()
 
