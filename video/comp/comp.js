@@ -211,7 +211,9 @@
       ? makeCard(el, cfg.img, null, P.x, P.y, V ? 820 : 760, V ? 820 : 760, -3)
       : makeDish(el, cfg.img, P.x, P.y, P.size)
     const inFrom = cfg.fromBoard ? { x: 0, scale: 0.35, rotation: 0, filter: 'blur(6px)', autoAlpha: 0.4 } : { x: V ? 560 : 800, scale: 1.5, rotation: cfg.spin || 10, filter: 'blur(18px)', autoAlpha: 0 }
-    tl.fromTo(dish.wrap, inFrom, { x: 0, scale: 1, rotation: cfg.card ? -3 : 0, filter: 'blur(0px)', autoAlpha: 1, duration: 0.55, ease: 'expo.out' }, t0)
+    // Vindo do cardápio: o prato só existe a partir do zoom (sem isto ficava visível, pequeno, por cima do cardápio)
+    if (cfg.fromBoard) gsap.set(dish.wrap, { autoAlpha: 0 })
+    tl.fromTo(dish.wrap, inFrom, { x: 0, scale: 1, rotation: cfg.card ? -3 : 0, filter: 'blur(0px)', autoAlpha: 1, duration: 0.55, ease: 'expo.out', immediateRender: !cfg.fromBoard }, t0)
     tl.to(dish.wrap, { scale: 1.1, rotation: (cfg.card ? -3 : 0) + (cfg.spin > 15 ? 8 : 3), y: -16, duration: Math.max(0.5, e - t0 - 0.85), ease: 'sine.inOut' }, t0 + 0.55)
     tl.to(dish.wrap, { x: V ? -560 : -800, scale: 1.25, filter: 'blur(16px)', duration: 0.3, ease: 'power3.in' }, e - 0.3)
     sweep(dish, t0 + 0.7)
@@ -597,7 +599,7 @@
     const chips = add(
       el,
       `<div class="abs" style="display:flex;flex-direction:column;gap:18px;align-items:${V ? 'center' : 'flex-start'};width:${V ? 1000 : 520}px;font-size:${V ? 40 : 36}px">
-        <span class="chip">${icon('list')} 126 pratos e bebidas com preços</span>
+        <span class="chip">${icon('list')} 126 pratos e bebidas</span>
         <span class="chip wa">${icon('whatsapp', 'ic')} Reserva pelo WhatsApp</span>
       </div>`,
     )
@@ -613,7 +615,7 @@
   })()
 
   // =========================================================================
-  // 6. Final: WhatsApp com o número (dito pela voz), logótipo e RESERVE JÁ
+  // 6. Final: WhatsApp com o número (um grupo por batida), logótipo e RESERVE JÁ
   // =========================================================================
   ;(() => {
     const { el, s, e } = scene('cta')

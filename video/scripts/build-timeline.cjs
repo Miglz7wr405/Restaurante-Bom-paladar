@@ -34,17 +34,19 @@ const VO_DIR = 'vo4' // voz Dinis (sotaque de Portugal), eleven_v3; b01, b02 e b
 const BLOCKS = [
   { id: 'b01', text: 'Bom Paladar, Restaurante e Bar! O sabor que Quelimane ADORA!', marks: { slogan: 2.1 } },
   { id: 'b02', text: 'Na Rua Robert Mugabe, aberto até à meia-noite, com nota quatro vírgula três no Google!', marks: { open: 2.38, rating: 4.08 } },
-  { id: 'b03', text: 'Buffet à vontade, com bebidas e sobremesa incluídas: a partir de MIL E QUINHENTOS meticais por pessoa!', marks: { price: 0 } },
+  { id: 'b03', text: 'Buffet à vontade, com bebidas e sobremesa incluídas: a partir de MIL E QUINHENTOS meticais por pessoa!', marks: { price: 4.04 } },
   { id: 'b04', text: 'Com camarão e lulas: DOIS MIL! E com lagosta e camarão tigre: DOIS MIL E OITOCENTOS!', marks: { priceA: 1.55, dishB: 2.78, priceB: 4.56 } },
-  { id: 'b05', text: 'Chamuças, bife na panela, galinha à zambeziana, peixe grelhado e mousse de malambe… tudo no buffet!', marks: { w1: 0, w2: 0, w3: 0, w4: 0, w5: 0, tudo: 0 } },
+  { id: 'b05', text: 'Chamuças, bife na panela, galinha à zambeziana, peixe grelhado e mousse de malambe… tudo no buffet!', marks: { w1: 0.05, w2: 0.86, w3: 1.97, w4: 3.34, w5: 4.26, tudo: 5.72 } },
   { id: 'b06', text: 'Tagliatelle Carbonara, bem cremosa: novecentos e cinquenta! Lasanha de carne moída: setecentos!', marks: { priceA: 2.82, dishB: 4.9, priceB: 6.17 } },
   { id: 'b07', text: 'E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!', marks: { priceA: 1.32, priceB: 2.95 } },
-  { id: 'b08', text: 'Bom Paladar Intense Girl: quatrocentos! Tequila Sunrise: quinhentos!', marks: { priceA: 0, dishB: 0, priceB: 0 } },
+  { id: 'b08', text: 'Bom Paladar Intense Girl: quatrocentos! Tequila Sunrise: quinhentos!', marks: { priceA: 2.42, dishB: 3.78, priceB: 5.11 } },
   { id: 'b09', text: 'Vinhos, cervejas, gins e whiskies: são mais de cento e vinte pratos e bebidas no nosso cardápio!', marks: {} },
+  // b10 montado a partir do take do vo3 (mesma voz): a frase de abertura e "Bom Paladar: reserve JÁ!", sem o número
+  // antigo; o número novo (87 062 45 64) entra só no ecrã, um grupo por batida, no silêncio entre as duas frases.
   {
     id: 'b10',
-    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: oitenta e sete… zero seis dois… quarenta e cinco… sessenta e quatro! Bom Paladar: reserve JÁ!',
-    marks: { reserve: 0, n1: 0, n2: 0, n3: 0, n4: 0, brand: 0, cta: 0 },
+    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: [87 062 45 64 no ecrã] Bom Paladar: reserve JÁ!',
+    marks: { reserve: 1.96, n1: 4.211, n2: 4.748, n3: 5.285, n4: 5.822, brand: 6.896, cta: 8.076 },
   },
 ]
 
@@ -108,7 +110,7 @@ const cutsRaw = [
   ['bar2', B.b08.start - 0.05],
   ['menu', B.b09.start - 0.05],
   ['website', B.b10.start - 0.05],
-  ['cta', B.b10.marks.n1 - 0.12],
+  ['cta', B.b10.marks.n1 - 0.25],
 ]
 const scenes = cutsRaw.map(([id, s], i) => ({ id, start: i === 0 ? 0 : +snap(s).toFixed(3) }))
 scenes.forEach((s, i) => (s.end = i + 1 < scenes.length ? scenes[i + 1].start : DURATION))
@@ -124,6 +126,7 @@ const sfx = [
   { file: 'sfx/sizzle.mp3', at: scenes.find((s) => s.id === 'buffet2').start + 0.1, gain: -9 },
   { file: 'sfx/ice.mp3', at: scenes.find((s) => s.id === 'bar').start + 0.1, gain: -9 },
   { file: 'sfx/click.mp3', at: B.b10.marks.reserve + 0.6, gain: -12 },
+  ...['n1', 'n2', 'n3', 'n4'].map((k, i) => ({ file: 'sfx/logo.mp3', at: +(B.b10.marks[k] - 0.05).toFixed(3), gain: i === 3 ? -10 : -13 })),
   { file: 'sfx/logo.mp3', at: B.b10.marks.cta - 0.05, gain: -6 },
 ]
 

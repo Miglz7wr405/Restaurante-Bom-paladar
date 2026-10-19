@@ -63,25 +63,22 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 
 ## Vídeo publicitário (`video/`)
 
-Anúncio de ~68 s em dois formatos: **9:16** (1080×1920, Reels/TikTok/Status) e **16:9** (1920×1080, YouTube/Facebook). É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Dinis", sotaque de Portugal, ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros.
-
-> **Atenção:** o vídeo foi feito com o menu anterior (pizzas, mariscos à la carte, carbonara a 550 MT) e o número antigo (87 185 4417). Para o atualizar ao menu novo é preciso refazer o guião, a voz e a gravação do site.
+Anúncio de ~68 s em **16:9** (1920×1080, YouTube/Facebook), feito para o menu de outubro de 2026. É motion design em HTML/CSS/GSAP, renderizado frame a frame (30 fps) com o Chromium do Playwright. Locução energética contínua (voz "Dinis", sotaque de Portugal, ElevenLabs `eleven_v3`), música afro-house e efeitos sonoros. A composição também tem um layout 9:16, mas não foi revista para este menu.
 
 Ordem do vídeo, conduzida pela voz:
-1. Logótipo e "O sabor que Quelimane adora!".
+1. Logótipo e "O sabor que Quelimane adora!", com uma montagem das fotos do restaurante.
 2. Morada, horário e ★ 4,3 no Google.
 3. **Pratos com nome e preço lidos pela voz e mostrados no ecrã quando são ditos:**
-   - Pizza Double Stack e Pizza Seafood
-   - Tagliatelle Carbonara e Lasanha
-   - Aparelhada de mariscos
-   - Bife grelhado e ½ galinha cafreal
-   - Petiscos
-   - Mojito e Piña Colada
-4. 135 pratos e bebidas no menu do site.
+   - Buffet à vontade a partir de 1.500 MT, Buffet 2.000 e Buffet 2.800
+   - O que há no buffet: chamuças, bife na panela, galinha à zambeziana, peixe grelhado e mousse de malambe
+   - Tagliatelle Carbonara (950 MT) e Lasanha de carne moída (700 MT)
+   - Mojito (300 MT) e Piña Colada (450 MT)
+   - Bom Paladar Intense Girl (400 MT) e Tequila Sunrise (500 MT)
+4. Os cardápios novos e os 126 pratos e bebidas do menu do site (17 secções).
 5. O website, com a reserva preenchida.
-6. Final com WhatsApp (número lido pela voz) e **RESERVE JÁ**.
+6. Final com o WhatsApp 87 062 45 64 (um grupo por batida, no ecrã) e **RESERVE JÁ**.
 
-Vários pratos entram "do cardápio para a mesa": aparece o cardápio impresso real, a linha do prato fica destacada e a câmara faz zoom até ao prato.
+O Buffet 1.500, o Menu Pasta e os cocktails entram "do cardápio para a mesa": aparece o cardápio impresso real, as linhas do prato ficam destacadas e a câmara faz zoom até à foto. Todas as fotos são do restaurante.
 
 O guião, os tempos de cada prato e de cada preço estão em `video/scripts/build-timeline.cjs` (`BLOCKS`).
 
@@ -96,7 +93,7 @@ O guião, os tempos de cada prato e de cada preço estão em `video/scripts/buil
 | `video/scripts/mix.cjs` | Mistura voz + música (com ducking) + efeitos, normaliza a −14 LUFS / −1 dBTP |
 | `video/scripts/encode.sh` | Junta frames e áudio num MP4 H.264/AAC (máximo, HD < 30 MB e leve) e tira a capa |
 
-Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo3/b01..b10.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/board1..4.jpg`, e depois:
+Os ficheiros de áudio, as gravações do site e os renders não estão no Git (`video/assets/`, `video/out/`). Para voltar a renderizar, coloque o áudio em `video/assets/audio/` (`vo4/b01..b10.mp3`, `music/music.mp3`, `sfx/*.mp3`), as fotos em `video/assets/photos/` e os cardápios em `video/assets/menu/` (`buffet-1500`, `pasta`, `cocktails`, `vinhos` e `bebidas`, em `.jpg`), e depois:
 
 ```bash
 npm run build && npx vite preview &           # site em http://localhost:4173
@@ -104,10 +101,9 @@ cd video && npm install
 export NODE_PATH=$(npm root -g)               # Playwright instalado globalmente
 node scripts/capture-site.cjs                 # gravações do site
 node scripts/build-timeline.cjs
-node scripts/render.cjs --format 9x16 --workers 4
 node scripts/render.cjs --format 16x9 --workers 4
 node scripts/mix.cjs
-bash scripts/encode.sh 9x16 && bash scripts/encode.sh 16x9
+bash scripts/encode.sh 16x9
 ```
 
 **Licença do áudio:** a voz, a música e os efeitos foram gerados numa conta ElevenLabs. Para uso comercial (anúncios pagos), a conta tem de estar num plano pago no momento da geração. Se o áudio foi gerado no plano gratuito, gere-o de novo depois do upgrade e volte a correr `build-timeline`, `render`, `mix` e `encode`.

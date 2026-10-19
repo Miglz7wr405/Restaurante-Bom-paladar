@@ -158,71 +158,74 @@
     },
     "b03": {
       "start": 11.378,
-      "end": 20.606,
+      "end": 17.909,
       "marks": {
-        "priceA": 15.301,
-        "dishB": 17.181,
-        "priceB": 19.711
+        "price": 15.418
       }
     },
     "b04": {
-      "start": 20.706,
-      "end": 27.263,
+      "start": 18.009,
+      "end": 23.832,
       "marks": {
-        "priceA": 23.494,
-        "dishB": 24.904,
-        "priceB": 26.424
+        "priceA": 19.505,
+        "dishB": 20.735,
+        "priceB": 22.515
       }
     },
     "b05": {
-      "start": 27.363,
-      "end": 32.632,
+      "start": 23.932,
+      "end": 30.358,
       "marks": {
-        "priceA": 30.703
+        "w1": 23.982,
+        "w2": 24.792,
+        "w3": 25.902,
+        "w4": 27.272,
+        "w5": 28.192,
+        "tudo": 29.652
       }
     },
     "b06": {
-      "start": 32.732,
-      "end": 38.688,
+      "start": 30.458,
+      "end": 37.485,
       "marks": {
-        "priceA": 35.152,
-        "dishB": 36.332,
-        "priceB": 37.972
+        "priceA": 33.226,
+        "dishB": 35.306,
+        "priceB": 36.576
       }
     },
     "b07": {
-      "start": 38.788,
-      "end": 44.012,
+      "start": 37.585,
+      "end": 42.986,
       "marks": {
-        "asinhas": 39.793,
-        "pao": 40.893,
-        "priceA": 42.383
+        "priceA": 38.82,
+        "priceB": 40.45
       }
     },
     "b08": {
-      "start": 44.112,
-      "end": 49.513,
+      "start": 43.086,
+      "end": 48.885,
       "marks": {
-        "priceA": 45.347,
-        "priceB": 46.977
+        "priceA": 45.506,
+        "dishB": 46.866,
+        "priceB": 48.196
       }
     },
     "b09": {
-      "start": 49.613,
-      "end": 53.166,
+      "start": 48.985,
+      "end": 54.627,
       "marks": {}
     },
     "b10": {
-      "start": 53.266,
-      "end": 64.655,
+      "start": 54.727,
+      "end": 63.53,
       "marks": {
-        "reserve": 55.226,
-        "n1": 57.426,
-        "n2": 58.706,
-        "n3": 60.336,
-        "n4": 61.506,
-        "brand": 62.756,
-        "cta": 63.936
+        "reserve": 56.687,
+        "n1": 58.938,
+        "n2": 59.475,
+        "n3": 60.012,
+        "n4": 60.549,
+        "brand": 61.623,
+        "cta": 62.803
       }
     }
   },
@@ -230,18 +233,23 @@
     "slogan": 2.45,
     "open": 6.78,
     "rating": 8.48,
-    "priceA": 45.347,
-    "dishB": 36.332,
-    "priceB": 46.977,
-    "asinhas": 39.793,
-    "pao": 40.893,
-    "reserve": 55.226,
-    "n1": 57.426,
-    "n2": 58.706,
-    "n3": 60.336,
-    "n4": 61.506,
-    "brand": 62.756,
-    "cta": 63.936
+    "price": 15.418,
+    "priceA": 45.506,
+    "dishB": 46.866,
+    "priceB": 48.196,
+    "w1": 23.982,
+    "w2": 24.792,
+    "w3": 25.902,
+    "w4": 27.272,
+    "w5": 28.192,
+    "tudo": 29.652,
+    "reserve": 56.687,
+    "n1": 58.938,
+    "n2": 59.475,
+    "n3": 60.012,
+    "n4": 60.549,
+    "brand": 61.623,
+    "cta": 62.803
   },
   "scenes": [
     {
@@ -255,70 +263,65 @@
       "end": 11.328
     },
     {
-      "id": "pizza1",
+      "id": "buffet1",
       "start": 11.328,
-      "end": 17.059
+      "end": 17.959
     },
     {
-      "id": "pizza2",
-      "start": 17.059,
-      "end": 20.656
+      "id": "buffet2",
+      "start": 17.959,
+      "end": 20.635
+    },
+    {
+      "id": "buffet3",
+      "start": 20.635,
+      "end": 23.882
+    },
+    {
+      "id": "pratos",
+      "start": 23.882,
+      "end": 30.482
     },
     {
       "id": "massa1",
-      "start": 20.656,
-      "end": 24.804
+      "start": 30.482,
+      "end": 35.314
     },
     {
       "id": "massa2",
-      "start": 24.804,
-      "end": 27.261
-    },
-    {
-      "id": "mariscos",
-      "start": 27.261,
-      "end": 32.63
-    },
-    {
-      "id": "carne1",
-      "start": 32.63,
-      "end": 36.232
-    },
-    {
-      "id": "carne2",
-      "start": 36.232,
-      "end": 38.738
-    },
-    {
-      "id": "petiscos",
-      "start": 38.738,
-      "end": 44.062
+      "start": 35.314,
+      "end": 37.462
     },
     {
       "id": "bar",
-      "start": 44.062,
-      "end": 49.563
+      "start": 37.462,
+      "end": 43.036
+    },
+    {
+      "id": "bar2",
+      "start": 43.036,
+      "end": 48.935
     },
     {
       "id": "menu",
-      "start": 49.563,
-      "end": 53.216
+      "start": 48.935,
+      "end": 54.643
     },
     {
       "id": "website",
-      "start": 53.216,
-      "end": 57.328
+      "start": 54.643,
+      "end": 58.688
     },
     {
       "id": "cta",
-      "start": 57.328,
+      "start": 58.688,
       "end": 67.74
     }
   ],
   "lines": [
     {
       "id": "b01",
-      "file": "vo3/b01.mp3",
+      "file": "vo4/b01.mp3",
       "from": 0,
       "to": 4.007,
       "at": 0.35,
@@ -327,7 +330,7 @@
     },
     {
       "id": "b02",
-      "file": "vo3/b02.mp3",
+      "file": "vo4/b02.mp3",
       "from": 0.057,
       "to": 6.878,
       "at": 4.457,
@@ -336,75 +339,75 @@
     },
     {
       "id": "b03",
-      "file": "vo3/b03.mp3",
-      "from": 0.097,
-      "to": 9.325,
+      "file": "vo4/b03.mp3",
+      "from": 0,
+      "to": 6.531,
       "at": 11.378,
-      "end": 20.606,
-      "text": "Pizza Double Stack, duas camadas de puro sabor: MIL meticais! Pizza Seafood, com lula e camarão: setecentos!"
+      "end": 17.909,
+      "text": "Buffet à vontade, com bebidas e sobremesa incluídas: a partir de MIL E QUINHENTOS meticais por pessoa!"
     },
     {
       "id": "b04",
-      "file": "vo3/b04.mp3",
-      "from": 0.052,
-      "to": 6.609,
-      "at": 20.706,
-      "end": 27.263,
-      "text": "Tagliatelle Carbonara, bem cremosa: quinhentos e cinquenta! Lasanha de carne moída: setecentos!"
+      "file": "vo4/b04.mp3",
+      "from": 0.054,
+      "to": 5.878,
+      "at": 18.009,
+      "end": 23.832,
+      "text": "Com camarão e lulas: DOIS MIL! E com lagosta e camarão tigre: DOIS MIL E OITOCENTOS!"
     },
     {
       "id": "b05",
-      "file": "vo3/b05.mp3",
-      "from": 0.06,
-      "to": 5.329,
-      "at": 27.363,
-      "end": 32.632,
-      "text": "Aparelhada de mariscos, com lula, camarão e lagosta: a partir de mil e quinhentos meticais!"
+      "file": "vo4/b05.mp3",
+      "from": 0,
+      "to": 6.426,
+      "at": 23.932,
+      "end": 30.358,
+      "text": "Chamuças, bife na panela, galinha à zambeziana, peixe grelhado e mousse de malambe… tudo no buffet!"
     },
     {
       "id": "b06",
-      "file": "vo3/b06.mp3",
-      "from": 0,
-      "to": 5.956,
-      "at": 32.732,
-      "end": 38.688,
-      "text": "Bife grelhado com molho demi-glace: mil e cem! Meia galinha cafreal: oitocentos!"
+      "file": "vo4/b06.mp3",
+      "from": 0.052,
+      "to": 7.079,
+      "at": 30.458,
+      "end": 37.485,
+      "text": "Tagliatelle Carbonara, bem cremosa: novecentos e cinquenta! Lasanha de carne moída: setecentos!"
     },
     {
       "id": "b07",
-      "file": "vo3/b07.mp3",
-      "from": 0.105,
-      "to": 5.329,
-      "at": 38.788,
-      "end": 44.012,
-      "text": "Para petiscar: asinhas crocantes e pão de alho com queijo, a partir de trezentos e cinquenta!"
-    },
-    {
-      "id": "b08",
-      "file": "vo3/b08.mp3",
+      "file": "vo4/b07.mp3",
       "from": 0.085,
       "to": 5.486,
-      "at": 44.112,
-      "end": 49.513,
+      "at": 37.585,
+      "end": 42.986,
       "text": "E no bar: Mojito a trezentos e Piña Colada a quatrocentos e cinquenta!"
     },
     {
-      "id": "b09",
-      "file": "vo3/b09.mp3",
+      "id": "b08",
+      "file": "vo4/b08.mp3",
       "from": 0,
-      "to": 3.553,
-      "at": 49.613,
-      "end": 53.166,
-      "text": "São mais de cento e trinta pratos e bebidas no nosso cardápio!"
+      "to": 5.799,
+      "at": 43.086,
+      "end": 48.885,
+      "text": "Bom Paladar Intense Girl: quatrocentos! Tequila Sunrise: quinhentos!"
+    },
+    {
+      "id": "b09",
+      "file": "vo4/b09.mp3",
+      "from": 0,
+      "to": 5.642,
+      "at": 48.985,
+      "end": 54.627,
+      "text": "Vinhos, cervejas, gins e whiskies: são mais de cento e vinte pratos e bebidas no nosso cardápio!"
     },
     {
       "id": "b10",
-      "file": "vo3/b10.mp3",
+      "file": "vo4/b10.mp3",
       "from": 0,
-      "to": 11.389,
-      "at": 53.266,
-      "end": 64.655,
-      "text": "Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: oitenta e sete... cento e oitenta e cinco... quarenta e quatro... dezassete! Bom Paladar: reserve JÁ!"
+      "to": 8.803,
+      "at": 54.727,
+      "end": 63.53,
+      "text": "Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: [87 062 45 64 no ecrã] Bom Paladar: reserve JÁ!"
     }
   ],
   "sfx": [
@@ -420,107 +423,97 @@
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 16.639,
+      "at": 17.539,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 20.236,
+      "at": 20.215,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 24.384,
+      "at": 23.462,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 26.841,
+      "at": 30.062,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 32.21,
+      "at": 34.894,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 35.812,
+      "at": 37.042,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 38.318,
+      "at": 42.616,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 43.642,
+      "at": 48.515,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 49.143,
+      "at": 54.223,
       "gain": -11
     },
     {
       "file": "sfx/whoosh.mp3",
-      "at": 52.796,
-      "gain": -11
-    },
-    {
-      "file": "sfx/whoosh.mp3",
-      "at": 56.908,
+      "at": 58.268,
       "gain": -11
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 15.251,
+      "at": 15.368,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 19.661,
+      "at": 19.455,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 23.444,
+      "at": 22.465,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 26.374,
+      "at": 33.176,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 30.653,
+      "at": 36.526,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 35.102,
+      "at": 38.77,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 37.922,
+      "at": 40.4,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 42.333,
+      "at": 45.456,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 45.297,
-      "gain": -12
-    },
-    {
-      "file": "sfx/logo.mp3",
-      "at": 46.927,
+      "at": 48.146,
       "gain": -12
     },
     {
@@ -530,22 +523,42 @@
     },
     {
       "file": "sfx/sizzle.mp3",
-      "at": 32.730000000000004,
+      "at": 18.059,
       "gain": -9
     },
     {
       "file": "sfx/ice.mp3",
-      "at": 44.162,
+      "at": 37.562000000000005,
       "gain": -9
     },
     {
       "file": "sfx/click.mp3",
-      "at": 55.826,
+      "at": 57.287,
       "gain": -12
     },
     {
       "file": "sfx/logo.mp3",
-      "at": 63.886,
+      "at": 58.888,
+      "gain": -13
+    },
+    {
+      "file": "sfx/logo.mp3",
+      "at": 59.425,
+      "gain": -13
+    },
+    {
+      "file": "sfx/logo.mp3",
+      "at": 59.962,
+      "gain": -13
+    },
+    {
+      "file": "sfx/logo.mp3",
+      "at": 60.499,
+      "gain": -10
+    },
+    {
+      "file": "sfx/logo.mp3",
+      "at": 62.753,
       "gain": -6
     }
   ],
