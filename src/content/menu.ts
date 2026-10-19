@@ -200,7 +200,7 @@ const cocktails: MenuItem[] = [
     'shots',
     'Shots',
     undefined,
-    'Blow Job, Guitinha, B52, Tequila Gold, Tequila Branca, Blue Kamikaze, Jägermeister e Jägerbomb.',
+    'Blow Job, Guitinha, B52, Tequila Gold, Tequila Branca, Blue Kamikaze, Jägermeister e Jägerbomb. Preços em Espirituosas & Shots.',
     drink(photos.shots, 'Shots: B52 e tequila com lima e sal'),
   ),
 ]
@@ -252,6 +252,107 @@ const wineCover: Visual = {
   alt: 'Copo de vinho tinto e copo de vinho branco com garrafa e uvas',
 }
 
+// Carta de bebidas e extras (folha "Extras / Sobremesas / Águas / … / Aguardentes").
+const extras: MenuItem[] = [
+  it('arroz-branco-coco-legumes', 'Arroz Branco / de Coco / de Legumes', 200, undefined, photo(photos.arrozLegumes, 'grill', 'Arroz de legumes')),
+  it('arroz-tomate-feijao', 'Arroz de Tomate e Arroz de Feijão c/ Salsicha', 300),
+  it('xima', 'Xima / Xima Caracata', 200),
+  it('legumes-salteados', 'Legumes Salteados', 200),
+  it('feijao-preto', 'Feijão Preto', 200),
+  it('salada-mista', 'Salada Mista', 200),
+]
+
+const sobremesas: MenuItem[] = [
+  it('pudim-ovos', 'Pudim de Ovos', 250),
+  it('mousse-malambe', 'Mousse de Malambe', 250, undefined, photo(photos.mousseMalambe, 'grill', 'Mousse de malambe')),
+  it('salada-frutas', 'Salada de Frutas da Época', 300),
+]
+
+const espumantes: MenuItem[] = [
+  it('annabelle', 'Annabelle', 1600),
+  it('tosti-moscato', 'Tosti Moscato', 1700),
+  it('jc-le-roux', 'J.C. Le Roux', 1300),
+  it('espumante-sem-alcool', 'Espumante sem Álcool', 1200),
+]
+
+const cervejaPressao: MenuItem[] = [
+  it('pressao-mini', 'Copo Mini (20 cl)', 140),
+  it('pressao-medio', 'Copo Médio (35 cl)', 190),
+  it('pressao-caneca', 'Caneca (50 cl)', 250),
+]
+
+const cervejas: MenuItem[] = [
+  it('super-bock-castle-lite', 'Super Bock / Castle Lite', 120),
+  it('manica-2m-laurentina', 'Manica (lata) / 2M (lata ou garrafa) / Laurentina Preta / Txilar', 100),
+  it('heineken-mini', 'Heineken Mini', 130),
+  it('heineken-sem-alcool-stella', 'Heineken sem Álcool / Stella Artois', 160),
+  it('corona', 'Corona', 140),
+  it('heineken-silver-castle-double', 'Heineken Silver / Castle Double Malt', 160),
+]
+
+const sidras: MenuItem[] = [
+  it('brutal-hunters-savanna', "Brutal / Hunter's Gold / Savanna Dry / Lemon", 150),
+  it('bernini', 'Bernini', 200),
+  it('breezer', 'Breezer (vários sabores)', 150),
+]
+
+const espirituosas: MenuItem[] = [
+  it('gordons', "Gordon's Gin", 100),
+  it('tanqueray-london-dry', 'Tanqueray London Dry', 170),
+  it('tanqueray-ten-botanist', 'Tanqueray Nº Ten / Tanqueray Blackcurrant / The Botanist', 240),
+  it('bulldog-hendricks', "Bulldog / Hendrick's / Beefeater Pink / Beefeater Orange / Musgrave", 170),
+  it('streeton', 'Streeton Blue / Orange / Pink', 150),
+  it('inverroche-tanqueray-sevilla', 'Inverroche Classic / Verdant / Tanqueray Sevilla', 180),
+  it('beefeater-london', 'Beefeater London', 150),
+  it('bombay-sapphire', 'Bombay Sapphire', 170),
+  it('sambuca', 'Sambuca Black / White (shot)', 250),
+  it('shot-blow-job', 'Blow Job (shot)', 250),
+  it('shot-jagermeister', 'Jägermeister (shot)', 250),
+  it('lovoka', 'Lovoka de Caramelo / de Chocolate (shot)', 250),
+  it('tequila-cactus-jack', 'Tequila Cactus Jack Azul (shot)', 250),
+  it('tequila-olmeca-silver', 'Tequila Olmeca Silver (shot)', 170),
+]
+
+const whisky: MenuItem[] = [
+  it('grants-ballantines-jameson', "Grant's / Ballantine's / Jameson / Dewar's", 125),
+  it('jw-red', 'Johnnie Walker Red Label', 125),
+  it('jw-black-jameson-ipa-jack', "Johnnie Walker Black Label / Jameson IPA / Jack Daniel's", 180),
+  it('glenfiddich-12-jameson-black', 'The Glenfiddich 12 / Jameson Black Barrel', 230),
+  it('jw-green-gold', 'Johnnie Walker Green Label / Gold Label', 330),
+  it('glenfiddich-15', 'The Glenfiddich 15', 280),
+  it('chivas-12', 'Chivas 12 Anos', 200),
+]
+
+const aguardentes: MenuItem[] = [
+  it('brandy-1920-smirnoff', '1920 Brandy / Vodka Smirnoff', 150),
+  it('sao-domingos', 'São Domingos', 150),
+  it('crf-hennessy-remy', 'CRF Reserva / Hennessy / Rémy Martin', 270),
+  it('vodka-absolut', 'Vodka Absolut', 200),
+  it('captain-morgan', 'Captain Morgan Black / Gold', 150),
+  it('martini-amarula', 'Martini Tinto / Branco / Amarula', 150),
+  it('tia-maria-porto-beirao', 'Tia Maria / Vinho do Porto Ferreira / Licor Beirão', 200),
+]
+
+const refrigerantes: MenuItem[] = [
+  it('coca-zero-dry-lemon-ginger', 'Coca-Cola Zero / Dry Lemon / Ginger Ale', 100),
+  it('coca-cola', 'Coca-Cola e outros', 100),
+  it('red-bull', 'Red Bull', 200),
+  it('guarana', 'Guaraná', 100),
+  it('cappy', 'Cappy (todos os sabores)', 100),
+  it('compal', 'Compal (grande)', 200),
+  it('sumo-natural-1', 'Sumo Natural c/ 1 Sabor', 200),
+  it('sumo-natural-2', 'Sumo Natural até 2 Sabores', 250),
+]
+
+const aguasCafetaria: MenuItem[] = [
+  it('agua-05', 'Água sem Gás 0,5 L', 50),
+  it('agua-15', 'Água sem Gás 1,5 L', 120),
+  it('agua-com-gas', 'Água com Gás Salgada / Outros Sabores', 120),
+  it('tonica-soda', 'Tónica / Soda', 100),
+  it('cafe-expresso', 'Café Expresso', 100),
+  it('cha', 'Chá Verde / Chá Preto', 200),
+]
+
 export const menuSections: MenuSection[] = [
   {
     id: 'buffet',
@@ -264,6 +365,8 @@ export const menuSections: MenuSection[] = [
   },
   { id: 'massas', label: 'Menu Pasta', items: massas },
   { id: 'lasanhas', label: 'Lasanhas', items: lasanhas },
+  { id: 'extras', label: 'Extras', items: extras },
+  { id: 'sobremesas', label: 'Sobremesas', items: sobremesas },
   { id: 'cocktails', label: 'Cocktails', items: cocktails },
   {
     id: 'vinhos-tintos',
@@ -279,11 +382,20 @@ export const menuSections: MenuSection[] = [
     note: 'Garrafa',
     items: vinhosBrancos,
   },
+  { id: 'espumantes', label: 'Espumantes', note: 'Garrafa', items: espumantes },
+  { id: 'cerveja-pressao', label: 'Cerveja à Pressão Super Bock', items: cervejaPressao },
+  { id: 'cervejas', label: 'Cervejas Lata / Garrafa', items: cervejas },
+  { id: 'sidras', label: 'Sidras', items: sidras },
+  { id: 'espirituosas', label: 'Espirituosas (Gin) & Shots', note: 'Dose', items: espirituosas },
+  { id: 'whisky', label: 'Whisky Blended, Scotch & Single Malt', note: 'Dose', items: whisky },
+  { id: 'aguardentes', label: 'Aguardentes, Digestivos & Cognac', note: 'Dose', items: aguardentes },
+  { id: 'refrigerantes', label: 'Refrigerantes & Sumos', items: refrigerantes },
+  { id: 'aguas', label: 'Águas & Cafetaria', items: aguasCafetaria },
 ]
 
 export const priceNote = 'Preços em meticais (MT), sujeitos a alteração sem aviso prévio.'
 
-export const barNote = 'Águas, refrigerantes, sumos, cafetaria, cervejas e outras bebidas: consulte o empregado ou o balcão do bar.'
+export const barNote = 'Cocktails, vinhos, cervejas, gins, whiskies e muito mais. Peça ao empregado as sugestões do bar.'
 
 export const menuItemCount = menuSections.reduce((n, s) => n + s.items.length, 0)
 

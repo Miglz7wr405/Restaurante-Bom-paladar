@@ -28,7 +28,7 @@ Todo o conteúdo editável está em `src/content/` (tipado em `types.ts`):
 | Ficheiro | O quê |
 | --- | --- |
 | `restaurant.ts` | Nome, morada, telefone/WhatsApp, horário, redes sociais, domínio do site |
-| `menu.ts` | Menu de outubro de 2026: Buffet (3 opções, com os pratos de cada uma em `groups`), Menu Pasta, Lasanhas, Cocktails, Vinhos Tintos e Brancos/Verdes/Rosé. 6 secções, 59 itens (nome, descrição, preço em MT; `price` vazio = "Consultar") |
+| `menu.ts` | Menu de outubro de 2026: Buffet (3 opções, com os pratos de cada uma em `groups`), Menu Pasta, Lasanhas, Extras, Sobremesas, Cocktails, Vinhos Tintos, Brancos/Verdes/Rosé, Espumantes, Cerveja à Pressão, Cervejas, Sidras, Espirituosas & Shots, Whisky, Aguardentes/Digestivos/Cognac, Refrigerantes & Sumos e Águas & Cafetaria. 17 secções, 126 itens (nome, descrição, preço em MT; `price` vazio = "Consultar") |
 | `photos.ts` | Catálogo de fotos dos pratos |
 | `home.ts` | Slides do hero, categorias, prato do mês, destaques, separadores "Os mais pedidos", promoções, take-away, equipa, novidades |
 
@@ -54,7 +54,7 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 - **Menu antigo**: substituído pelo menu de outubro de 2026 (buffets, pasta, cocktails e vinhos). Pizzas, à la carte de mariscos, carnes, petiscos, etc. saíram do site.
 - **Carta de vinhos, nomes por confirmar**: o cartão impresso tem gralhas e foi interpretado assim: "Mucho Más", "Reguengos", "Segredos de S. Miguel", "Duas Quintas", "Pé Tinto", "Portada", "Quinta da Bolota". Ficaram como se leem, a confirmar: **Cadão** (Novo e Reserva), **Spylano** e **Petusco Verde**. O cartão tem um segundo **Mucho Más a 2.330 MT** (destacado a azul) que não foi incluído; confirmar se é outro vinho.
 - **Grafias**: "galinha cafrial" ficou "galinha cafreal" e "Massa Putanesca" ficou como no menu. Os Shots não têm preço no menu ("Consultar").
-- **Bebidas avulsas** (águas, refrigerantes, sumos, cafetaria, cervejas): não vieram no menu novo; o site mostra só uma nota.
+- **Carta de bebidas e extras**: transcrita da folha "Extras / Sobremesas / Águas / … / Aguardentes". Corrigido: cerveja à pressão em **cl** (a folha diz 20/35/50 ml), "Martin" → Martini, "Castle Double Malte" → Double Malt. As secções de Espirituosas, Whisky e Aguardentes estão marcadas como **Dose** (preço por copo): confirmar.
 - **Hora de abertura e dias**: só a hora de fecho (00:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 00:00" e o JSON-LD omite o horário.
 - **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 87 062 4564` (o número dos menus novos). Confirmar que o número tem WhatsApp.
 - **Facebook / Instagram**: adicionar os links em `socials` (vazios não aparecem).
