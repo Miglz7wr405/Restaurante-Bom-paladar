@@ -43,7 +43,8 @@ const BLOCKS = [
   { id: 'b08', text: 'Bom Paladar Intense Girl: quatrocentos! Tequila Sunrise: quinhentos!', marks: { priceA: 2.42, dishB: 3.78, priceB: 5.11 } },
   { id: 'b09', text: 'Vinhos, cervejas, gins e whiskies: são mais de cento e vinte pratos e bebidas no nosso cardápio!', marks: {} },
   // b10 montado a partir do take do vo3 (mesma voz): a frase de abertura e "Bom Paladar: reserve JÁ!", sem o número
-  // antigo; o número de reservas (84 062 45 60) entra só no ecrã, um grupo por batida, no silêncio entre as duas frases.
+  // antigo; o número de reservas (84 062 45 60) entra só no ecrã, um grupo por batida, no silêncio entre as duas frases,
+  // e a recepção (87 062 4564) logo a seguir.
   {
     id: 'b10',
     text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: [84 062 45 60 no ecrã] Bom Paladar: reserve JÁ!',
