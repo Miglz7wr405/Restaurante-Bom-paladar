@@ -1,6 +1,6 @@
 import type { DaySchedule, SocialLink } from './types'
 
-const phoneDigits = '258870624564'
+const phoneDigits = '258840624560'
 
 export const restaurant = {
   name: 'Bom Paladar',
@@ -20,7 +20,7 @@ export const restaurant = {
     countryCode: 'MZ',
   },
   phone: {
-    display: '+258 87 062 4564',
+    display: '+258 84 062 4560',
     href: `tel:+${phoneDigits}`,
     whatsapp: `https://wa.me/${phoneDigits}`,
   },
@@ -29,12 +29,12 @@ export const restaurant = {
   rating: { value: 4.3, count: 6, source: 'Google' },
   highlight: 'Serve ótimos cocktails',
   slogan: 'Sabor, qualidade e boa companhia!',
-  // Only the closing time (00:00) is confirmed. Set `opens` (e.g. '10:00') and check the days once confirmed.
+  // Only the closing time (23:00) is confirmed. Set `opens` (e.g. '10:00') and check the days once confirmed.
   hours: [
     {
       days: 'Todos os dias',
       schemaDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      closes: '00:00',
+      closes: '23:00',
     },
   ] as DaySchedule[],
 }

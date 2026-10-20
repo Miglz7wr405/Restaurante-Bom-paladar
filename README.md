@@ -55,8 +55,8 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 - **Carta de vinhos, nomes por confirmar**: o cartão impresso tem gralhas e foi interpretado assim: "Mucho Más", "Reguengos", "Segredos de S. Miguel", "Duas Quintas", "Pé Tinto", "Portada", "Quinta da Bolota". Ficaram como se leem, a confirmar: **Cadão** (Novo e Reserva), **Spylano** e **Petusco Verde**. O cartão tem um segundo **Mucho Más a 2.330 MT** (destacado a azul) que não foi incluído; confirmar se é outro vinho.
 - **Grafias**: "galinha cafrial" ficou "galinha cafreal" e "Massa Putanesca" ficou como no menu. Os Shots não têm preço no menu ("Consultar").
 - **Carta de bebidas e extras**: transcrita da folha "Extras / Sobremesas / Águas / … / Aguardentes". Corrigido: cerveja à pressão em **cl** (a folha diz 20/35/50 ml), "Martin" → Martini, "Castle Double Malte" → Double Malt. As secções de Espirituosas, Whisky e Aguardentes estão marcadas como **Dose** (preço por copo): confirmar.
-- **Hora de abertura e dias**: só a hora de fecho (00:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 00:00" e o JSON-LD omite o horário.
-- **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 87 062 4564` (o número dos menus novos). Confirmar que o número tem WhatsApp.
+- **Hora de abertura e dias**: só a hora de fecho (23:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 23:00" e o JSON-LD omite o horário.
+- **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 84 062 4560`, o número do restaurante indicado pelo cliente (os menus impressos ainda têm o 87 062 4564).
 - **Facebook / Instagram**: adicionar os links em `socials` (vazios não aparecem).
 - **Equipa e novidades**: textos provisórios; substituir por nomes/fotos e notícias reais.
 - **Domínio**: `siteUrl` em `restaurant.ts` (usado no canonical, OG e sitemap).
@@ -76,7 +76,7 @@ Ordem do vídeo, conduzida pela voz:
    - Bom Paladar Intense Girl (400 MT) e Tequila Sunrise (500 MT)
 4. Os cardápios novos e os 126 pratos e bebidas do menu do site (17 secções).
 5. O website, com a reserva preenchida.
-6. Final com o WhatsApp 87 062 45 64 (um grupo por batida, no ecrã) e **RESERVE JÁ**.
+6. Final com o WhatsApp 84 062 45 60 (um grupo por batida, no ecrã) e **RESERVE JÁ**.
 
 O Buffet 1.500, o Menu Pasta e os cocktails entram "do cardápio para a mesa": aparece o cardápio impresso real, as linhas do prato ficam destacadas e a câmara faz zoom até à foto. Todas as fotos são do restaurante.
 
