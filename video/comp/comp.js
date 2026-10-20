@@ -291,7 +291,7 @@
   })()
 
   // =========================================================================
-  // 2. Local: Rua Robert Mugabe · aberto até à meia-noite · 4,3 no Google
+  // 2. Local: Rua Robert Mugabe · aberto até às 23h · 4,3 no Google
   // =========================================================================
   ;(() => {
     const { el, s, e } = scene('local')
@@ -341,7 +341,7 @@
       `<div class="abs" style="text-align:${V ? 'center' : 'left'};width:${V ? 1000 : 1300}px">
         <div class="oswald nm nowrap" style="font-size:${V ? 104 : 118}px">Rua Robert Mugabe</div>
         <div class="mask" style="margin-top:12px"><span class="kicker" style="font-size:${V ? 36 : 34}px">Quelimane · Moçambique</span></div>
-        <div class="open" style="margin-top:${V ? 60 : 50}px;display:flex;justify-content:${V ? 'center' : 'flex-start'}"><span class="chip gold" style="font-size:${V ? 46 : 44}px">${icon('clock')} Aberto até à meia-noite</span></div>
+        <div class="open" style="margin-top:${V ? 60 : 50}px;display:flex;justify-content:${V ? 'center' : 'flex-start'}"><span class="chip gold" style="font-size:${V ? 46 : 44}px">${icon('clock')} Aberto até às 23h</span></div>
         <div class="rate" style="margin-top:${V ? 56 : 46}px;display:flex;align-items:center;gap:.35em;justify-content:${V ? 'center' : 'flex-start'};font-size:${V ? 64 : 60}px">
           <span class="oswald gold-text" style="font-size:1.9em;line-height:1">4,3</span>
           <span class="stars">${icon('star').repeat(5)}<span class="on" style="width:0%">${icon('star').repeat(5)}</span></span>
@@ -632,7 +632,7 @@
     const num = add(
       el,
       `<div class="abs oswald nowrap" style="font-size:${L.num[2]}px;display:flex;gap:.28em;letter-spacing:.02em">
-        <span class="g">87</span><span class="g">062</span><span class="g">45</span><span class="g">64</span></div>`,
+        <span class="g">84</span><span class="g">062</span><span class="g">45</span><span class="g">60</span></div>`,
     )
     at(num, L.num[0], L.num[1])
     const groups = num.querySelectorAll('.g')
@@ -652,7 +652,7 @@
     at(cta, L.cta[0], L.cta[1])
     const addr = add(
       el,
-      `<div class="abs nowrap" style="display:flex;align-items:center;gap:.4em;font:500 ${L.addr[2]}px Inter;color:var(--cream-100)"><span style="color:var(--gold-400);width:1.2em;height:1.2em;display:flex">${icon('pin')}</span>Rua Robert Mugabe · Quelimane · Aberto até à meia-noite</div>`,
+      `<div class="abs nowrap" style="display:flex;align-items:center;gap:.4em;font:500 ${L.addr[2]}px Inter;color:var(--cream-100)"><span style="color:var(--gold-400);width:1.2em;height:1.2em;display:flex">${icon('pin')}</span>Rua Robert Mugabe · Quelimane · Aberto até às 23h</div>`,
     )
     at(addr, L.addr[0], L.addr[1])
     drawLogo(mark, m.brand - 0.1, 0.5)
@@ -678,7 +678,7 @@
     const t1 = S.menu.start
     const bar = add(
       overlay,
-      `<div class="infobar" style="font-size:${V ? 27 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 87 062 4564</div>`,
+      `<div class="infobar" style="font-size:${V ? 27 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 84 062 4560</div>`,
     )
     if (V) at(bar, C.x, 262)
     else gsap.set(bar, { left: 60, top: 1000, yPercent: -50 })

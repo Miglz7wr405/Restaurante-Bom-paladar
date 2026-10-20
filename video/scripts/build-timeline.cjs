@@ -33,7 +33,8 @@ function silences(file, db = -40, d = 0.05) {
 const VO_DIR = 'vo4' // voz Dinis (sotaque de Portugal), eleven_v3; b01, b02 e b07 reaproveitados do vo3
 const BLOCKS = [
   { id: 'b01', text: 'Bom Paladar, Restaurante e Bar! O sabor que Quelimane ADORA!', marks: { slogan: 2.1 } },
-  { id: 'b02', text: 'Na Rua Robert Mugabe, aberto até à meia-noite, com nota quatro vírgula três no Google!', marks: { open: 2.38, rating: 4.08 } },
+  // b02 montado a partir do take do vo3 sem "aberto até à meia-noite" (o restaurante fecha às 23h): o horário fica só no ecrã.
+  { id: 'b02', text: 'Na Rua Robert Mugabe, com nota quatro vírgula três no Google!', marks: { open: 1.55, rating: 2.23 } },
   { id: 'b03', text: 'Buffet à vontade, com bebidas e sobremesa incluídas: a partir de MIL E QUINHENTOS meticais por pessoa!', marks: { price: 4.04 } },
   { id: 'b04', text: 'Com camarão e lulas: DOIS MIL! E com lagosta e camarão tigre: DOIS MIL E OITOCENTOS!', marks: { priceA: 1.55, dishB: 2.78, priceB: 4.56 } },
   { id: 'b05', text: 'Chamuças, bife na panela, galinha à zambeziana, peixe grelhado e mousse de malambe… tudo no buffet!', marks: { w1: 0.05, w2: 0.86, w3: 1.97, w4: 3.34, w5: 4.26, tudo: 5.72 } },
@@ -42,11 +43,11 @@ const BLOCKS = [
   { id: 'b08', text: 'Bom Paladar Intense Girl: quatrocentos! Tequila Sunrise: quinhentos!', marks: { priceA: 2.42, dishB: 3.78, priceB: 5.11 } },
   { id: 'b09', text: 'Vinhos, cervejas, gins e whiskies: são mais de cento e vinte pratos e bebidas no nosso cardápio!', marks: {} },
   // b10 montado a partir do take do vo3 (mesma voz): a frase de abertura e "Bom Paladar: reserve JÁ!", sem o número
-  // antigo; o número novo (87 062 45 64) entra só no ecrã, um grupo por batida, no silêncio entre as duas frases.
+  // antigo; o número de reservas (84 062 45 60) entra só no ecrã, um grupo por batida, no silêncio entre as duas frases.
   {
     id: 'b10',
-    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: [87 062 45 64 no ecrã] Bom Paladar: reserve JÁ!',
-    marks: { reserve: 1.96, n1: 4.211, n2: 4.748, n3: 5.285, n4: 5.822, brand: 6.896, cta: 8.076 },
+    text: 'Veja o menu completo no nosso site e reserve a sua mesa pelo WhatsApp: [84 062 45 60 no ecrã] Bom Paladar: reserve JÁ!',
+    marks: { reserve: 1.96, n1: 4.451, n2: 4.988, n3: 5.525, n4: 6.062, brand: 7.136, cta: 8.316 },
   },
 ]
 
