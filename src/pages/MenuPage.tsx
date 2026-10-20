@@ -84,6 +84,9 @@ export default function MenuPage() {
             <ButtonLink href={restaurant.phone.href} variant="outline">
               Encomendar: {restaurant.phone.display}
             </ButtonLink>
+            <ButtonLink href={restaurant.reception.href} variant="outline">
+              {restaurant.reception.label}: {restaurant.reception.display}
+            </ButtonLink>
           </div>
         </div>
       </section>

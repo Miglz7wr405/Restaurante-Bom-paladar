@@ -19,10 +19,18 @@ export const restaurant = {
     country: 'Moçambique',
     countryCode: 'MZ',
   },
+  // Reservations, WhatsApp and the newsletter go to this number.
   phone: {
+    label: 'Reservas e WhatsApp',
     display: '+258 84 062 4560',
     href: `tel:+${phoneDigits}`,
     whatsapp: `https://wa.me/${phoneDigits}`,
+  },
+  // The number printed on the menus; calls only.
+  reception: {
+    label: 'Recepção',
+    display: '+258 87 062 4564',
+    href: 'tel:+258870624564',
   },
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=Bom%20Paladar%20Restaurante%20%26%20Bar%2C%20Rua%20Robert%20Mugabe%2C%20Quelimane',
@@ -38,6 +46,8 @@ export const restaurant = {
     },
   ] as DaySchedule[],
 }
+
+export const phones = [restaurant.phone, restaurant.reception]
 
 // Add Facebook / Instagram here once confirmed; empty hrefs are not rendered.
 export const socials: SocialLink[] = [

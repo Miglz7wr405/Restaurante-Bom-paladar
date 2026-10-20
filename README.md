@@ -56,7 +56,7 @@ As imagens são servidas como WebP com fallback JPG, `loading="lazy"`, `decoding
 - **Grafias**: "galinha cafrial" ficou "galinha cafreal" e "Massa Putanesca" ficou como no menu. Os Shots não têm preço no menu ("Consultar").
 - **Carta de bebidas e extras**: transcrita da folha "Extras / Sobremesas / Águas / … / Aguardentes". Corrigido: cerveja à pressão em **cl** (a folha diz 20/35/50 ml), "Martin" → Martini, "Castle Double Malte" → Double Malt. As secções de Espirituosas, Whisky e Aguardentes estão marcadas como **Dose** (preço por copo): confirmar.
 - **Hora de abertura e dias**: só a hora de fecho (23:00) está confirmada. Preencher `opens` em `restaurant.ts`; até lá o site mostra "Aberto até às 23:00" e o JSON-LD omite o horário.
-- **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 84 062 4560`, o número do restaurante indicado pelo cliente (os menus impressos ainda têm o 87 062 4564).
+- **WhatsApp**: reservas e newsletter abrem uma mensagem para `+258 84 062 4560` (reservas e WhatsApp). O site mostra também a recepção, `+258 87 062 4564` (o número dos menus impressos), só para chamadas. Os dois estão em `restaurant.ts` (`phone` e `reception`).
 - **Facebook / Instagram**: adicionar os links em `socials` (vazios não aparecem).
 - **Equipa e novidades**: textos provisórios; substituir por nomes/fotos e notícias reais.
 - **Domínio**: `siteUrl` em `restaurant.ts` (usado no canonical, OG e sitemap).

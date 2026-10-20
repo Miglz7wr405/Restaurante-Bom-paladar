@@ -1,5 +1,5 @@
 import { findSection } from '@/content/menu'
-import { MENU_URL, navLinks, restaurant, socials } from '@/content/restaurant'
+import { MENU_URL, navLinks, phones, restaurant, socials } from '@/content/restaurant'
 
 const FOOTER_SECTIONS = ['buffet', 'massas', 'lasanhas', 'cocktails', 'vinhos-tintos', 'vinhos-brancos'].map(findSection)
 import { Icon } from '../ui/Icon'
@@ -7,7 +7,7 @@ import { Logo } from '../ui/Logo'
 
 export function Footer() {
   const year = new Date().getFullYear()
-  const { address, phone, hours } = restaurant
+  const { address, hours } = restaurant
   return (
     <footer id="contactos" className="bg-ink-950 text-cream-100/80 print:hidden">
       <div className="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
@@ -79,12 +79,17 @@ export function Footer() {
                 {address.street}, {address.city}, {address.country}
               </a>
             </li>
-            <li className="flex gap-3">
-              <Icon name="phone" className="h-5 w-5 shrink-0 text-gold-400" />
-              <a href={phone.href} className="hover:text-gold-300">
-                {phone.display}
-              </a>
-            </li>
+            {phones.map((p) => (
+              <li key={p.href} className="flex gap-3">
+                <Icon name="phone" className="h-5 w-5 shrink-0 text-gold-400" />
+                <span>
+                  {p.label}:{' '}
+                  <a href={p.href} className="hover:text-gold-300">
+                    {p.display}
+                  </a>
+                </span>
+              </li>
+            ))}
             {hours.map((h) => (
               <li key={h.days} className="flex gap-3">
                 <Icon name="clock" className="h-5 w-5 shrink-0 text-gold-400" />

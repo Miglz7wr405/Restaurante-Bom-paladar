@@ -1,6 +1,6 @@
 import { m } from 'framer-motion'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
-import { restaurant } from '@/content/restaurant'
+import { phones, restaurant } from '@/content/restaurant'
 import { fadeLeft, fadeRight, viewportOnce } from '@/lib/motion'
 import { todayISO, validateReservation, whatsappLink, type ReservationData, type ReservationErrors } from '@/lib/validation'
 import { Button } from '../ui/Button'
@@ -81,12 +81,17 @@ export function Reservation() {
               <Icon name="clock" className="h-5 w-5 text-gold-400" />
               Aberto até às {restaurant.hours[0]?.closes}
             </li>
-            <li className="flex items-center gap-3">
-              <Icon name="phone" className="h-5 w-5 text-gold-400" />
-              <a href={restaurant.phone.href} className="hover:text-gold-300">
-                {restaurant.phone.display}
-              </a>
-            </li>
+            {phones.map((p) => (
+              <li key={p.href} className="flex items-center gap-3">
+                <Icon name="phone" className="h-5 w-5 text-gold-400" />
+                <span>
+                  {p.label}:{' '}
+                  <a href={p.href} className="hover:text-gold-300">
+                    {p.display}
+                  </a>
+                </span>
+              </li>
+            ))}
           </ul>
         </m.div>
 

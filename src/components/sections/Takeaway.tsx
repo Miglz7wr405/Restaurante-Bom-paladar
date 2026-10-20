@@ -79,6 +79,11 @@ export function Takeaway() {
                 <Icon name="phone" className="h-4 w-4" /> {restaurant.phone.display}
               </span>
             </ButtonLink>
+            <ButtonLink href={restaurant.reception.href} variant="dark">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="phone" className="h-4 w-4" /> {restaurant.reception.label}: {restaurant.reception.display}
+              </span>
+            </ButtonLink>
             <ButtonLink href={restaurant.phone.whatsapp} target="_blank" rel="noopener noreferrer" variant="primary">
               <span className="inline-flex items-center gap-2">
                 <Icon name="whatsapp" className="h-4 w-4" /> WhatsApp
