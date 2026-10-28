@@ -76,7 +76,7 @@ Ordem do vídeo, conduzida pela voz:
    - Bom Paladar Intense Girl (400 MT) e Tequila Sunrise (500 MT)
 4. Os cardápios novos e os 126 pratos e bebidas do menu do site (17 secções).
 5. O website, com a reserva preenchida.
-6. Final com o WhatsApp 84 062 45 60 (um grupo por batida, no ecrã), a recepção 87 062 4564 e **RESERVE JÁ**.
+6. Final "Para reservas" com 87 185 44 17 em destaque (um grupo por batida, no ecrã), o alternativo 87 062 4564 em pequeno e **RESERVE JÁ**.
 
 O Buffet 1.500, o Menu Pasta e os cocktails entram "do cardápio para a mesa": aparece o cardápio impresso real, as linhas do prato ficam destacadas e a câmara faz zoom até à foto. Todas as fotos são do restaurante.
 

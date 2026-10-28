@@ -617,23 +617,23 @@
   })()
 
   // =========================================================================
-  // 6. Final: WhatsApp com o número (um grupo por batida), recepção, logótipo e RESERVE JÁ
+  // 6. Final: reservas 87 185 44 17 (um grupo por batida), o alternativo em pequeno, logótipo e RESERVE JÁ
   // =========================================================================
   ;(() => {
     const { el, s, e } = scene('cta')
     const m = BL.b10.marks
     add(el, `<div class="layer" style="background:radial-gradient(ellipse at 50% 100%, rgba(214,47,42,.35), transparent 55%), radial-gradient(circle at 50% 35%, #2e2412 0%, #121110 45%, #0b0b0c 80%)"></div>`)
     const L = V
-      ? { label: [540, 330, 34], wa: [540, 470, 150], num: [540, 680, 150], rec: [540, 815, 50], mark: [540, 945, 150], name: [540, 1095, 140], cta: [540, 1290, 180], addr: [540, 1440, 34] }
-      : { label: [960, 90, 30], wa: [560, 230, 130], num: [1040, 230, 150], rec: [960, 362, 46], mark: [960, 482, 120], name: [960, 614, 130], cta: [960, 800, 180], addr: [960, 962, 34] }
-    const label = add(el, `<div class="abs kicker" style="font-size:${L.label[2]}px">Reservas pelo WhatsApp</div>`)
+      ? { label: [540, 330, 34], wa: [540, 470, 150], num: [540, 680, 150], rec: [540, 805, 40], mark: [540, 945, 150], name: [540, 1095, 140], cta: [540, 1290, 180], addr: [540, 1440, 34] }
+      : { label: [960, 90, 30], wa: [560, 230, 130], num: [1040, 230, 150], rec: [960, 350, 38], mark: [960, 482, 120], name: [960, 614, 130], cta: [960, 800, 180], addr: [960, 962, 34] }
+    const label = add(el, `<div class="abs kicker" style="font-size:${L.label[2]}px">Para reservas</div>`)
     at(label, L.label[0], L.label[1])
     const wa = add(el, `<div class="abs" style="width:${L.wa[2]}px;height:${L.wa[2]}px;border-radius:50%;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(37,211,102,.55)">${icon('whatsapp', '', 'width:62%;height:62%')}</div>`)
     at(wa, L.wa[0], L.wa[1])
     const num = add(
       el,
       `<div class="abs oswald nowrap" style="font-size:${L.num[2]}px;display:flex;gap:.28em;letter-spacing:.02em">
-        <span class="g">84</span><span class="g">062</span><span class="g">45</span><span class="g">60</span></div>`,
+        <span class="g">87</span><span class="g">185</span><span class="g">44</span><span class="g">17</span></div>`,
     )
     at(num, L.num[0], L.num[1])
     const groups = num.querySelectorAll('.g')
@@ -644,13 +644,13 @@
       tl.fromTo(groups[i], { color: '#ecd08a' }, { color: '#fbf8f1', duration: 0.6 }, t + 0.25)
     })
     tl.to(wa, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 7, ease: 'sine.inOut' }, s + 0.6)
-    // Recepção (só chamadas), uma batida depois do último grupo do WhatsApp
+    // Número alternativo, discreto, uma batida depois do último grupo
     const rec = add(
       el,
-      `<div class="abs oswald nowrap" style="display:flex;align-items:center;gap:.35em;font-size:${L.rec[2]}px;color:var(--cream-100)"><span style="color:var(--gold-400);width:.9em;height:.9em;display:flex">${icon('phone')}</span>Recepção · 87 062 4564</div>`,
+      `<div class="abs oswald nowrap" style="font-size:${L.rec[2]}px;letter-spacing:.04em;color:var(--cream-100)"><span style="opacity:.7">Alternativo · 87 062 4564</span></div>`,
     )
     at(rec, L.rec[0], L.rec[1])
-    pop(rec, m.n4 + 60 / TL.music.bpm, { y: 30 })
+    pop(rec, m.n4 + 60 / TL.music.bpm, { y: 16 })
 
     const mark = add(el, `<div class="abs" style="height:${L.mark[2]}px;width:${L.mark[2] * 0.875}px;color:var(--gold-400);filter:drop-shadow(0 0 20px rgba(224,184,90,.45))">${LOGO}</div>`)
     at(mark, L.mark[0], L.mark[1])
@@ -686,7 +686,7 @@
     const t1 = S.menu.start
     const bar = add(
       overlay,
-      `<div class="infobar" style="font-size:${V ? 23 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 84 062 4560 <i></i> <span style="display:flex;color:var(--gold-400)">${icon('phone')}</span> 87 062 4564</div>`,
+      `<div class="infobar" style="font-size:${V ? 23 : 24}px">${icon('pin', '', 'color:var(--gold-400)')} Rua Robert Mugabe · Quelimane <i></i> <span class="wa" style="display:flex">${icon('whatsapp')}</span> 87 185 4417 <i></i> <span style="opacity:.65">87 062 4564</span></div>`,
     )
     if (V) at(bar, C.x, 262)
     else gsap.set(bar, { left: 60, top: 1000, yPercent: -50 })
